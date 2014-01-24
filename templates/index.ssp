@@ -1,0 +1,72 @@
+<%@ var staticUrl: String %>
+<%@ var uuid: String = "nologin" %>
+<% attributes("nav") = "navIndex" %>
+<%@ var links: List[com.buzzinate.lezhi.model.ExchangeLink.ExchangeLink] = null%>
+<%@ var request: javax.servlet.http.HttpServletRequest%>
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/plugin.css" />
+<div class="lezhi_banner">
+	<div class="lezhi_content_wid986">
+		<a href="
+		#if (request.getAttribute("USER_NAME") != null)
+		${rootUrl}user/manage
+		#else
+		${rootUrl}get?uuid=${uuid}
+		#end
+		" class="lezhi_banner_link"></a>
+	</div>
+</div>
+
+<div class="lezhi_content_wid986" style="margin-top:20px;">	
+	<div class="lezhi_index_show left">
+		<div class="lezhi_index_tag tag1"></div>
+		<div class="lezhi_index_tag tag2"></div>
+		<div class="lezhi_index_tag tag3"></div>
+		<div class="lezhi_index_tag tag4"></div>
+	</div>
+	
+	<div class="lezhi_index_message">
+		<div class="lezhi_user_list_head yahei">网站公告/活动</div>
+		<div class="clear spacer5"></div>
+		<div class="lezhi_index_message_list">
+			<ul>
+				<li><a class="bLinkU" href="http://blog.lezhi.me/?p=36" target="_blank">乐知 – 最新版本开通站长赢利功能</a></li>
+				<li><a class="bLinkU" href="http://blog.lezhi.me/?p=30" target="_blank">乐知推荐——网站流量提升宝典</a></li>
+				<li><a class="bLinkU" href="http://blog.lezhi.me/?p=10" target="_blank">四年浴血奋战，感恩“站”友情谊</a></li>
+				<li><a class="bLinkU" href="http://blog.lezhi.me/?p=1" target="_blank">bShare发布社会化智能推荐系统—“乐知推荐”</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="clear"></div>
+	
+	<div class="lezhi_user_list">
+		<div class="lezhi_user_list_head yahei">谁在使用</div>
+		<div class="sitebar">     
+			<div class="left sitescr"><img alt="中华网" src="${staticUrl}images/webLz/sitebar/gmw.gif"></div>
+			<div class="left sitescr"><img alt="中华网" src="${staticUrl}images/webLz/sitebar/china.gif"></div>                              
+			<div class="left sitescr"><img alt="中国日报" src="${staticUrl}images/webLz/sitebar/chinadaily.gif"></div>
+			<div class="left sitescr"><img alt="中新网" src="${staticUrl}images/webLz/sitebar/chinanews.gif"></div>							
+			<div class="left sitescr"><img alt="it168" src="${staticUrl}images/webLz/sitebar/it168.jpg"></div>
+			<div class="left sitescr"><img alt="猫扑" src="${staticUrl}images/webLz/sitebar/mop.jpg"></div>
+			<div class="left sitescr"><img alt="pchome" src="${staticUrl}images/webLz/sitebar/pchome.jpg"></div>
+			<div class="left sitescr"><img alt="瑞丽" src="${staticUrl}images/webLz/sitebar/rayli.jpg"></div> 
+			<div class="left sitescr"><img alt="车讯网" src="${staticUrl}images/webLz/sitebar/chexun.png"></div>  
+			<div class="left sitescr"><img alt="YOKA" src="${staticUrl}images/webLz/sitebar/yoka.jpg"></div>                 				
+	    </div>	
+        <div class="clear"></div>
+    </div>
+    <div class="lezhi_user_list">
+        <div class="lezhi_user_list_head yahei">友情链接</div>
+        <div class="lezhi_links">
+            <ul>
+            #for(i <- 0 until links.size)
+                <li><a style="text-decoration:none;" href="${links(i).url}" target="_blank">${links(i).title}</a></li>
+            #end
+            </ul>
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+
+<!-- Share Button -->
+<a class="bshareDiv" href="http://www.bshare.cn/share">分享按钮</a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/button.js#uuid=5e3a22db-ccd4-4cf6-8e78-f50bc1bbcb60&amp;style=3&amp;fs=4&amp;textcolor=#fff&amp;bgcolor=#ff7200&amp;text=分享到"></script>
+<!-- End Share Button -->

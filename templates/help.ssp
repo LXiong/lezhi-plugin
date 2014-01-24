@@ -1,0 +1,371 @@
+<%@ var staticUrl: String %>
+<% attributes("nav") = "navHelp" %>
+
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/plugin.css" />
+<style>
+    h3{margin:30px 0px 10px 0px;font-weight:bold;color:#333;}
+    .lezhiInstallStep1{padding: 20px 25px 46px 25px;}
+    pre{font-family: "Consolas", "Monaco", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;}
+</style>
+
+<div class="center">
+    <div class="pageBody">    
+        <div class="pageLeft">
+            <div class="lezhiInstallStep1">
+                <h1 class="helpHead" style="color:#ff7c00;">客户端JS自定义API</h1>
+                <div class="clear"></div>
+                <h3>1.什么是乐知?</h3>
+                <p class="helpDetail">
+                    乐知是一款基于社会化的文章推荐系统。他能够帮助将网站的相关文章版位，在云端通过智能推荐引擎进行分析，将更精准的内容推送给用户。 帮助网站主增加用户访问量，提升用户粘度，深入挖掘网站深度。
+                </p>
+                <h3>2.如何安装乐知文章推荐插件?</h3>
+                <p class="helpDetail">
+                    <span>在 “<a href="${rootUrl}get/code" class="bLinkU">安装插件</a>”中按流程设置完并领取代码，即可将乐知领回家。</span>
+                    <span>您也可以快速的将下列代码放置在您网页页尾代码之前的任意位置即可。</span>
+                </p>
+                <div class="helpExample">
+                <pre>
+                
+    <span class="c800">&lt;!-- lezhi code start --></span>
+    <span class="c008">&lt;div class=</span><span class="c080">"lz-module lz-style-default"</span><span class="c008">>&lt;/div></span>
+    <span class="c008">&lt;script type=</span><span class="c080">"text/javascript"</span> <span class="c008">charset=</span><span class="c080">"utf-8" </span>
+    <span class="c008">src=</span><span class="c080">"http://lzstatic.bshare.cn/plugin/lz.js#"</span>>
+    <span class="c008">&lt;/script></span>
+    <span class="c800">&lt;!-- lezhi code end --></span>
+                </pre>
+            </div>
+            <h3>3.为什么安装了乐知文章推荐后页面上还没有显示相关文章？</h3>
+                    <p class="helpDetail">
+            插件安装完之后，请稍等片刻。乐知推荐引擎会去获取您网站的内容信息（时间长短取决与您网站的内容量。内容越多，
+            获取的时间相对也就越长，一般在15分钟以内）。这段时间内请不要停止乐知插件，因为这样会影响内容的获取。如果较长时间后文章依然无法正常显示，请咨询我们的在线客服。
+            </p>
+            <h3>4.乐知目前有几种样式？</h3>
+                    <p class="helpDetail">
+            <span>乐知目前支持的表现样式有插件及按扭样式两种。</span>
+            <span>插件样式</span>
+            <span><img src="${staticUrl}images/viewFix.jpg" /></span>
+            <span>按扭样式</span>
+            <span><img src="${staticUrl}images/viewSlide.jpg" /></span>
+            </p>
+            <h3>5.安装乐知是否需要注册？</h3>
+                    <p class="helpDetail">
+            乐知支持非注册用户的使用。 但是无法享受即时数据检测，后台样式修改，包括之后的广告服务。
+            </p>
+            <h3>6.注册版本与非注册版本有什么区别?</h3>
+                    <p class="helpDetail">
+            <span>注册版本与非注册版本在前台页面表现上完全一样。</span>
+            <span>注册版本拥有后台管理功能。包括即时数据检测，自定义样式管理，多站点管理，及之后的广告服务。</span>
+            </p>
+            <h3>7.如何注册乐知会员?</h3>
+                    <p class="helpDetail">
+            <span>点击右上角的“注册”按扭即可。</span>
+            <span>同时您也可以在安装插件时勾选“数据统计”功能，并按提示完成注册。</span>
+            </p>
+            <h3>8.一个会员帐号能否绑定多个网站?</h3>
+                    <p class="helpDetail">
+            一个会员帐号能够帮定多个网站，同时也能对这些网站进行分开管理。
+            </p>
+            <h3>9.站长能够监测哪些数据?</h3>
+                    <p class="helpDetail">
+            站长能够根据时间，站点等纬度。对内容在乐知推荐系统中的展示量，点击量等进行检测。
+            </p>
+            <h3>10.添加乐知后网站打开会变慢吗?</h3>
+                    <p class="helpDetail">
+            不会。 首先乐知的代码非常轻巧，仅仅几k大小。 而且乐知使用了延迟加载功能，会优先讲您的网站加载完毕后再加载乐知。因此对您的网页打开速度没有任何影响。
+            </p>
+            <h3>11.安装后如何修改样式?</h3>
+                    <p class="helpDetail">
+            <span>如果您使用的是非注册版本，您在修改完毕样式后需要再次领取一遍代码进行安装。</span>
+            <span>如果您使用的是注册版本，那么您只需要登陆乐知后台，在线修改样式即可。</span>
+            </p>
+            <h3>12.有些文章没有图片，如何自定义默认显示的图片？</h3>
+                    <p class="helpDetail">
+            在安装或者是修改样式的时候将您的默认图片地址填写到“默认图片设置即可”。
+            </p>
+            <h3>13.我需要更丰富的自定义样式该怎么办?</h3>
+                    <p class="helpDetail">
+            获取了乐知安装代码后，针对您的个性化需求，乐知提供了更为丰富的自定义功能。您只需要在lz_style_default.global中进行简单定义后，将代码放在乐知的主js(lz.js)的前面即可。 
+            </p>
+                <div class="clear spacer20"></div>
+                <div class="helpTitle">下面是lz_style_default.global参数的详细说明：</div>
+                <div class="clear spacer20"></div>
+                <table width="100%" class="helpTable">
+                    <colgroup>
+                        <col style="text-align:left;" />
+                        <col style="text-align:left;" />
+                        <col style="text-align:left;" />
+                        <col style="text-align:left;" />
+                    </colgroup>
+                    <tr>
+                        <th>参数名</th>
+                        <th>描述</th>
+                        <th>类型</th>
+                        <th>默认值</th>
+                    </tr>
+                    <tr>
+                        <td>url</td>
+                        <td>文章来源地址</td>
+                        <td class="variable">string</td>
+                        <td>document.location</td>
+                    </tr>
+                    <tr>
+                        <td>promote</td>
+                        <td>页签显示文字(仅对站内推荐有效)</td>
+                        <td class="variable">string</td>
+                        <td>乐知推荐</td>
+                    </tr>
+                    <!--
+                    <tr>
+                        <td>brand</td>
+                        <td>插件页脚显示的文字Logo</td>
+                        <td class="variable">string</td>
+                        <td>乐知</td>
+                    </tr>
+                    <tr>
+                        <td>showLogo</td>
+                        <td>是否显示插件页脚的文字Logo(如设置了brand，此参数设为false也会显示页脚)</td>
+                        <td class="variable">boolean</td>
+                        <td>true</td>
+                    </tr>
+                    -->
+                    <tr>
+                        <td>col</td>
+                        <td>列数</td>
+                        <td class="variable">integer</td>
+                        <td>5</td>
+                    </tr>
+                    <tr>
+                        <td>row</td>
+                        <td>行数</td>
+                        <td class="variable">integer</td>
+                        <td>1</td>
+                    </tr>
+                    <tr>
+                        <td>pic</td>
+                        <td>插件格式</td>
+                        <td class="variable">boolean</td>
+                        <td>true</td>
+                    </tr>
+                    <tr>
+                        <td>type</td>
+                        <td>插件显示的方式:分为固定模式("fixed")和按钮模式("slide")</td>
+                        <td class="variable">string</td>
+                        <td>"fixed"</td>
+                    </tr>
+                    <tr>
+                        <td>htcolor</td>
+                        <td>head的字体颜色定义</td>
+                        <td class="variable">string</td>
+                        <td>"#333"</td>
+                    </tr>
+                    <tr>
+                        <td>rtcolor</td>
+                        <td>推荐的文字字体颜色</td>
+                        <td class="variable">string</td>
+                        <td>"#333"</td>
+                    </tr>
+                    <tr>
+                        <td>bdcolor</td>
+                        <td>插件窗体的框线颜色</td>
+                        <td class="variable">string</td>
+                        <td>"#DADADA"</td>
+                    </tr>
+                    <tr>
+                        <td>hvcolor</td>
+                        <td>悬浮正文的字体颜色</td>
+                        <td class="variable">string</td>
+                        <td>"#FBFBEF"</td>
+                    </tr>
+                    <tr>
+                        <td>fontSize</td>
+                        <td>(只对文字格式生效)插件文字字号</td>
+                        <td class="variable">integer</td>
+                        <td>12</td>
+                    </tr>
+                    <tr>
+                        <td>position</td>
+                        <td>(只对按钮模式生效)插件浮动的位置</td>
+                        <td class="variable">string</td>
+                        <td>"right"</td>
+                    </tr>
+                    <tr>
+                        <td>defaultPic</td>
+                        <td>(只对图文格式生效)设置没有图片文章的默认图片</td>
+                        <td class="variable">url</td>
+                        <td>空</td>
+                    </tr>
+                    <tr>
+                        <td>picSize</td>
+                        <td>(只对嵌入图文式有效)图片模式的图片大小，范围88～120, 单位：px</td>
+                        <td class="variable">integer</td>
+                        <td>88</td>
+                    </tr>
+                    <tr>
+                        <td>highlight</td>
+                        <td>文章标题和图片加红高亮显示</td>
+                        <td class="variable">boolean</td>
+                        <td>false</td>
+                    </tr>
+                    <tr>
+                        <td>width</td>
+                        <td>插件的宽度，0则为auto自适应</td>
+                        <td class="variable">integer</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>height</td>
+                        <td>插件的高度，0则为auto自适应</td>
+                        <td class="variable">integer</td>
+                        <td>0</td>
+                    </tr>
+                    <tr>
+                        <td>titleBgColor</td>
+                        <td>页签的背景颜色</td>
+                        <td class="variable">string</td>
+                        <td>"#fff"</td>
+                    </tr>
+                    <tr>
+                        <td>titleImage</td>
+                        <td>页签的背景图片地址</td>
+                        <td class="variable">string</td>
+                        <td>""</td>
+                    </tr>
+                    <tr>
+                        <td>titleFontSize</td>
+                        <td>页签的字体大小</td>
+                        <td class="variable">integer</td>
+                        <td>12</td>
+                    </tr>
+                    <tr>
+                        <td>titleBold</td>
+                        <td>页签的字体是否加粗</td>
+                        <td class="variable">boolean</td>
+                        <td>false</td>
+                    </tr>
+                    <tr>
+                        <td>titleBold</td>
+                        <td>页签的字体是否加粗</td>
+                        <td class="variable">boolean</td>
+                        <td>false</td>
+                    </tr>
+                    <tr>
+                        <td>fontBold</td>
+                        <td>推荐文章字体是否加粗</td>
+                        <td class="variable">boolean</td>
+                        <td>false</td>
+                    </tr>
+                    <tr>
+                        <td>fontUnderline</td>
+                        <td>推荐文章字体是否加下划线</td>
+                        <td class="variable">boolean</td>
+                        <td>false</td>
+                    </tr>
+                    <tr>
+                        <td>linkUnderline</td>
+                        <td>推荐文章字体鼠标放上时是否加下划线</td>
+                        <td class="variable">boolean</td>
+                        <td>false</td>
+                    </tr>
+                    <tr>
+                        <td>redirectType</td>
+                        <td>推荐文章跳转模式("_blank":新开窗口和"_self":"当前页面")</td>
+                        <td class="variable">string</td>
+                        <td>"_blank"</td>
+                    </tr>
+                    <tr>
+                        <td>bgcolor</td>
+                        <td>插件的背景颜色</td>
+                        <td class="variable">string</td>
+                        <td>"#fff"</td>
+                    </tr>
+                    <tr>
+                        <td>picBorderRadius</td>
+                        <td>插件图片的边框是否为圆角(IE8及更低版本IE不支持)</td>
+                        <td class="variable">boolean</td>
+                        <td>true</td>
+                    </tr>
+                    <tr>
+                        <td>lineHeight</td>
+                        <td>插件正文字体的行高</td>
+                        <td class="variable">integer</td>
+                        <td>15</td>
+                    </tr>
+                    <tr>
+                        <td>listType</td>
+                        <td>插件正文的list type("disc","square")</td>
+                        <td class="variable">string</td>
+                        <td>"disc"</td>
+                    </tr>
+                </table>
+                <div class="clear spacer30"></div> 
+                <div class="helpTitle">范例：</div>
+                <div class="clear spacer20"></div>
+                <div class="helpExample">
+                    <pre>
+                    
+    <span class="c008">&lt;script type=</span><span class="c080">"text/javascript"</span> <span class="c008">charset=</span><span class="c080">"UTF-8"</span><span class="c008">></span>
+    var <span class="variable">lz_style_default</span> = {
+        global: {
+            uuid: <span class="cPink">''</span>,
+            url: <span class="cBlue">document.location</span>,
+            promote: <span class="cPink">'乐知推荐'</span>,
+            col: <span class="cBrown">5</span>,
+            row: <span class="cBrown">1</span>,
+            pic: <span class="cBlue">true</span>,
+            type: <span class="cPink">'fixed'</span>, <span class="cGreen">// fixed|slide</span>
+            htcolor: <span class="cPink">'#333'</span>, <span class="cGreen">// heading text color</span>
+            rtcolor: <span class="cPink">'#333'</span>, <span class="cGreen">// recomm text color</span>
+            bdcolor: <span class="cPink">'#DADADA'</span>, <span class="cGreen">// border color</span>
+            hvcolor: <span class="cPink">'#FBFBEF'</span>, <span class="cGreen">// border color on mouse over</span>
+            fontSize: <span class="cBrown">12</span>,  <span class="cGreen">//font-size for textMode only</span>
+            position: <span class="cPink">'right'</span>, <span class="cGreen">// left|right</span>
+            defaultPic: <span class="cPink">''</span>, 
+            highlight: <span class="cBlue">false</span> <span class="cGreen">// true|false</span>
+            width: <span class="cBrown">0</span>,   <span class="cGreen">//set the plugin div width</span>
+            height: <span class="cBrown">0</span>,  <span class="cGreen">//set the plugin div height</span>
+            titleBgColor: <span class="cPink">"#fff"</span>,   <span class="cGreen">//title background color</span>
+            titleImage: <span class="cPink">""</span>,     <span class="cGreen">//title background image</span>
+            titleFontSize: <span class="cBrown">12</span>,  <span class="cGreen">//title font size</span>
+            titleBold: <span class="cBlue">false</span>,   <span class="cGreen">//title font weight</span>
+            fontBold: <span class="cBlue">false</span>,    <span class="cGreen">//recomm text font weight</span>
+            fontUnderline: <span class="cBlue">false</span>,   <span class="cGreen">//recomm text underline</span>
+            linkUnderline: <span class="cBlue">false</span>,   <span class="cGreen">//recomm text underline when mouse hover</span>
+            redirectType: "_blank", <span class="cGreen">//link to by _self or _blank</span>
+            picMatch: <span class="cPink">"insite"</span>,     <span class="cGreen">//pic match mody by insite , outsite</span>
+            bgcolor: <span class="cPink">"#fff"</span>,    <span class="cGreen">//plugin div background color</span>
+            picBorderRadius: <span class="cBlue">true</span>,      <span class="cGreen">//pic border is radius 5px</span>
+            lineHeight: <span class="cBrown">15</span>,     <span class="cGreen">//recomm text line height</span>
+            listType: <span class="cPink">"disc"</span>   <span class="cGreen">//recomm text list type on text mode</span>
+        }
+    };
+    <span class="c008">&lt;/script></span>
+	<span class="c800">&lt;!-- lezhi code start --></span>
+	<span class="c008">&lt;div class=</span><span class="c080">"lz-module lz-style-default"</span><span class="c008">>&lt;/div></span>
+	<span class="c008">&lt;script type=</span><span class="c080">"text/javascript"</span> <span class="c008">charset=</span><span class="c080">"utf-8" </span>
+	<span class="c008">src=</span><span class="c080">"http://lzstatic.bshare.cn/plugin/lz.js#"</span>>
+	<span class="c008">&lt;/script></span>
+	<span class="c800">&lt;!-- lezhi code end --></span>
+			        </pre>
+		        </div>
+            </div>
+        </div>
+        <% layout("common/pageRight.ssp") {%><%}%>
+    </div>
+</div>
+
+<!-- Share Button -->
+<a class="bshareDiv" href="http://www.bshare.cn/share">分享按钮</a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/button.js#uuid=5e3a22db-ccd4-4cf6-8e78-f50bc1bbcb60&amp;style=3&amp;fs=4&amp;textcolor=#fff&amp;bgcolor=#ff7200&amp;text=分享到"></script>
+<!-- End Share Button -->
+
+<a id="qqservicetab" target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=800087176&amp;site=qq&amp;menu=yes"></a>
+    
+<div id="notifications" class="hidden" style="display: none; ">
+    <div class="notification-bar-container">
+        <div class="notification-bar-bkg" style="background-color: rgb(255, 248, 204); height: 25px;"></div>
+        <div class="notification-bar">
+            <div class="notification-bar-contents">
+                <div class="notification-msg heading1" style="color:#333; font-size:20px; font-weight:bold;"></div>
+            </div>
+        </div>
+    </div>
+</div>

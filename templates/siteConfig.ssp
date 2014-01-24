@@ -1,0 +1,83 @@
+<%@ var isExisted: Boolean = true %>
+
+<%@ var pic: Boolean = true %>
+<%@ var uuid: String = "" %>
+<%@ var row: Int = 4 %>
+<%@ var col: Int = 1 %>
+<%@ var pluginType: String = "fixed" %>
+<%@ var source: String = "insite" %>
+<%@ var promote: String = "" %>
+<%@ var picSize: Int = 88 %>
+<%@ var fontSize: Int = 12 %>
+<%@ var position: String = "right" %>
+<%@ var defaultPic: String = "" %>
+<%@ var htcolor: String = "333" %>
+<%@ var rtcolor: String = "333" %>
+<%@ var bdcolor: String = "dadada" %>
+<%@ var hvcolor: String = "009FCE" %>
+<%@ var highlight: Boolean = false %>
+<%@ var width: Int = 0 %>
+<%@ var height: Int = 0 %>
+<%@ var titleBgColor: String = "fff" %>
+<%@ var titleImage: String = "" %>
+<%@ var titleFontSize: Int = 12 %>
+<%@ var titleBold: Boolean = false %>
+<%@ var fontBold: Boolean = false %>
+<%@ var fontUnderline: Boolean = false %>
+<%@ var linkUnderline: Boolean = false %>
+<%@ var redirectType: String = "_blank" %>
+<%@ var picMatch: String = "insite" %>
+<%@ var bgcolor: String = "fff" %>
+<%@ var picBorderRadius: Boolean = false %>
+<%@ var lineHeight: Int = 15 %>
+<%@ var listType: String = "disc" %>
+<%@ var adEnabled: Boolean = false %>
+<%@ var adCount: Int = 0 %>
+<%@ var request: javax.servlet.http.HttpServletRequest%>
+
+<!-- content -->
+
+<div>
+    
+	    <div style="padding-bottom:240px;padding-top:100px;padding-left:600px;text-align:center;">
+	    #if(isExisted)
+	        <table >
+	            <tr><td>uuid:</td><td>${uuid}</td></tr>
+	            <tr><td>pic:</td><td>${pic}</td></tr>
+	            <tr><td>row:</td><td>${row}</td></tr>
+	            <tr><td>col:</td><td>${col}</td></tr>
+	            <tr><td>pluginType:</td><td>${pluginType}</td></tr>
+	            <tr><td>source:</td><td>${source}</td></tr>
+	            <tr><td>promote:</td><td>${promote}</td></tr>
+	            <tr><td>picSize:</td><td>${picSize}</td></tr>
+	            <tr><td>fontSize:</td><td>${fontSize}</td></tr>
+	            <tr><td>position:</td><td>${position}</td></tr>
+	            <tr><td>defaultPic:</td><td>${defaultPic}</td></tr>
+	            <tr><td>htcolor:</td><td>${htcolor}</td></tr>
+	            <tr><td>rtcolor:</td><td>${rtcolor}</td></tr>
+	            <tr><td>bdcolor:</td><td>${bdcolor}</td></tr>
+	            <tr><td>hvcolor:</td><td>${hvcolor}</td></tr>
+	            <tr><td>highlight:</td><td>${highlight}</td></tr>
+	            <tr><td>width:</td><td>${width}</td></tr>
+	            <tr><td>height:</td><td>${height}</td></tr>
+	            <tr><td>titleBgColor:</td><td>${titleBgColor}</td></tr>
+	            <tr><td>titleImage:</td><td>${titleImage}</td></tr>
+	            <tr><td>titleFontSize:</td><td>${titleFontSize}</td></tr>
+	            <tr><td>titleBold:</td><td>${titleBold}</td></tr>
+	            <tr><td>fontBold:</td><td>${fontBold}</td></tr>
+	            <tr><td>fontUnderline:</td><td>${fontUnderline}</td></tr>
+	            <tr><td>linkUnderline:</td><td>${linkUnderline}</td></tr>
+	            <tr><td>redirectType:</td><td>${redirectType}</td></tr>
+	            <tr><td>picMatch:</td><td>${picMatch}</td></tr>
+	            <tr><td>bgcolor:</td><td>${bgcolor}</td></tr>
+	            <tr><td>picBorderRadius:</td><td>${picBorderRadius}</td></tr>
+	            <tr><td>lineHeight:</td><td>${lineHeight}</td></tr>
+	            <tr><td>listType:</td><td>${listType}</td></tr>
+	            <tr><td>adEnabled:</td><td>${adEnabled}</td></tr>
+	            <tr><td>adCount:</td><td>${adCount}</td></tr>
+	        </table>
+	    #else
+            <p style="font-size:20px;color:red">该uuid不存在</p>
+        #end
+	    </div>
+</div>

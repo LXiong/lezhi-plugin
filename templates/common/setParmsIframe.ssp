@@ -1,0 +1,686 @@
+<% attributes("layout") = "" %>
+<%@ var staticUrl: String %>
+<%@ var rootUrl: String %>
+<%@ var err: (Int, String) = (-1,"") %>
+<%@ var pic: Boolean = true %>
+<%@ var autoMatch: Boolean = false %>
+<%@ var highlight: Boolean = false %>
+<%@ var redirectMode: String = "js" %>
+<%@ var uuid: String = "" %>
+<%@ var row: Int = 4 %>
+<%@ var col: Int = 1 %>
+<%@ var pluginType: String = "fixed" %>
+<%@ var source: String = "insite" %>
+<%@ var promote: String = "乐知推荐" %>
+<%@ var fontSize: Int = 12 %>
+<%@ var picSize: Int = 88 %>
+<%@ var position: String = "right" %>
+<%@ var defaultPic: String = "" %>
+<%@ var htcolor: String = "" %>
+<%@ var rtcolor: String = "" %>
+<%@ var bdcolor: String = "" %>
+<%@ var hvcolor: String = "" %>
+<%@ var ts: String = "" %>
+<%@ var sig: String = "" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="keywords" content="个性化阅读，个性化推荐，阅读类软件" />
+    <link rel="stylesheet" type="text/css" href="${staticUrl}css/common.css?t=20121123.css" />
+    <link rel="stylesheet" type="text/css" href="${staticUrl}css/lezhi.css?t=20121123.css" />
+    <link rel="stylesheet" type="text/css" href="${staticUrl}css/user.css?t=20121123.css" />
+	<link rel="stylesheet" type="text/css" href="${staticUrl}css/plugin.css?t=20121123.css" />
+    <script type="text/javascript" charset="utf-8">
+        var BSHARE_STATIC_HOST = "${staticUrl}"; // used by unitpngfix.js
+    </script>
+    <script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/jquery-1.7.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/jquery.tools.ui.min.1.2.6.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/bgiframe.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${staticUrl}js/common/bshare-web-common.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${staticUrl}js/login/ajaxLogout.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/jquery.tools.forms.min.1.2.6.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/webtoolkit.sha1.js"></script>
+    <!--[if lt IE 7]> 
+    <script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/unitpngfix.js"></script>
+    <![endif]-->
+</head>
+<body>
+     <form id="setStyle" name="setStyle" action="installIframe" method="POST">
+					<div class="lezhiSet">
+						<div class="parmslist">
+							<h3>样式设置:</h3>
+							<input type="radio" name="pluginType" id="lzGeneral" class="radio" value="fixed"
+							#if (pluginType == "fixed")
+								checked="checked"
+							#end
+							 /><label for="lzGeneral">插件样式</label><span class="articleTypeDesc">显示在内容下方</span>
+							<input type="radio" name="pluginType" id="lzPlugin" class="radio" value="slide"
+							#if (pluginType == "slide")
+								checked="checked"
+							#end
+							/><label for="lzPlugin">按钮样式</label><span class="articleTypeDesc">悬浮在页面左/右下侧</span>
+						</div>
+						<div class="clear spacer20"></div>
+						<img src="${staticUrl}images/viewFix.jpg" id="viewFix" style="margin-left:80px;" />
+						<img src="${staticUrl}images/viewSlide.jpg" id="viewSlide" style="display:none;margin-left:80px;" />
+					</div>
+					<div class="lezhiRecommend lezhiSet">
+						<div class="parmslist">
+							<h3>图/文设置:</h3>
+						<input type="radio" id="picMode" class="radio" name="pic" value="true"
+						#if (pic == true)
+							checked="checked"
+						#end
+						 />
+						<label style="color:#009788;" for="picMode">图文格式</label>&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="radio" id="textMode" name="pic" class="radio" value="false"
+						#if (pic != true)
+							checked="checked"
+						#end
+						 />
+						
+						<label style="color:#009788;" for="textMode">纯文字</label>
+						
+						</div>
+					</div>
+					<div class="lezhiTypeGeneral1" id="picView">
+						<div class="lezhiTypeGeneral1Bg" id="lzTypeView"></div>
+						
+					</div>
+					<div class="lezhiTypeGeneral2" id="textView" style="display:none;">
+						<div style="width:100%;float:left;"><div class="recommTab" id="recommTab">您可能也喜欢</div></div>
+						
+						<div class="lezhiTypeGeneral2Bg">
+
+							<div class="recommSlideTag" style="display: block; " id="viewSlideTag">&gt;&gt;乐<br>知<br>推<br>荐</div>
+							<ul>
+								<li>3月份CPI同比增长3.6% 食品价格同比上涨7.5% 专题...</li>
+								<li>最高法：补偿不公平不准强拆 遏制暴力拆迁 全文...</li>
+								<li>朝鲜安排70余名外国记者参观卫星发射场 专题 滚动...</li>
+								<li>朝鲜对外展示卫星 火箭已安装在发射塔上 高清图...</li>
+								<li>工信部称我国稀土开采污染代价远超所获收益...</li>
+								<li>朝鲜对外展示卫星 火箭已安装在发射塔上 高清图...</li>
+								
+
+							</ul>
+							<div class="clear"></div>
+						</div>
+						
+					</div>
+					<div class="clear spacer10"></div>
+					<div id="lzConfigDiv" style="padding-top:15px;position:relative">
+					
+					<div class="lezhiSet" id="lzPromote">
+						<div class="parmslist"><h3>标题名字:</h3><input type="text" name="promote" value="${promote}" class="tb" style="font-weight:bold;" /><span class="articleTypeDesc">标题名字字数限制为2-8个字</span></div>
+						<div class="clear spacer20"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="lezhiSet">
+						<div class="parmslist" id="parmsImages"><h3>默认图片:</h3><input type="text" name="defaultPic"
+						#if (defaultPic == "")
+							value="http://"
+						#else
+							value="${defaultPic}"
+						#end
+						class="tb" /><span class="articleTypeDesc">无图文章的默认图片 尺寸: 120 * 120 px</span><div class="clear spacer20"></div></div>
+						
+						<div class="parmslist">
+							<h3>图片尺寸:</h3><input type="text" name="picSize" class="tb" value="${picSize}" /><span class="articleTypeDesc">图片尺寸范围88-120px</span>
+						</div>
+						<div class="clear"></div>
+						
+						<div class="clear spacer20"></div>
+						<div class="parmslist">
+							<h3>自动匹配图片:</h3><input type="checkbox" id="autoMatch" value="${autoMatch}"
+						#if (autoMatch)
+							checked="checked"
+						#end /><span class="articleTypeDesc">为没有图片的文章自动匹配一张图片</span>
+						</div>
+						<div class="clear spacer20"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="lezhiSet">
+					
+						<div class="left"><h3>是否加红:</h3></div>
+						<div class="left"><input type="checkbox" id="highlight" value="${highlight}"
+						#if (highlight)
+							checked="checked"
+						#end /><span class="articleTypeDesc">为最热推荐列表里最相似的链接加红</span>
+						</div>
+					</div>
+					<div class="clear spacer20"></div>
+					<div class="lezhiSet">
+						<div class="left"><h3>JS跳转:</h3></div>
+						<div class="left"><input type="checkbox" id="redirectMode" value="${redirectMode}"
+						#if (redirectMode == "js")
+							checked="checked"
+						#end /><span class="articleTypeDesc">内容连接使用乐知js跳转，不勾选的话可能会无法从第三方统计系统中了解哪些流量是来源于乐知</span>
+						</div>
+					</div>
+					<div class="clear spacer20"></div>
+					<div class="lezhiSet" id="pluginPosition">
+						<div class="parmslist">
+						<div class="clear"></div>
+							<h3>插件位置:</h3>
+							<input type="radio" name="position" value="left"
+							#if (position == "left")
+								checked="checked"
+							#end
+							/>&nbsp;左下
+							<!--input type="radio" name="position" value="left,center" />&nbsp;左中
+							<input type="radio" name="position" value="left,bottom" />&nbsp;左下
+							<input type="radio" name="position" value="right,top" />&nbsp;右上
+							<input type="radio" name="position" value="right,center" />&nbsp;右中 -->
+							<input type="radio" name="position" value="right"
+							#if (position == "right")
+								checked="checked"
+							#end
+							/>&nbsp;右下
+						</div>
+						<div class="clear spacer20"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="lezhiSet" id="fontText" style="display:none;">
+						<h3 style="display:inline;">显示字号:</h3><select id="fontSize" name="fontSize"><option 
+						#if (fontSize == 12)		
+						      selected="selected"		
+						#end		
+						      value="12">12px</option><option 		
+						#if (fontSize == 14)		
+						      selected="selected"		
+						#end
+						 value="14">14px</option></select>
+						<div class="clear spacer20"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="lezhiSet">
+						<h3 style="display:inline;" id="rowText">显示行数:</h3><select id="row" name="row"><option value="1">1行</option><option value="2">2行</option></select>
+						<span id="colSpan"><h3 style="display:inline;">显示列数:</h3><select id="col" name="col"><option value="1">1列</option><option value="2">2列</option><option value="3">3列</option><option value="4">4列</option><option value="5" selected="selected">5列</option></select>
+						</span> </div> <div class="clear spacer20"></div> <div class="lezhiSet"> <div style="width:80%;"><div class="setPlaceHode"><h3 style="display:inline;">文章类型:</h3></div><div class="left"><input id="trending" type="checkbox" class="articleType" value="trending" /><span style="font-size:12px;">最热文章<span class="articleTypeDesc">增加一个站内最热文章的标签栏</span></span></div></div> </div> <div class="clear spacer20"></div> <div class="lezhiSet" style="padding-bottom:10px;"> <div class="parmslist"><div class="setPlaceHode"><h3>颜色设置:</h3></div> <div class="setColorList" style="width:auto;"><div class="setColorTit wid50">栏目名</div><input type="text" class="setColorValue left" name="htcolor" value="${htcolor}" /><div id="cpHtcolor" class="colorSet" onclick="getColorPicker(event)" style="background:${htcolor}"></div></div> <div class="setColorList" style="width:auto;" id="hvcolorDiv"><div class="setColorTit wid50">鼠标掠过</div><input type="text" class="setColorValue left" name="hvcolor" value="${hvcolor}" /><div id="cpHvcolor" class="colorSet" onclick="getColorPicker(event)" style="background:${hvcolor}"></div></div> <div class="clear spacer15"></div> <div class="setColorList ml77" style="width:auto;"><div class="setColorTit  wid50">文章标题</div><input type="text" name="rtcolor" class="setColorValue left" value="${rtcolor}" /><div id="cpRtcolor" class="colorSet" onclick="getColorPicker(event)" style="background:${rtcolor}"></div></div> <div class="setColorList" style="width:auto;"><div class="setColorTit wid50">边框</div><input type="text" name="bdcolor" class="setColorValue left" value="${bdcolor}" /><div id="cpBdcolor" class="colorSet" onclick="getColorPicker(event)" style="background:${bdcolor}"></div></div> <div class="clear"></div> <p class="parmsListDescription ml77 left">标题和链接颜色留空，代表使用您网站的默认配色</p><input type="button" class="btnCheck" id="resetColor" style="background:#e3e3e3\9;padding:5px 0px\9; margin-top:5px; margin-left:12px\9;" value="恢复默认颜色" /> <div class="clear"></div> </div> <div class="clear"></div> </div> </div>
+					<div id="lzMoreDiv" class="lzMoreDiv" style="display:none;">
+						<div class="lzMore arrB" id="showDetailConfig">展开更多选项</div>
+					</div>
+					
+					<p class="articleTypeP">
+						<input type="button" class="btnCheck" id="btnCheck" style="background:#e3e3e3\9; margin-bottom:20px;padding:5px 5px\9; margin-left:12px\9;" value="查看安装效果" />
+						<input type="button" class="close btnCheck" id="close" style="background:#e3e3e3\9; margin-bottom:20px;padding:5px 5px\9; margin-left:12px\9;" value="关闭" />
+						
+					</p>
+					<div class="bshareRecomm" id="bShareRecommDiv" style="display:none;"></div>
+					<div class="clear spacer20"></div>
+					<div class="lezhiGetCodeBtn" style="text-align:center;">
+						<input type="submit"  value="保存" class="buttonLightGreen" style="font-size:14px;padding:11px 47px;padding:11px 27px\9; font-weight:bold;background:#00c3b7\9;" />
+					</div>
+				
+				
+			<!--input name="positionY" type="hidden" value="" /-->
+			<input name="autoMatch" type="hidden" value="${autoMatch}" />
+			<input name="highlight" type="hidden" value="${highlight}" />
+			<input name="redirectMode" type="hidden" value="${redirectMode}" />
+			<input name="ts" type="hidden" value="${ts}" />
+			<input name="sig" type="hidden" value="${sig}" />
+			<input name="uuid" type="hidden" value="${uuid}" />
+			<input name="error" type="hidden" value="${err}" />
+        </form>
+	<div id="notifications" class="hidden" style="display: none; ">
+	    <div class="notification-bar-container">
+		<div class="notification-bar-bkg" style="background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 248, 204); height: 25px; background-position: initial initial; background-repeat: initial initial; "></div>
+		<div class="notification-bar">
+		    <div class="notification-bar-contents">
+			<div class="notification-msg heading1" style="color: rgb(51, 51, 51); font-size:20px; font-weight:bold;"></div>
+		    </div>
+		</div>
+	    </div>
+	  </div>
+        
+			<script>
+				function getColorPicker(e){
+					var event = e || window.event;  
+					getColor(event, "选择颜色");
+					if (document.all) {  
+						event.cancelBubble = true;  
+					    }  
+					    else {  
+						event.stopPropagation();  
+					    } 
+				}
+			</script>
+<script type="text/javascript"  charset="utf-8" src="${staticUrl}js/tools/color-picker.js"></script>
+
+
+<script type="text/javascript" >
+function slideOut(){
+	if(document.getElementById("recommSlideTag")){
+		$("#bShareRecommTag").click();
+		return false;
+	}else{
+		window.setTimeout(function(){
+			slideOut();
+		},300);
+	}
+}
+
+function disabledButton(){
+	if(document.getElementById("bShareRecommTab")){
+		document.getElementById("btnCheck").removeAttribute("disabled");
+		return false;
+	}else{
+		window.setTimeout(function(){
+			disabledButton();
+		},300);
+	}
+}
+
+function resetRow(){
+	var _lzMode = $(":radio[name=pluginType]:checked").val();
+	var picRow  = '<option value="1" selected="selected">1行</option><option value="2">2行</option>';
+	var textCol = '<option value="1" selected="selected">1列</option><option value="2">2列</option>';
+	var textRow = '<option value="1">1行</option><option value="2">2行</option><option value="3">3行</option><option value="4">4行</option><option value="5" selected="selected">5行</option><option value="6">6行</option><option value="7">7行</option><option value="8">8行</option><option value="9">9行</option><option value="10">10行</option>';
+	var picCol = '<option value="1">1列</option><option value="2">2列</option><option value="3">3列</option><option value="4">4列</option><option value="5" selected="selected">5列</option>';
+
+	
+	var val = getRadioValue("pic");
+		if(val === "true"){
+			$("#col").html(picCol);
+			$("#parmsImages").parent().show();
+			$("#row").html(picRow);
+			$("#rowText").html("显示行数:");
+			$("#picView").show();
+			$("#textView").hide();
+			$("#fontText").hide();
+			$("input[name=hvcolor]").val("${hvcolor}");
+			document.getElementById("cpHvcolor").style.background = "${hvcolor}";
+		}else{
+			$("#rowText").html("显示条数:");
+			$("#col").html(textCol);
+			$("#parmsImages").parent().hide();
+			$("#row").html(textRow);
+			$("#picView").hide();
+			$("#textView").show();
+			$("#fontText").show();
+			$("input[name=hvcolor]").val("${hvcolor}");
+			document.getElementById("cpHvcolor").style.background = "${hvcolor}";
+		}
+		resetView();
+}
+
+function resetView(){
+	var _lzMode = $(":radio[name=pluginType]:checked").val(),
+	_pic = getRadioValue("pic");
+	if(_lzMode == "fixed"){
+		$("#lzPromote").show();
+		resetTypeView(_lzMode);
+		if(_pic == "true"){
+			$("#lzTypeView").attr("class","lezhiTypeGeneral1Bg");
+			
+		}else{
+			$("#viewSlideTag").hide();
+			$(".lezhiTypeGeneral2Bg").css("margin-left","105px");
+			$("#recommTab").show();
+		}
+	}else{
+		if($("#trending").attr("checked") == "checked"){
+			$("#lzPromote").show();
+		}else{
+			$("#lzPromote").hide();
+		}
+		resetTypeView(_lzMode);
+		if(_pic == "true"){
+			$("#lzTypeView").attr("class","lezhiTypeGeneral1BgSlide");
+			
+		}else{
+			$("#viewSlideTag").show();
+			$(".lezhiTypeGeneral2Bg").css("margin-left","130px");
+			$("#recommTab").hide();
+		}
+	}
+}
+
+function resetTypeView(mode){
+	if(mode == "fixed"){
+		$("#viewFix").show();
+		$("#viewSlide").hide();
+		$("#pluginPosition").hide();
+	}else{
+		$("#viewFix").hide();
+		$("#viewSlide").show();
+		$("#pluginPosition").show();
+	}
+}
+
+function getRadioValue(radioName){   
+        var obj=document.getElementsByName(radioName);     
+        for(var i=0;i<obj.length;i++){     
+        if(obj[i].checked){     
+            return obj[i].value;     
+             }     
+         }     
+     }  
+
+var bshare_recomm_config = {
+	//source:"insite",
+	mock:true
+	//highlight:true
+}
+
+$(function(){
+	resetRow();
+	#if(err._1 > 0)
+	displayStatusMessage('${err._2}');
+	#end
+	$("#btnCheck").click(function(){
+		var _recommConfig = '';
+		var	_defaultPic = $("input[name=defaultPic]").val(),
+			_row = $("select[name=row] option:selected").val(),
+			_col = $("select[name=col] option:selected").val(),
+			_htcolor = $("input[name=htcolor]").val(),
+			_rtcolor = $("input[name=rtcolor]").val(),
+			_bdcolor = $("input[name=bdcolor]").val(),
+			_hvcolor = $("input[name=hvcolor]").val(),
+			_fontSize = $("select[name=fontSize] option:selected").val(),
+			_lzMode = $(":radio[name=pluginType]:checked").val();
+		var	_article = "insite,",
+			_pic = $("input[name=pic]:checked").val(),
+			_promote = $("input[name=promote]").val(),
+			_picSize = $("input[name=picSize]").val(),
+			_highlight = $("input[name=highlight]").val(),
+			_redirectMode = $("input[name=redirectMode]").val(),
+			_position = $(":radio[name=position]:checked").val();
+		//var	_position = _positionR.split(",")[0];
+		//var	_positionY = _positionR.split(",")[1];
+		
+		//bshare_recomm_config.promote = "乐知推荐";
+		bshare_recomm_config.url = "http://blog.bshare.cn/2012/06/bshareandsina/";
+
+		if(_defaultPic === 'http://'){
+			_defaultPic = '';
+		}
+		if(Number(_picSize) > 98 && Number(_col) >= 5 && _lzMode == "fixed"){
+			_col = 4;
+		}
+		$("#bShareRecommDiv").show();
+		$("#trending:checked").each(function(){
+			_article += ($(this).val() + ",");
+		});
+		_article = _article.substring(0,_article.length-1);
+		if(_pic == "true"){
+			_pic = true;
+			
+		}else{
+			_pic = false;
+		}
+
+		
+		_recommConfig = "#source=" + _article + "&promote=" + _promote + "&defaultPic=" + _defaultPic + "&picSize=" + _picSize + "&col=" + _col + "&row=" + _row + "&pic=" + _pic + "&type=" + _lzMode + "&position=" + _position + "&htcolor=" + _htcolor + "&rtcolor=" + _rtcolor + "&bdcolor=" + _bdcolor + "&hvcolor=" + _hvcolor + "&fontSize=" + _fontSize + "&highlight=" + _highlight + "&redirectMode=" + _redirectMode;
+		
+
+
+		
+			
+		$("#lzScript").attr("type","text/cache");
+		$("#lzScript").attr("src",$("#lzScript").attr("src").split("#")[0]);
+		$("#lzScript").attr("src",$("#lzScript").attr("src") + _recommConfig);
+		
+		window.onscroll = null;
+		$("#bShareRecommDiv").html("");
+		$("#bShareRecommDiv").attr("class"," ");
+		if(_pic){
+			var _pluginWid = _col * (Number(_picSize) + 30);
+		}
+		$("#bShareRecommDiv").attr("style","width:" + _pluginWid + "px;");
+
+		var w = window, d = w.document, de = d.documentElement, db = d.body, scrollTop = de.scrollTop || db.scrollTop, recommTag = document.getElementById("bShareRecommTag"), offsetX;
+                if(/MSIE 6/.test(navigator.userAgent)){
+					offsetX = 30;
+				}else{
+					offsetX = 1;
+				}
+                if (/MSIE 6/.test(navigator.userAgent)) {
+					
+                	document.getElementById("bShareRecommDiv").style.bottom = 20 - parseInt(scrollTop/offsetX) + 'px';
+                }
+		document.getElementById("bShareRecommDiv").style.display = "block";
+		if(_lzMode === "fixed"){
+			$("#bShareRecommTag").hide();
+			$("#close").show();
+			
+		}else{
+			$("#bShareRecommTag").show();
+			$("#close").hide();
+		}
+		
+		window.lezhi.init();
+		if(_lzMode === 'slide'){
+			slideOut();
+		} 
+		$(this).attr("disabled","disabled");
+		disabledButton();
+		
+		return false;
+	});
+	
+	$("#uuid").change(function(){
+		document.install.method = "GET";
+		document.install.submit();
+	})
+
+	$("#setStyle").submit(function(){
+		var _articleType = 'insite,',
+		   
+		    _defaultPic = $("input[name=defaultPic]").val(),
+		_poromote = $("input[name=promote]").val();
+		//var _position = $(":radio[name=position]:checked").val();
+		if($("#lzPromote").is(":visible") && (_poromote.length < 2 || _poromote.length > 8)){
+			alert("标题栏字数少于2个或多于8个");
+			return false;
+		}
+		if(_defaultPic === 'http://'){
+			$("input[name=defaultPic]").val('');
+		}
+		
+		$("#trending:checked").each(function(){
+			_articleType += ($(this).val() + ",");
+		});
+		$("input[name=source]").val(_articleType.substring(0,_articleType.length-1));
+		//$("input[name=position]").val(_position.split(",")[0]);
+		//$("input[name=positionY]").val(_position.split(",")[1]);
+	});
+
+	$("#close").click(function(){
+		$("#bShareRecommDiv").hide();
+		$(this).hide();
+	});
+
+	//set max counts 10
+	$("#row").change(function(){
+		
+		var _max = 10,
+		    _val = parseInt($(this).val()),
+		    _i;
+		var _maxCol;
+		
+		_maxCol = Math.floor(_max / _val);
+		var _len = $("#col option").length;
+		$("#col option").each(function(){
+			if(this.parentNode.tagName == "SPAN"){
+				$(this).unwrap();
+			}
+		});
+		for(_i = _maxCol; _i < _len; _i++){
+			$($("#col option").get(_i)).wrap('<span style="display:none;" />');
+		}
+	});
+
+	$("#col").change(function(){
+		
+		var _max = 10,
+		    _val = parseInt($(this).val()),
+		    _i;
+		var _maxCol;
+		
+		_maxCol = Math.ceil(_max / _val);
+		var _len = $("#row option").length;
+		$("#row option").each(function(){
+			if(this.parentNode.tagName == "SPAN"){
+				$(this).unwrap();
+			}
+		});
+		for(_i = _maxCol; _i < _len; _i++){
+			$($("#row option").get(_i)).wrap('<span style="display:none;" />');
+		}
+	});
+	
+	$("input[name=pic]").change(function(){
+		
+		resetRow();
+	});
+
+	
+	
+	
+	
+
+
+
+	$("#lzGeneral").click(function(){
+		resetTypeView("fixed");
+		$("#btnCheck").click();
+		resetView();
+	});
+
+	$("#lzPlugin").click(function(){
+		resetTypeView("slide");
+		$("#btnCheck").click();
+		resetView();
+	});
+
+	$("#resetColor").click(function(){
+		var _pic = $("input[name=pic]:checked").val();
+		$("input[name=htcolor]").val("#333");
+		document.getElementById("cpHtcolor").style.background = "#333";
+		if(_pic === "true"){
+			$("input[name=hvcolor]").val("#FBFBEF");
+			document.getElementById("cpHvcolor").style.background = "#FBFBEF";
+		}else{
+			$("input[name=hvcolor]").val("#1A94E6");
+			document.getElementById("cpHvcolor").style.background = "#1A94E6";
+		}
+		
+		$("input[name=rtcolor]").val("#333");
+		document.getElementById("cpRtcolor").style.background = "#333";
+		$("input[name=bdcolor]").val("#DADADA");
+		document.getElementById("cpBdcolor").style.background = "#DADADA";
+	});
+	
+	
+	
+	
+
+	//bind row and col
+	
+	setTimeout(function(){$("#row").val("${row}");},0);
+	$("#col").val("${col}");
+	$("#fontSize").val("${fontSize}");
+
+	$("input[class=articleType]").each(function(){
+		var _source = "${source}".split(",");
+		for(var i = 0; i < _source.length; i++){
+			if($(this).val() === _source[i]){
+				$(this).attr("checked","checked");
+			}
+		}
+		
+	});
+	
+	function lz_cfg_show(dom){		
+		$(dom).css({display:"block",height:"0px",
+				paddingTop:"15px"});
+		$(dom).stop();
+		$(dom).css({height:"100%"});
+	}
+	function lz_cfg_hide(dom){
+		$(dom).css({paddingTop:"0px",overflow:"hidden"});
+		$(dom).stop();
+		$(dom).animate({height:["0px","swing"]},800);	
+	}
+	 
+	
+	$("#lzConfigDiv").css({"background-color":"#ececec"});
+	$("#showDetailConfig").show();
+	$("#lzMoreDiv").show();
+	$("#showDetailConfig").click(function(){
+		if($(this).html() == "展开更多选项"){
+			$(this).html("收起更多选项");
+			$(this).removeClass("arrB").addClass("arrT");
+			//$("#lzConfigDiv").show();
+			lz_cfg_show($("#lzConfigDiv"));
+		}else{
+			$(this).html("展开更多选项");
+			$(this).removeClass("arrT").addClass("arrB");
+			//$("#lzConfigDiv").hide();
+			lz_cfg_hide($("#lzConfigDiv"));
+		}
+		
+	});
+
+	$("#trending").click(function(){
+		if(_lzMode = $(":radio[name=pluginType]:checked").val() == "slide"){
+			if($(this).attr("checked") == "checked"){
+				$("#lzPromote").show();	
+			}else{
+				$("#lzPromote").hide();	
+			}
+		}
+		
+		
+	});
+
+	$("input[name=picSize]").blur(function(){
+		if(Number($(this).val()) > 120){
+			$(this).val(120);
+		}else if(Number($(this).val()) < 88){
+			$(this).val(88);
+		}
+	});
+
+	 $("#autoMatch").change(function(){
+		if($(this).attr("checked") == "checked"){
+			$("input[name=autoMatch]").val("true");
+			$("#parmsImages").hide();
+		}else{
+			$("#parmsImages").show();
+			$("input[name=autoMatch]").val("false");
+		}
+	 });
+	 
+	 $("#highlight").change(function(){
+		if($(this).attr("checked") == "checked"){
+			$("input[name=highlight]").val("true");
+		}else{
+			$("input[name=highlight]").val("false");
+		}
+	 });
+
+	 $("#redirectMode").change(function(){
+		if($(this).attr("checked") == "checked"){
+			$("input[name=redirectMode]").val("js");
+		}else{
+			$("input[name=redirectMode]").val("http");
+		}
+	 });
+
+	var _lzMode = $(":radio[name=pluginType]:checked").val();
+	
+	if(_lzMode == "fixed" || $("#trending").attr("checked") == "checked"){
+		$("#lzPromote").show();
+	}
+})
+</script>
+
+<script type="text/javascript"  charset="utf-8" src="${staticUrl}js/tools/jquery.easing.1.3.js#"></script>
+<script type="text/javascript" id="lzScript" charset="utf-8" src="${staticUrl}plugin/lz.js#"></script>
+</body>
+</html>

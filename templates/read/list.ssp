@@ -1,0 +1,234 @@
+<% attributes("layout") = "" %>
+<%@ var staticUrl: String %>
+<%@ var rootUrl: String %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Language" content="UTF-8">
+    <meta name="description" content="- 我正在关注乐知个性化阅读器，只要用新浪微博账号登录，就可以有属于你自己独一无二的个性化阅读，来试试吧！">
+    <meta name="keywords" content="乐知,阅读软件,Android应用">
+    <meta name="author" content="Buzzinate">
+
+    <title>乐知 - #比你更懂你#</title>
+    
+    <link rel="icon" href="http://lezhi.me/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="http://lezhi.me/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="${staticUrl}css/common.css" type="text/css" />
+    <link rel="stylesheet" href="${staticUrl}css/lz.css" type="text/css" />
+	<link rel="stylesheet" href="${staticUrl}css/slide.css" type="text/css" />
+
+	<script type="text/javascript" src="http://static.bshare.cn/js/libs/jquery-1.7.min.js"></script>
+	<script type="text/javascript" src="${staticUrl}js/common/bshareLib.js"></script>
+	<script type="text/javascript" src="${staticUrl}js/tools/slide.js"></script>
+	<style>
+	.n_lezhi_menu li.sel{background:url('${staticUrl}images/menuBlue_sel.png') top center no-repeat;}
+	</style>
+</head>
+
+<body style="background:#f9f9f9;">
+<div style="height:100%;overflow:hidden;">
+	<!-- top -->
+	<div class="lezhi_read_top">
+		<div class="lezhi_top">
+			<div class="wid980 relative">
+				<a href="http://lezhi.me" name="top" class="lezhi_logo"><img src="${staticUrl}images/logo.png" /></a>
+
+				<div class="n_lezhi_menu">
+					<ul>
+						<li class="sel"><a href="" alt="">首页</a></li>
+						<li><a href="lezhiWeb/choiceType.html" alt="">乐知推荐</a></li>
+						<li><a href="" alt="">乐知阅读</a></li>
+						<li><a href="" alt="" class="last">客户端</a></li>
+					</ul>
+				</div>
+				<div class="top_blog"><a target="_blank" href="http://weibo.com/2299191064" title="关注我们" class="sinaBlog"></a><span id="weixin" class="weixin" title="点击获取二维码"></span></div>
+				<div class="top_blog">关注我们：</div>
+				<img id="erweima" class="erweima" src="${staticUrl}images/touxiang.jpg" title="乐知二维码" />
+				<div class="clear"></div>
+			</div>
+		</div>
+	</div>
+
+	<!-- content -->
+	<div class="lezhi_content_wid980" style="margin-top:10px;">
+		<div class="lezhi_read_main_left">
+			<div class="focus_pics">
+				<div class="slide" id="slide">
+					<div class="slideWarp">
+						<ul class="content">
+							<li><img src="${staticUrl}images/read/bg.jpg" width="674" height="322" alt="bg" /></li>
+							<li><img src="${staticUrl}images/read/bg2.jpg" width="674" height="322" alt="bg" /></li>
+							<li><img src="${staticUrl}images/read/bg3.jpg" width="674" height="322" alt="bg" /></li>
+							<li><img src="${staticUrl}images/read/bg.jpg" width="674" height="322" alt="bg" /></li>
+						</ul>
+					</div>
+					<div class="pagination">
+						<ul style="width:auto;">
+							<li>1</li>
+							<li>2</li>
+							<li>3</li>
+							<li>4</li>
+						</ul>
+					</div>
+					<div class="pagination_mask"></div>
+				</div>
+			</div>
+			<div class="lezhi_trending">
+				<div class="lezhi_trending_title">热文榜</div>
+				<!--  article here  -->
+				
+			</div>
+			<div class="loading">正在加载,请稍候<img src="${staticUrl}images/read/loading.gif"  style="vertical-align:middle;" /></div>
+		</div>
+
+		<!-- content right -->
+		<div class="lezhi_read_main_right">
+			<div class="lezhi_read_right_module">
+				<div class="lezhi_read_right_module_title">用户登录</div>
+				<div class="lezhi_read_login">
+					<div class="lezhi_read_login_user"><input type="text" class="text" /></div>
+					<div class="lezhi_read_login_pwd"><input type="text" class="text" /></div>
+					<div class="login_line"><input type="submit" class="login_btn" value="" />&nbsp;&nbsp;还没账号？<a href="" class="register_link">快来注册</a></div>
+					<div class="login_line">用其他账户登录：&nbsp;<a href="" class="qq"></a></div>
+				</div>
+			</div>
+			<div class="lezhi_read_right_module">
+				<div class="lezhi_read_right_module_title">频道菜单</div>
+				<div class="lezhi_read_login">
+					<a href="" class="tiles topic left"><div class="tilesTag">话题</div></a>
+					<a href="" class="tiles recomm right hover"><div class="tilesTag">热文榜</div></a>
+					<a href="" class="tiles collect left"><div class="tilesTag">收藏</div></a>
+					<a href="" class="tiles hot_spot right"><div class="tilesTag">本地热点</div></a>
+					<div class="clear"></div>
+				</div>
+			</div>
+			<div class="lezhi_read_right_module">
+				<iframe width="100%" height="340" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=340&fansRow=1&ptype=0&speed=0&skin=1&isTitle=0&noborder=0&isWeibo=1&isFans=0&uid=2872849360&verifier=a35e8609&colors=d6f3f7,ffffff,#fff000,666666,ecfbfd&dpc=1"></iframe>
+			</div>
+			<div class="lezhi_read_right_module">
+				<a href=""><img src="${staticUrl}images/read/tmpAds.jpg" /></a>
+			</div>
+		</div>
+	</div>
+
+	<!-- footer -->
+	<div class="footer">
+		<div class="break_line"></div>
+		<div class="website">
+			<a href="http://www.bshare.cn/" target="_blank">首页</a>|
+					
+			<a href="http://blog.bshare.cn/" target="_blank">关于我们</a>|
+			<a href="http://www.bshare.cn/career" target="_blank">诚聘英才</a>|
+			<a href="http://wpa.qq.com/msgrd?v=3&amp;uin=800087176&amp;site=qq&amp;menu=yes" target="_blank">联系我们</a>|
+			<a href="http://www.bshare.cn/privacy" target="_blank">隐私条款</a>|
+			<a href="http://www.bshare.cn/feedback" target="_blank">问题反馈</a>
+		</div>
+		<div class="clear spacer15"></div>
+		
+		<div>
+			<span><a target="_blank" title="沪ICP备09026724号" href="http://www.miibeian.gov.cn/">沪ICP备09026724号</a></span>
+			<div class="clear spacer10"></div>
+			<span>© 2009-2012 <a title="擘纳" href="http://www.buzzinate.com" class="bLinkOrangeU" target="_blank">擘纳</a>（上海）信息科技有限公司。版权所有。</span>
+			<div class="clear spacer15"></div>
+			<div style="text-align: center;">
+				<a target="_blank" href="http://www.sgs.gov.cn/lz/licenseLink.do?method=licenceView&amp;entyId=20120703161312773"><img src="http://static.bshare.cn/images/sgs_license.gif" border="0"></a>
+			</div>
+		</div>
+	  </div>
+</div>
+<a id="qqservicetab" target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=800087176&amp;site=qq&amp;menu=yes"></a>
+<a class="bshareDiv" href="http://www.bshare.cn/share">分享按钮</a><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/button.js#uuid=5e3a22db-ccd4-4cf6-8e78-f50bc1bbcb60&amp;style=3&amp;fs=4&amp;textcolor=#fff&amp;bgcolor=#06C&amp;text=分享到"></script>
+<!--//tentcent analytics -->
+<script type="text/javascript" src="http://tajs.qq.com/stats?sId=19800397" charset="UTF-8"></script>              
+</body>
+
+<script type="text/javascript">
+
+$(function(){
+	var bs=new bshare.Slide({container:$("#slide"),width:674,height:320,isPlay:true});
+	var offset = 0;
+	//load new recommdation when window scroll to page bottom
+	window.onscroll = function(){
+		
+		var html = '', screenHeight = window.screen.height, clientHeight = window.document.body.clientHeight, scrollTop = window.document.body.scrollTop, overTop = clientHeight - screenHeight - scrollTop;
+		var topParam = [ 
+					"offset=" + offset, 
+					"length=" + "",
+					"refresh=" + "",
+					"category=" + "1"
+					 ]; 
+		if(overTop < 30){
+			if(offset >= 60){
+				return;
+			}
+				$(".loading").show();
+				loadModule('http://192.168.1.69:8000/api/article/top?callback=window.mobileLz.top&' + topParam.join("&"));
+				
+			
+			//$(".lezhi_trending").append(html);					
+		}
+		
+	}
+	
+	
+	var topParam = [ 
+					"offset=" + offset, 
+					"length=" + "",
+					"refresh=" + "",
+					"category=" + "1"
+					 ]; 
+					 
+
+	loadModule('http://192.168.1.69:8000/api/article/top?callback=window.mobileLz.top&' + topParam.join("&"));
+	window.mobileLz = {
+		top : function(json){
+			var _html = "", articles = json.article;
+			for(var i = 0; i < articles.length; i++){
+				_html += loadArtice(articles[i].title,articles[i].url,articles[i].summary,articles[i].from,articles[i].createdAt);
+			}
+			$(".loading").hide();
+			offset += 20;
+			$(".lezhi_trending").append(_html);
+		}
+	}
+	//jsonP function
+	function loadModule(url) {
+        var jsonp = document.createElement("script");
+        jsonp.type = "text/javascript";
+		jsonp.charset = "utf-8";
+        jsonp.src = url;
+        $$.fn.getElemsByTagName(document, "head")[0].appendChild(jsonp);
+    }
+	
+	function loadArtice(title,url,summary,from,createdAt){
+		var html = '<div class="lezhi_paper">'
+			+ '<div class="lezhi_paper_title"><a href="' + 'detail.html?url=' + url + '">' + title + '</a></div>'
+			+ '<div class="lezhi_paper_text">'
+			+ summary
+					
+			+ '</div>'
+			+ '<div class="lezhi_footer">' + createdAt + ' 来自<a href="">' + from + '</a></div>'
+			+ '</div>';
+					
+		return html;			
+		
+	}
+})
+
+
+var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-34918367-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+
+</script>
+</html>

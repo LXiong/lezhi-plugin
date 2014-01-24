@@ -1,0 +1,17 @@
+Local Dev:
+1. Install sbt:
+https://github.com/harrah/xsbt/wiki/Getting-Started-Setup
+2. Use sbt to run the project
+3. Go to http://127.0.0.1:8099/assets/demo.html to view demo
+
+Deployment:
+1. Run sbt, in sbt console run assembly. This will generate an assemblied jar file in target folder.
+2. Run the jar file, e.g. run.sh
+3. Run crontab confile to add crontab task.
+4. Run Online to do online data processing(only one time executed is enough)
+
+Note:
+1. Create conf/app-local.conf for local env configuration
+
+We use Cascel as Cassandra client, it's on Github:
+https://github.com/zyeming/cascal

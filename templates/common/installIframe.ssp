@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<% attributes("layout") = "" %>
+<%@ var staticUrl: String %>
+<%@ var rootUrl: String %>
+<% attributes("nav") = "navPlugin" %>
+<%@ var pic: Boolean = true %>
+<%@ var err: (Int, String) = (-1,"") %>
+<%@ var uuid: String = "" %>
+<%@ var row: Int = 4 %>
+<%@ var col: Int = 1 %>
+<%@ var pluginType: String = "fixed" %>
+<%@ var source: String = "insite" %>
+<%@ var promote: String = "" %>
+<%@ var picSize: Int = 88 %>
+<%@ var position: String = "right" %>
+<%@ var defaultPic: String = "" %>
+<%@ var htcolor: String = "333" %>
+<%@ var rtcolor: String = "333" %>
+<%@ var bdcolor: String = "dadada" %>
+<%@ var hvcolor: String = "009FCE" %>
+<%@ var highlight: Boolean = false %>
+<%@ var request: javax.servlet.http.HttpServletRequest%>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="keywords" content="个性化阅读，个性化推荐，阅读类软件" />
+    <link rel="stylesheet" type="text/css" href="${staticUrl}css/common.css?t=20121123.css" />
+    <link rel="stylesheet" type="text/css" href="${staticUrl}css/lezhi.css?t=20121123.css" />
+    <link rel="stylesheet" type="text/css" href="${staticUrl}css/user.css?t=20121123.css" />
+	<link rel="stylesheet" type="text/css" href="${staticUrl}css/plugin.css?t=20121123.css" />
+    <style>
+        .lezhiLogin{
+            display:none;
+        }
+        .lezhiTopBody{
+            margin-top:25px;
+        }
+    </style>
+
+    <script type="text/javascript" charset="utf-8">
+        var BSHARE_STATIC_HOST = "${staticUrl}"; // used by unitpngfix.js
+    </script>
+    <script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/jquery-1.7.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/jquery.tools.ui.min.1.2.6.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/bgiframe.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${staticUrl}js/common/bshare-web-common.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${staticUrl}js/login/ajaxLogout.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/jquery.tools.forms.min.1.2.6.js"></script>
+    <script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/webtoolkit.sha1.js"></script>
+    <!--[if lt IE 7]> 
+    <script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/unitpngfix.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+	<div class="center">
+		<div class="pageBody center">
+			<div class="pageLeft">
+				<div class="lezhiInstallStep1">
+					<h1>安装插件，只需2步</h1>
+					<div class="lzInstallSetp2">
+						<ul>
+							<li><img src="${staticUrl}images/step1Gray.jpg" alt="第一步" /><div class="stepDes" style="float:left; margin-top:15px;">填写网站信息</div></li>
+							<li><img src="${staticUrl}images/step2.jpg" alt="第二步" /><div class="stepDes">获取代码</div></li>
+						</ul>
+						<div class="clear"></div>
+					</div>
+					
+					<div class="lezhiCopyCode">
+						<p class="lezhiCopyCodeP">复制以下代码，置放在你要显示相关文章的位置，强烈建议置放在紧贴这文章内容的下面，经我们测试这是点击率最高的地方。确记只在文章的页面放这段代码：</p>
+						<textarea id="getJsCode" class="taGetCode" readonly="" style="height:112px;font-family:courier new,monospace,宋体,sans-serif;">
+<!-- lezhi code start -->
+<div id="bShareRecommDiv"></div>
+<script type="text/javascript" charset="utf-8" src="${staticUrl}plugin/lz.js#uuid=${uuid}"></script>
+<!-- lezhi code end -->
+						</textarea>
+						<button class="btnGray" id="getJsCodeBtn" style="position:relative;">复制代码</button>
+					</div>
+					
+					<div class="clear spacer30"></div>
+					<div class="lezhiGetCodeBtn" style="text-align:center;">
+						<input type="button" class="buttonLightGray" value="返回" style="font-size:14px;padding:11px 47px;padding:11px 27px\9; font-weight:bold;background:#cbcbcb\9;" onclick="window.location.href=window.document.referrer;" />
+					</div>
+				</div>
+			</div>
+			<% layout("/common/pageRight.ssp") {%><%}%>
+		</div>
+	</div>
+	
+    <div id="notifications" class="hidden" style="display: none; ">
+    	<div class="notification-bar-container">
+    		<div class="notification-bar-bkg" style="background-color: rgb(255, 248, 204); height: 25px;"></div>
+    		<div class="notification-bar">
+    			<div class="notification-bar-contents">
+    				<div class="notification-msg heading1" style="color:#333; font-size:20px; font-weight:bold;"></div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+
+<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/jquery.zclip.min.js"></script>
+<script type="text/javascript" >
+    $(function(){
+    	#if(err._1 == 0)
+    	   displayStatusMessage('配置保存成功');
+    	#end
+    
+		$('#getJsCodeBtn').zclip({
+		    path: '${staticUrl}js/resource/ZeroClipboard.swf',
+		    copy: function() { return $("#getJsCode").val(); },
+		    afterCopy: function() {
+		    	displayStatusMessage('复制成功，您可以粘贴(Ctrl-V)到您网站的页面模板中了。');
+		    }
+		});
+    });
+</script>
+
+</body>
+</html>

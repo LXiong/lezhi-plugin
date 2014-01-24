@@ -1,0 +1,11 @@
+1 00 * * * /opt/jdk1.6.0_31/bin/java -DAPP_NAME=lezhiPageStatistic  -Droot.dir=/opt/lezhi-plugin/ -cp /opt/lezhi-plugin/target/lezhi_recomm-assembly-0.1.0-SNAPSHOT.jar com.buzzinate.lezhi.crontab.PageStatisticCron >>/var/log/lezhi/lezhiStatistic.log 2>&1 &
+10 00 * * * /opt/jdk1.6.0_31/bin/java -DAPP_NAME=lezhiUrlNumSync -Droot.dir=/opt/lezhi-plugin/ -cp /opt/lezhi-plugin/target/lezhi_recomm-assembly-0.1.0-SNAPSHOT.jar com.buzzinate.lezhi.crontab.UrlNumSyncCron >>/var/log/lezhi/lezhiSync.log 2>&1 &
+
+
+java -DAPP_NAME=lezhiPageStatistic -Droot.dir=/opt/lezhi-plugin/ -cp /opt/lezhi-plugin/target/lezhi_recomm-assembly-0.1.0-SNAPSHOT.jar com.buzzinate.lezhi.crontab.PageStatisticCron
+
+java -DAPP_NAME=lezhiMigration  -Droot.dir=/opt/lezhi-plugin/ -cp /opt/lezhi-plugin/target/lezhi_recomm-assembly-0.1.0-SNAPSHOT.jar  com.buzzinate.lezhi.migration.Migration
+java -DAPP_NAME=lezhiMigrationUuidUrls  -Droot.dir=/opt/lezhi-plugin/ -cp /opt/lezhi-plugin/target/lezhi_recomm-assembly-0.1.0-SNAPSHOT.jar  com.buzzinate.lezhi.migration.MigrationUuidUrls
+
+
+java -DAPP_NAME=lezhiRestore  -Droot.dir=/opt/lezhi-plugin/ -cp /opt/lezhi-plugin/target/lezhi_recomm-assembly-0.1.0-SNAPSHOT.jar  com.buzzinate.lezhi.crontab.RestoreSite

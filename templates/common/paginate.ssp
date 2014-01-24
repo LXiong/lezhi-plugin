@@ -1,0 +1,57 @@
+<%--
+	pagination partial
+    by magic 2013-8-5
+
+    usage: <% layout("common/paginate.ssp") {%><%}%>
+ --%>
+
+<%@ var staticUrl: String %>
+<%@ var pagination: Int = 0 %>
+<%@ var pageSize: Int =0 %>
+<%@ var totalSize: Int = 0 %>
+
+<div id="pager" class="pagination right"></div>
+
+<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/jquery.pagination.js"></script>
+<script type="text/javascript" charset="utf-8">
+function initPage(pageNo, pageSize, totalRecords) {
+    try{
+        var pn = parseInt(pageNo,10);
+        var ps = parseInt(pageSize,10);
+        var tr = parseInt(totalRecords,10);
+        if (pn < 0)
+            return;
+        $("#pager").pagination(tr, {
+            current_page:pn-1,
+            num_edge_entries: 2,
+            num_display_entries: 6,
+            next_text:'',
+            prev_text:'',
+            items_per_page:ps, 
+            callback: pageCallback
+        });
+    }catch(e){}
+}
+    
+function pageCallback(pageNo) {
+    pageNo += 1
+    var href = window.location.href;
+    var currentPageNo = /pagination=\d*/.exec(href);
+    if (!!currentPageNo) {
+        href = href.replace(currentPageNo, "pagination=" + pageNo);
+    } else {
+        var index = href.indexOf("?");
+        if (index > 0) {
+            href += "&";
+        } else {
+            href += "?";
+        }
+        href += ("pagination=" + pageNo);
+    }
+    window.location.href = href;
+}
+
+$(function() {
+    initPage("${pagination}", "${pageSize}", "${totalSize}".replace(",",""));
+});
+</script>

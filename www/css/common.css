@@ -1,0 +1,97 @@
+@charset "utf-8";
+
+
+/********** reset origin style (eric meyers reset) *************/
+html, body, button, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, button, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 12px;
+    font-family:Helvetica,Calibri,Tahoma,Arial,宋体,sans-serif;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+/********** reset origin style *************/
+
+button { transition: 0.2s; -moz-transition: 0.2s; -webkit-transition: 0.2s; -o-transition: 0.2s; }
+
+h1,h2,h3,h4,h5,h6{font-size:100%; font-family: Helvetica,Calibri,Tahoma,Arial,微软雅黑,宋体,sans-serif; }
+
+h3{font-size:14px;font-weight:normal;}
+
+h5{font-size:12px;}
+
+ul{
+	list-style-type:none;
+	margin:0;
+	padding:0;
+}
+
+img {
+	border:0;
+	vertical-align:bottom;
+	
+}
+
+sup{vertical-align:text-top;}
+
+sub{vertical-align:text-bottom;}
+
+/***************** set common style **********************/
+.left { float: left; *display: inline; }
+.right { float: right; *display: inline; }
+.clear { clear: both; height: 0; overflow: hidden; line-height: 0; font-size: 0; }
+.center{text-align:center; margin:auto;}
+.bLinkU, .bLinkOrangeU, .bLinkDarkU, .bLinkUV {color:#2E3192;text-decoration:underline;}
+.bLinkU:hover, .bLinkOrangeU:hover, .bLinkDarkU:hover, .bLinkUV:hover {text-decoration:none;}
+.fB{font-weight:bold;}
+
+/*div spacers*/
+.spacer1, .spacer2, .spacer3, .spacer4, .spacer5, .spacer10, .spacer15, .spacer20, .spacer25, .spacer30, .spacer50, .spacer100 { height: 0; overflow: hidden; padding-bottom: 1px; }
+.spacer2 { padding-bottom: 2px; }
+.spacer3 { padding-bottom: 3px; }
+.spacer4 { padding-bottom: 4px; }
+.spacer5 { padding-bottom: 5px; }
+.spacer10 { padding-bottom: 10px; }
+.spacer15 { padding-bottom: 15px; }
+.spacer20 { padding-bottom: 20px; }
+.spacer25 { padding-bottom: 25px; }
+.spacer30 { padding-bottom: 30px; }
+.spacer40 { padding-bottom: 40px; }
+.spacer50 { padding-bottom: 50px; }
+.spacer100 { padding-bottom: 100px; }
+.hspacer10 { padding: 0 5px; }

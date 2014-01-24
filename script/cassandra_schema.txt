@@ -1,0 +1,383 @@
+create keyspace lezhi_plugin
+  with placement_strategy = 'NetworkTopologyStrategy'
+  and strategy_options = {DC1 : 3}
+  and durable_writes = true;
+
+use lezhi_plugin;
+
+create column family admin_counts
+  with column_type = 'Standard'
+  and comparator = 'UTF8Type'
+  and default_validation_class = 'CounterColumnType'
+  and key_validation_class = 'DateType'
+  and read_repair_chance = 0.1
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and column_metadata = [
+    {column_name : 'showups_pic_i',
+    validation_class : CounterColumnType},
+    {column_name : 'showups_fixed_t',
+    validation_class : CounterColumnType},
+    {column_name : 'showups_nopic_i',
+    validation_class : CounterColumnType},
+    {column_name : 'showups_nopic_t',
+    validation_class : CounterColumnType},
+    {column_name : 'clicks_nopic_i',
+    validation_class : CounterColumnType},
+    {column_name : 'views',
+    validation_class : CounterColumnType},
+    {column_name : 'inClicks',
+    validation_class : CounterColumnType},
+    {column_name : 'showups',
+    validation_class : CounterColumnType},
+    {column_name : 'clicks_slide_i',
+    validation_class : CounterColumnType},
+    {column_name : 'clicks_nopic_t',
+    validation_class : CounterColumnType},
+    {column_name : 'outClicks',
+    validation_class : CounterColumnType},
+    {column_name : 'showups_fixed_i',
+    validation_class : CounterColumnType},
+    {column_name : 'showups_slide_t',
+    validation_class : CounterColumnType},
+    {column_name : 'showups_pic_t',
+    validation_class : CounterColumnType},
+    {column_name : 'clicks_fixed_t',
+    validation_class : CounterColumnType},
+    {column_name : 'showups_slide_i',
+    validation_class : CounterColumnType},
+    {column_name : 'clicks_pic_i',
+    validation_class : CounterColumnType},
+    {column_name : 'clicks_fixed_i',
+    validation_class : CounterColumnType},
+    {column_name : 'displays',
+    validation_class : CounterColumnType},
+    {column_name : 'clicks_pic_t',
+    validation_class : CounterColumnType},
+    {column_name : 'clicks_slide_t',
+    validation_class : CounterColumnType}]
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family adsclose_reason
+  with column_type = 'Standard'
+  and comparator = 'UTF8Type'
+  and default_validation_class = 'UTF8Type'
+  and key_validation_class = 'BytesType'
+  and read_repair_chance = 0.1
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family page_counts
+  with column_type = 'Standard'
+  and comparator = 'UTF8Type'
+  and default_validation_class = 'CounterColumnType'
+  and key_validation_class = 'UUIDType'
+  and read_repair_chance = 0.1
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and column_metadata = [
+    {column_name : 'outClicks',
+    validation_class : CounterColumnType},
+    {column_name : 'views',
+    validation_class : CounterColumnType},
+    {column_name : 'displays',
+    validation_class : CounterColumnType},
+    {column_name : 'inClicks',
+    validation_class : CounterColumnType},
+    {column_name : 'showups',
+    validation_class : CounterColumnType}]
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family page_info
+  with column_type = 'Standard'
+  and comparator = 'UTF8Type'
+  and default_validation_class = 'UTF8Type'
+  and key_validation_class = 'UUIDType'
+  and read_repair_chance = 1.0
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and column_metadata = [
+    {column_name : 'siteUuid',
+    validation_class : UUIDType},
+    {column_name : 'createTime',
+    validation_class : DateType},
+    {column_name : 'url',
+    validation_class : UTF8Type},
+    {column_name : 'title',
+    validation_class : UTF8Type}]
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family page_statistic
+  with column_type = 'Super'
+  and comparator = 'UTF8Type'
+  and subcomparator = 'BytesType'
+  and default_validation_class = 'UTF8Type'
+  and key_validation_class = 'BytesType'
+  and read_repair_chance = 0.1
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family site_blacklist
+  with column_type = 'Standard'
+  and comparator = 'UTF8Type'
+  and default_validation_class = 'UTF8Type'
+  and key_validation_class = 'BytesType'
+  and read_repair_chance = 0.1
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family site_config
+  with column_type = 'Standard'
+  and comparator = 'UTF8Type'
+  and default_validation_class = 'UTF8Type'
+  and key_validation_class = 'UUIDType'
+  and read_repair_chance = 0.01
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'ALL'
+  and column_metadata = [
+    {column_name : 'htcolor',
+    validation_class : UTF8Type},
+    {column_name : 'position',
+    validation_class : UTF8Type},
+    {column_name : 'picSize',
+    validation_class : Int32Type},
+    {column_name : 'redirectMode',
+    validation_class : UTF8Type},
+    {column_name : 'source',
+    validation_class : UTF8Type},
+    {column_name : 'sitePrefix',
+    validation_class : UTF8Type},
+    {column_name : 'adEnabled',
+    validation_class : BooleanType},
+    {column_name : 'autoMatch',
+    validation_class : BooleanType},
+    {column_name : 'col',
+    validation_class : Int32Type},
+    {column_name : 'fontSize',
+    validation_class : Int32Type},
+    {column_name : 'hvcolor',
+    validation_class : UTF8Type},
+    {column_name : 'pic',
+    validation_class : BooleanType},
+    {column_name : 'pluginType',
+    validation_class : UTF8Type},
+    {column_name : 'row',
+    validation_class : Int32Type},
+    {column_name : 'promot',
+    validation_class : UTF8Type},
+    {column_name : 'rtcolor',
+    validation_class : UTF8Type},
+    {column_name : 'defaultPic',
+    validation_class : UTF8Type},
+    {column_name : 'promote',
+    validation_class : UTF8Type},
+    {column_name : 'adCount',
+    validation_class : Int32Type},
+    {column_name : 'highlight',
+    validation_class : BooleanType},
+    {column_name : 'bdcolor',
+    validation_class : UTF8Type}]
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family site_page
+  with column_type = 'Standard'
+  and comparator = 'UUIDType'
+  and default_validation_class = 'UTF8Type'
+  and key_validation_class = 'UUIDType'
+  and read_repair_chance = 0.1
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family stat_page_displays
+  with column_type = 'Standard'
+  and comparator = 'DateType'
+  and default_validation_class = 'CounterColumnType'
+  and key_validation_class = 'UUIDType'
+  and read_repair_chance = 0.1
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family stat_page_in_click
+  with column_type = 'Standard'
+  and comparator = 'DateType'
+  and default_validation_class = 'CounterColumnType'
+  and key_validation_class = 'UUIDType'
+  and read_repair_chance = 0.1
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family stat_page_out_click
+  with column_type = 'Standard'
+  and comparator = 'DateType'
+  and default_validation_class = 'CounterColumnType'
+  and key_validation_class = 'UUIDType'
+  and read_repair_chance = 0.1
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family stat_page_showup
+  with column_type = 'Standard'
+  and comparator = 'DateType'
+  and default_validation_class = 'CounterColumnType'
+  and key_validation_class = 'UUIDType'
+  and read_repair_chance = 0.1
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family stat_page_view
+  with column_type = 'Standard'
+  and comparator = 'DateType'
+  and default_validation_class = 'CounterColumnType'
+  and key_validation_class = 'UUIDType'
+  and read_repair_chance = 0.1
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family stat_site_displays
+  with column_type = 'Standard'
+  and comparator = 'DateType'
+  and default_validation_class = 'CounterColumnType'
+  and key_validation_class = 'UUIDType'
+  and read_repair_chance = 0.1
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family stat_site_in_click
+  with column_type = 'Standard'
+  and comparator = 'DateType'
+  and default_validation_class = 'CounterColumnType'
+  and key_validation_class = 'UUIDType'
+  and read_repair_chance = 0.1
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family stat_site_out_click
+  with column_type = 'Standard'
+  and comparator = 'DateType'
+  and default_validation_class = 'CounterColumnType'
+  and key_validation_class = 'UUIDType'
+  and read_repair_chance = 0.1
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family stat_site_showup
+  with column_type = 'Standard'
+  and comparator = 'DateType'
+  and default_validation_class = 'CounterColumnType'
+  and key_validation_class = 'UUIDType'
+  and read_repair_chance = 0.1
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};
+
+create column family stat_site_view
+  with column_type = 'Standard'
+  and comparator = 'DateType'
+  and default_validation_class = 'CounterColumnType'
+  and key_validation_class = 'UUIDType'
+  and read_repair_chance = 0.1
+  and dclocal_read_repair_chance = 0.0
+  and gc_grace = 864000
+  and min_compaction_threshold = 4
+  and max_compaction_threshold = 32
+  and replicate_on_write = true
+  and compaction_strategy = 'org.apache.cassandra.db.compaction.SizeTieredCompactionStrategy'
+  and caching = 'KEYS_ONLY'
+  and compression_options = {'sstable_compression' : 'org.apache.cassandra.io.compress.SnappyCompressor'};

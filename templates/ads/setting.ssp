@@ -1,0 +1,350 @@
+<% attributes("title") = "乐知 广告设置" %>
+<% attributes("nav") = "navUser" %>
+<% attributes("backend") = "true" %>
+<%@ var staticUrl: String %>
+<%@ var err: (Int, String) = (-1,"") %>
+<%@ var uuid: String = "" %>
+<%@ var count: Int =0%>
+<%@ var row: Int =0%>
+<%@ var col: Int =0%>
+<%@ var pic: Boolean = false %>
+<%@ var hvcolor: String = "" %>
+<%@ var adEnabled: Boolean = false %>
+<%@ var adCount: Int =0%>
+<%@ var url: String="" %>
+<%@ var adBlackList: String="" %>
+
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/user.css" />
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/plugin.css" />
+
+<style>
+    .pageBody, .pageBodyIndex {width:auto;margin:20px 15px;}
+    .pageCenter {margin-bottom:0px;}
+    .wid980 {width:auto;margin:0 15px;}
+    .adsTable2 td { height:24px; padding: 15px 5px; }
+    .keyWordListUL li, .keyWordListUL2 li { text-align:left !important; width: auto !important; margin: 5px 2px !important; padding:3px 5px; background:#eee; float: left; }
+    .lzWindowPop .keyWordList { width: auto; }
+</style>
+
+<div class="center">
+    <div class="breadCrumbs">
+        <span>当前位置：</span>
+        <a href="${rootUrl}">乐知推荐</a>
+        <span>&nbsp=&gt;&nbsp;</span>
+        <a href="${rootUrl}user/manage">管理中心</a>
+        <span>&nbsp=&gt;&nbsp;</span>
+        <a href="${rootUrl}user/ads/setting/edit?uuid=${uuid}">广告设置</a>
+    </div>
+    <div class="pageBody pageBodyIndex" style="padding:14px 14px 20px;">
+        <form name="myform" method="GET" action="/user/ads/setting">
+			<input id="uuid" name="uuid" type="hidden" value="${uuid}" />
+		    <div class="left" style="width:300px;">
+				<table class="adsTable2">
+					<tr>
+						<td width="100">投放网站：</td>
+						<td>
+						    <a id="lzModifyKeyWordUrl" href="${url}" target="_blank" class="bLinkU">${if(url.length>30) url.substring(0,30)+"..." else url}</a>
+						</td>
+					</tr>
+					<tr>
+						<td>广告位条数：</td>
+						<td>
+						    <select id="count" name="count" class="bInput">
+							#for(i <- 1 until count+1)
+								<option
+								    #if(i == adCount)
+										selected="selected"
+									#end
+								value='${i}'>${i}</option>
+							#end
+							</select>
+					    </td>
+					</tr>
+					<tr style="display:none;">
+						<td>黑名单关键字：</td>
+						<td>
+						    <a id="cKeyWord" class="bLinkU" href="javascript:;">添加黑名单关键字...</a>
+    						<input id="keyWord" type="hidden" value="${adBlackList}" />
+    						<div class="clear spacer20"></div>
+    						<div class="picSelTit" style="margin-bottom:5px;">已经添加黑名单关键词：</div>
+                            <div style="border:1px solid #f8f8f8;padding:10px;">
+                                <ul class="keyWordListUL2"></ul>
+                                <div class="clear"></div>
+                            </div>
+                        </td>
+					</tr>
+				</table>
+            </div>
+            <div class="left" style="margin-left:15px;">
+                <div class="spacer10 clear"></div>
+                <h1 style="font-size:18px;margin-bottom:15px;padding-bottom:5px;border-bottom:1px solid #ff7c00;">预览效果</h1>
+				<!-- lezhi code start -->
+				<iframe class="preview_iframe" name="preview_iframe" style="width:700px;background:#f8f8f8;" frameborder="0" id="preview_iframe" src="${staticUrl}iframeJs.html?uuid=${uuid}&adCount=${adCount}"></iframe>
+				<!-- lezhi code end -->
+		    </div>
+            <div class="clear spacer20"></div>
+            #if(adEnabled == false)
+				<div><input id="userAgreement" type="checkbox" checked="checked" style="position:relative;top:2px;" /> 我已详细阅读并接受<a href="${rootUrl}userAgreement" class="bLinkU" style="color:red;" target="_blank">&lt;&lt;乐知广告联盟合作协议&gt;&gt;</a></div>
+                <div class="clear spacer10"></div>
+                <div style="color:#666;margin-left:5px;">系统将会您在首次登陆"<a href="http://admax.buzzinate.com/publisher/home" class="bLinkU" target="_blank">广告数据</a>"，及"<a href="http://admax.buzzinate.com/publisher/settings" class="bLinkU" target="_blank">账户信息</a>”时提醒您完善用户数据。</div>
+				<div class="clear spacer30"></div>
+			#end
+			<div class="lezhiGetCodeBtn">
+				<input type="submit" value="保存" id="submit" class="bButton orange" style="font-size:14px;padding:10px 50px;" />
+				<input type="button" class="bButton" onclick="javascript:window.location.href='${rootUrl}user/manage'" value="返回" style="font-size:14px;padding:10px 50px;margin-left:5px;" />
+			</div>
+        </form>
+    </div>
+</div>
+
+<a id="qqservicetab" target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=800087176&amp;site=qq&amp;menu=yes"></a>
+
+<div id="notifications" class="hidden" style="display: none; ">
+    <div class="notification-bar-container">
+        <div class="notification-bar-bkg" style="background-color: rgb(255, 248, 204); height: 25px;"></div>
+        <div class="notification-bar">
+            <div class="notification-bar-contents">
+                <div class="notification-msg heading1" style="color: rgb(51, 51, 51); font-size:20px; font-weight:bold;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="maskDiv" class="maskDiv"></div>
+<div id="lzWindowPop" class="lzWindowPop">
+	<div id="closeBtn" class="closeBtn"></div>
+	<div id="lzWindowPopDiv"></div>
+</div>
+<div id="lzModifyKeyWord" style="display:none;">
+    <div style="width:500px;">
+        <div class="spacer20"></div>
+    	<div style="text-align:left;">
+    	    <span style="margin-right:10px;">黑名单关键词</span><input type="text" id="keyWordTB" class="bInput" style="width:200px;" />&nbsp;&nbsp;
+    	    <input id="addKeyWord" type="button" class="bButton" value="添加" style="padding:7px 15px;" />
+    	</div>
+    	<div class="spacer20"></div>
+    	<div class="picSelTit" style="margin-bottom:5px;">已经添加黑名单关键词：</div>
+    	<div class="keyWordList" style="border:1px solid #f8f8f8;padding:10px;">
+    		<ul class="keyWordListUL"></ul>
+    		<div class="clear"></div>
+    	</div>
+    	<div class="clear spacer20"></div>
+    	<div class="lezhiGetCodeBtn" style="text-align:center;">
+    		<input id="saveKeyWords" type="submit" value="保存" class="bButton orange" style="font-size:14px;padding:6px 22px;"/>&nbsp;&nbsp;
+    		<input type="button" class="bButton backBtn" value="返回" style="font-size:14px;padding:6px 22px;" />
+    	</div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    //mask
+	function maskShow(){
+		var _hei = $(document).height();
+		$("#maskDiv").css({height:_hei+"px"});
+		$("#maskDiv").show();
+	}
+
+	function maskHide(){
+		$("select").show();
+		$("#maskDiv").hide();
+	}
+	
+	var LEZHI_PLUGIN_BASE = "${staticUrl}plugin",
+	LEZHI_PLUGIN_LINK = LEZHI_PLUGIN_BASE + "/feeds?callback=window.lezhi.callback";
+
+	function loadModule(url) {
+        var jsonp = document.createElement("script");
+        jsonp.type = "text/javascript";
+		jsonp.charset = "utf-8";
+        jsonp.src = url;
+        document.getElementsByTagName("body")[0].appendChild(jsonp);
+    }
+	
+	function syncGetFeeds(count){
+		var lezhiParam = [  
+    		"uuid=" + "${uuid}",
+    		"url=" + encodeURIComponent(document.location.href), 
+    		"adCount=" + count,  
+    		"mock=true" ]; 
+				
+			loadModule(LEZHI_PLUGIN_LINK + "&" + lezhiParam.join("&"));
+			setTimeout(function(){$("#bShareRecommTag").click();},200);
+	}
+
+    function initKeywords() {
+        var _html = "";
+        try{
+            var _keywords = $("#keyWord").val();
+            if($.trim(_keywords).length > 0){
+                _keywords = _keywords.split(",");
+            }
+        }catch(err){
+            return;
+        }
+        for(var i=0;i<_keywords.length;i++){
+            _html += '<li><span title="' + _keywords[i] + '">' + _keywords[i] + '</span><input type="button" value="移除" style="margin-left:15px;" class="removeBtn bButton" /></li>';
+        }
+        if (_html == "") { _html = "<li class='noKeywords' style='color:red;'>没有关键词</li>"; }
+        $(".keyWordListUL").html(_html);
+        $(".keyWordListUL2").html(_html);
+        $(".keyWordListUL2 .removeBtn").remove();
+    }
+    
+    $(function(){
+        initKeywords();
+        loadPreview();
+    	$("#cKeyWord").bind("click",function(){
+    		initKeywords();
+    		$("#lzWindowPopDiv").html($("#lzModifyKeyWord").html());
+            var _width = $("#lzWindowPop").width();
+            document.getElementById("lzWindowPop").style.marginLeft = _width/-2 + "px";
+            $("#lzWindowPop").css("margin-top", "-" + ($("#lzWindowPop").outerHeight()/2) + "px");
+            $("#lzWindowPop").addClass("showPop");
+            $("select").hide();
+            maskShow();
+    	});
+    	
+    	$(".backBtn").live("click",function(){
+    		$("#closeBtn").click();
+    	});
+    
+    	$("#closeBtn").live("click",function(){
+    		$("#lzWindowPop").removeClass("showPop");
+    		$("#lzWindowPopDiv").html("");
+    		maskHide();
+    	});
+    
+    	$(".removeBtn").live("click",function(){
+    		$(this).parent().remove();
+    		rmList.push($(this).parent().find("span").html());
+    		if ($("#lzWindowPopDiv .keyWordListUL").children('li').length == 0) {
+                $(".keyWordListUL").html("<li class='noKeywords' style='color:red;'>没有关键词</li>");
+            }
+    	});
+    
+    	$("#addKeyWord").live("click",function(){
+    	    hideStatusMessage();
+    	    $(".keyWordList .noKeywords").remove();
+    	    
+    		var _flag = true;
+    		if($.trim($("#keyWordTB").val()) != ""){
+    			$("#lzWindowPopDiv .keyWordListUL").find("li").each(function(){
+    				if($.trim($("#keyWordTB").val()) == $(this).find("span").attr("title")){
+    					_flag = false;
+    				}
+    			});
+    		}else{
+    			_flag = false;
+    		}
+    		if(_flag){
+    		    var keywd = $.trim($("#keyWordTB").val());
+    			$("#lzWindowPopDiv .keyWordListUL").append('<li><span title="' + keywd + '">'+keywd+'</span><input type="button" value="移除" style="margin-left:15px;" class="removeBtn bButton" /></li>');
+    			addList.push(keywd);
+    			$("#keyWordTB").val(""); // reset
+    		} else {
+    		    displayStatusMessage("关键词不能空白还是已经有了", "error");
+    		}
+    	});
+    	
+    	var rmList = [], addList = [];
+    	$("#saveKeyWords").live("click",function(){
+    		var _rmListTmp = [],
+    		_addListTmp = [],
+    		_uuid = '${uuid}';
+    		_addListTmp = arrayUniq(addList,rmList);
+    		_rmListTmp = arrayUniq(rmList,addList);
+    		if(_addListTmp.length == 0 && _rmListTmp.length == 0){
+    			displayStatusMessage('未修改不得提交');
+    			return;
+    		}	
+    		
+    		var _url = $("#lzModifyKeyWordUrl").attr("href"),
+    		_index = parseInt($("#lzModifyKeyWord").attr("index")) + 1,
+    		_rmList = '', _addList = '';
+    		for(var i = 0; i < _rmListTmp.length; i++){
+    			_rmList += ',"' + _rmListTmp[i] + '"';
+    		}
+    		for(var i = 0; i < _addListTmp.length; i++){
+    			_addList += ',"' + _addListTmp[i] + '"';
+    		}
+    		_rmList = _rmList.substring(1);
+    		_addList = _addList.substring(1);
+    		$.ajax({
+    			type: "POST",
+    			url: "/user/ads/keywords/edit",
+    			dataType: "json",
+    			data: "url=" + encodeURI(_url) + "&uuid=" + _uuid + "&rmWords=" + "[" + _rmList + "]" + "&adWords=" + "[" + _addList + "]",
+    			success: function(callback){
+    				if(callback.result == 0){
+    				    $(".keyWordListUL2").html($("#lzWindowPopDiv .keyWordListUL").html());
+    				    $(".keyWordListUL2 .removeBtn").remove();
+    				    
+    					displayStatusMessage(callback.message);
+    					$("#closeBtn").click();
+    					$("#closePicBtn").click();
+    					rmList = [];
+    					addList = [];
+    					
+    					$("#keyWord").val(callback.keywords);
+    				}else{
+    					displayStatusMessage(callback.message);
+    				}
+    			}
+    		});
+    	});
+
+    	function arrayUniq(a,b){
+    	    var obj = new Object();
+    	    for(var i =0,len = a.length;i<len;i++){
+        		if(obj[a[i]] <= 0 ){
+        			obj[a[i]] = obj[a[i]] - 1;
+        		}else{
+        			obj[a[i]] = 0;
+        		}
+    	    }
+    	    for(var i =0,len = b.length;i<len;i++){
+        		if(obj[b[i]] <= 0){
+        			obj[b[i]] = obj[b[i]] + 1;
+        		}
+    	    }
+    	    var arr = new Array();
+    	    var i = 0; 
+    	    for(var per in obj){
+        	    if(obj[per] == 0){
+        	        arr.push(per);
+        	    }
+    	    }
+    	    return arr;
+    	}
+    	
+    	//post jsonP add count to feeds api
+    	$("#count").bind("change",function(){
+    		loadPreview();
+    	});
+
+        $("#userAgreement").bind("click",function(){
+            if($(this).attr("checked") == "checked"){
+                $("#submit").attr("disabled",false);
+                $("#submit").addClass("orange");
+            }else{
+                $("#submit").attr("disabled",true);
+                $("#submit").removeClass("orange");
+            }
+            
+        });
+    });
+
+    //reload preview
+    function loadPreview(){
+        var adCount = $("#count").val(), col = ${col}, row = ${row};
+
+
+        var iframe = document.getElementById("preview_iframe"),
+        iframeSrc = '${staticUrl}iframeJs.html?uuid=${uuid}';
+        iframeSrc = iframeSrc + '&adCount='+ adCount + '&col='+ col + '&row='+ row;
+        iframe.src = iframeSrc;
+        //window.frames['preview_iframe'].location.reload();
+    }
+</script>
+
+

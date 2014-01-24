@@ -1,0 +1,382 @@
+<%@ var staticUrl: String %>
+<%@ var rootUrl: String %>
+
+<% attributes("title") = "乐知 数据中心" %>
+<% attributes("nav") = "navAdmin" %>
+<% attributes("backend") = "true" %>
+<%@ var articleNum: String="" %>
+<%@ var totalNum: String="" %>
+<%@ var pluginNum: String="" %>
+<%@ var buttonNum: String="" %>
+<%@ var picNum: String="" %>
+<%@ var textNum: String="" %>
+<%@ var activeTotalNum: String="" %>
+<%@ var activePluginNum: String="" %>
+<%@ var activeButtonPluginNum: String="" %>
+<%@ var activePicNum: String="" %>
+<%@ var activeTextNum: String="" %>
+<%@ var adminDatas: Seq[com.buzzinate.lezhi.bean.AdminData] = null %>
+
+<%@ var request: javax.servlet.http.HttpServletRequest %>
+<%@ var jsonPv: String = "" %>
+<%@ var dateStart: String = "" %>
+<%@ var dateEnd: String = "" %>
+<%@ var link: String = "admin" %>
+
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/user.css" />
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/plugin.css" />
+
+<style>
+    .pageBody, .pageBodyIndex {width:auto;margin:20px 15px;}
+    .pageCenter {margin-bottom:0px;}
+    .wid980 {width:auto;margin:0 15px;}
+    .bTable2 td, .bTable2 th {text-align:right;}
+</style>
+
+<div class="center">
+    <div class="breadCrumbs">
+        <span>当前位置：</span>
+        <a href="${rootUrl}">乐知推荐</a>
+        <span>&nbsp=&gt;&nbsp;</span>
+        <a href="${rootUrl}admin/dashboard">乐知管理</a>
+        <span>&nbsp=&gt;&nbsp;</span>
+        <a href="${rootUrl}admin/stats/dashboard">数据中心</a>
+    </div>
+    <div class="pageBodyIndex">
+        <div class="pageCenter">
+            <div class="left"><a href="${rootUrl}admin/link">友情链接</a></div>
+            <div class="right">
+                <a class="bButton orange" href="${rootUrl}admin/stats/dashboard" style="padding:9px 15px;margin-right:5px;cursor:default;">数据中心</a>
+                <a class="bButton" href="${rootUrl}admin/stats/pages" style="padding:9px 15px;margin-right:5px;">页面数据</a>
+                <a class="bButton" href="${rootUrl}admin/stats/sites" style="padding:9px 15px;">网站数据</a>
+                <a class="bButton" href="${rootUrl}admin/uuidpaths" style="padding:9px 15px;">内容管理</a>
+            </div>
+            <div class="clear spacer15"></div>
+            <div class="clear spacer20" style="border-top:1px solid #ff7200;"></div>
+            
+	        <div class="moduleBack module-white-grey" style="style="margin:0;"">
+                 <span>文章收录数：</span>
+				 <span style="padding-right:16px;color:red;font-size:16px;">${"%,d".format(articleNum.toLong)}</span>
+                 <div class="clear"></div>
+            </div>
+            
+    	    <div class="clear spacer30"></div>
+    	    <div class="left" style="width:49%">
+        	    <table class="bTable2 dataListTable">
+            		<tr>
+            			<th style="text-align:right;">所有用户</th>
+            			<th style="text-align:right;">插件</th>
+            			<th style="text-align:right;">按钮</th>
+            			<th style="text-align:right;">图文</th>
+            			<th style="text-align:right;">文字</th>
+            		</tr>
+            		<tr>
+            			<td style="text-align:right;background:#F2F6F9;">${totalNum}</td>
+            			<td style="text-align:right;background:#F2F6F9;">${pluginNum}</td>
+            			<td style="text-align:right;background:#F2F6F9;">${buttonNum}</td>
+            			<td style="text-align:right;background:#F2F6F9;">${picNum}</td>
+            			<td style="text-align:right;background:#F2F6F9;">${textNum}</td>
+            		</tr>
+        	    </table>
+    	    </div>
+    		
+            <div class="right" style="width:49%">
+        	    <table class="bTable2 dataListTable">
+            		<tr>
+            			<th style="text-align:right;">3天内活跃</th>
+            			<th style="text-align:right;">插件</th>
+            			<th style="text-align:right;">按钮</th>
+            			<th style="text-align:right;">图文</th>
+            			<th style="text-align:right;">文字</th>
+            		</tr>
+            		<tr>
+            			<td style="text-align:right;background:#F2F6F9;">${activeTotalNum}</td>
+            			<td style="text-align:right;background:#F2F6F9;">${activePluginNum}</td>
+            			<td style="text-align:right;background:#F2F6F9;">${activeButtonPluginNum}</td>
+            			<td style="text-align:right;background:#F2F6F9;">${activePicNum}</td>
+            			<td style="text-align:right;background:#F2F6F9;">${activeTextNum}</td>
+            		</tr>
+        	    </table>
+    	    </div>
+    		
+    		<div class="clear spacer30"></div>
+    		<h3 class="fB">页面PV&nbsp;<span title="装了乐知推荐框的页面PV数据" class="help-popup-img"></span></h3>
+    	    <div class="clear spacer20"></div>
+    	    <div class="aticleShowData">
+                <div id="divChartShow" style="height:200px;width:100%">
+                    <div style="text-align:center;padding:30px 0;">
+                    <img title="..." 
+                            alt="..." 
+                            src="${staticUrl}images/ajaxLoad.gif"/>&nbsp;...
+                    </div>
+                </div>
+            </div>
+            
+            <div class="clear spacer30"></div>
+    		<h3 class="fB">相关文章数据</h3>
+    		<div class="clear spacer10"></div>
+    	    <table class="bTable2 dataListTable2 tableBackC">
+    		#if(adminDatas != null && adminDatas.size > 0)
+    			<tr>
+    			    <th style="text-align:center;">日期</th>
+    				#for(i <- 0 until adminDatas.size)
+    					<th>${adminDatas(i).date}</th>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td class="head" style="text-align:center;">推荐框展示数</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td class="head">${adminDatas(i).totalShowup}</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">插件</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${adminDatas(i).adminCount.showupsFixedI}</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">按钮</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${adminDatas(i).adminCount.showupsSlideI}</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">图文</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${adminDatas(i).adminCount.showupsPicI}</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">文字</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${adminDatas(i).adminCount.showupsNopicI}</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td class="head" style="text-align:center;">点击数</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td class="head">${adminDatas(i).totalClick}</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">插件</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${adminDatas(i).adminCount.clicksFixedI}</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">按钮</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${adminDatas(i).adminCount.clicksSlideI}</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">图文</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${adminDatas(i).adminCount.clicksPicI}</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">文字</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${adminDatas(i).adminCount.clicksNopicI}</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td class="head" style="text-align:center;">点击率</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td class="head">${"%,3.3f".format(adminDatas(i).totalClickRate)}%</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">插件</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${"%,3.3f".format(adminDatas(i).pluginClickRate)}%</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">按钮</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${"%,3.3f".format(adminDatas(i).buttonClickRate)}%</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">图文</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${"%,3.3f".format(adminDatas(i).picClickRate)}%</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">文字</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${"%,3.3f".format(adminDatas(i).textClickRate)}%</td>
+    				#end
+    			</tr>
+    		#end
+    	    </table>
+    		<div class="clear spacer30"></div>
+    		<h3 class="fB">热门文章数据</h3>
+    		<div class="clear spacer10"></div>
+    		
+    	    <table class="bTable2 dataListTable2 tableBackC" style="margin-bottom:20px;">
+    		#if(adminDatas != null && adminDatas.size > 0)
+    			<tr>
+    			    <th style="text-align:center;">日期</th>
+    				#for(i <- 0 until adminDatas.size)
+    					<th>${adminDatas(i).date}</th>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td class="head" style="text-align:center;">推荐框展示数</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td class="head">${adminDatas(i).totalShowupT}</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">插件</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${adminDatas(i).adminCount.showupsFixedT}</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">按钮</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${adminDatas(i).adminCount.showupsSlideT}</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">图文</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${adminDatas(i).adminCount.showupsPicT}</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">文字</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${adminDatas(i).adminCount.showupsNoPicT}</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td class="head" style="text-align:center;">点击数</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td class="head">${adminDatas(i).totalClickT}</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">插件</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${adminDatas(i).adminCount.clicksFixedT}</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">按钮</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${adminDatas(i).adminCount.clicksSlideT}</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">图文</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${adminDatas(i).adminCount.clicksPicT}</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">文字</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${adminDatas(i).adminCount.clicksNoPicT}</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td class="head" style="text-align:center;">点击率</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td class="head">${"%,3.3f".format(adminDatas(i).totalClickRateT)}%</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">插件</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${"%,3.3f".format(adminDatas(i).pluginClickRateT)}%</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">按钮</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${"%,3.3f".format(adminDatas(i).buttonClickRateT)}%</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">图文</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${"%,3.3f".format(adminDatas(i).picClickRateT)}%</td>
+    				#end
+    			</tr>
+    			<tr>
+    			    <td style="text-align:center;">文字</td>
+    				#for(i <- 0 until adminDatas.size)
+    					<td>${"%,3.3f".format(adminDatas(i).textClickRateT)}%</td>
+    				#end
+    			</tr>
+    		#end
+    	    </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/jquery.tools.toolbox.min.1.2.6.js"></script>
+<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/json2-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/ofc2-menu.js"></script>
+<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/jquer.autocomplete.pack.js"></script>
+<script type="text/javascript" charset="utf-8">
+    var appendTS = "";
+    if ($.browser.msie) {// && $.browser.version=="6.0") {
+        var timestamp = Number(new Date()); // current time as number.. this is needed for IE6 support
+        appendTS = "?ts="+timestamp;
+    }
+    var ofcSource = '${staticUrl}ofc2/open-flash-chart.swf'+appendTS;
+    var expInsSource = '${staticUrl}ofc2/expressInstall.swf';
+    var saveImageMsg = '保存图像...';
+    var loadingMsg = '加载中...';
+    var embedOptionsViews = {id:'websiteChartViews',src:ofcSource,version:[9,0],wmode:'opaque',expressInstall:expInsSource};
+    var flashConfigurationViews = {"id":"websiteChartViews","get-data":"getOfcData","save_image_message":saveImageMsg,"loading":loadingMsg};
+   
+    function getOfcData() {
+        return "${unescape(jsonPv)}".replace(/'/g, "\"");
+    }
+    
+    $(function() {
+        String.prototype.replaceAll = function(s1,s2) { 
+	       return this.replace(new RegExp(s1,"gm"),s2); 
+	   }
+
+        $(".dataListTable2 tr").each(function() {
+    	    var _this = this;
+    	    $(_this).find("td").each(function() {
+        		var _index = $(_this).find("td").index(this);
+        		if(_index > 0) {
+        			if(parseFloat($(this).html().replaceAll(",","")) > parseFloat($(this).prev().html().replaceAll(",",""))){
+        				$(this).removeClass("down");
+        				$(this).addClass("up");
+        			}else if(parseFloat($(this).html().replaceAll(",","")) < parseFloat($(this).prev().html().replaceAll(",",""))){
+        				$(this).removeClass("up");
+        				$(this).addClass("down");
+        			}else{
+        				$(this).removeClass("down");
+        				$(this).removeClass("up");
+        			}
+        		}
+            });
+	    });
+	    
+	    // init help popups
+        $("span.help-popup-img[title]").tooltip({
+            tipClass: 'helpPopupBoxes',
+            position: 'top right',
+            delay: 100,
+            layout: '<div><span></span></div>'
+        });
+        
+        // embed flash elements
+        flashembed("divChartShow", embedOptionsViews, flashConfigurationViews);
+	});
+</script>

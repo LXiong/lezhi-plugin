@@ -1,0 +1,336 @@
+<% attributes("title") = "乐知 修改信息" %>
+<% attributes("nav") = "navUser" %>
+<% attributes("backend") = "true" %>
+<%@ var staticUrl: String %>
+<%@ var link: String = "" %>
+<%@ var contactInfo: com.buzzinate.buzzads.domain.PublisherContactInfo = new com.buzzinate.buzzads.domain.PublisherContactInfo%>
+
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/user.css" />
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/plugin.css" />
+
+<style>
+    .pageBody, .pageBodyIndex {width:auto;margin:20px 15px;}
+    .pageCenter {margin-bottom:0px;}
+    .wid980 {width:auto;margin:0 15px;}
+    .adsTable1 td { padding: 10px 5px; }
+    .bInput {width:200px;}
+    .error{padding-left:15px;color:red;}
+    .cRed {color:#ff7c00;}
+    .paytype-list .bank-list {
+        margin-top: 10px;
+        margin-left: 0;
+        overflow: hidden;
+        clear: both;
+        zoom: 1;
+    }
+    .paytype-list .item {
+        float: left;
+        font-size: 14px;
+        margin: 0 30px 10px 0;
+    }
+    .paytype-list input {
+        float: left;
+        width: 13px;
+        margin-top: 10px;
+        margin-left: 1px;
+    }
+    .paytype-list label {
+        float: left;
+        width: 145px;
+        height: 32px;
+        margin-left: 5px;
+        border: 1px solid #DDD;
+        background-image: url("${staticUrl}images/banklist.png?v=4");
+        background-repeat: no-repeat;
+        cursor: pointer;
+        text-indent: -9999px;
+    }
+    .paytype-list .icbc {
+        background-position: 0 -379px;
+    }
+    .paytype-list .cmb {
+        background-position: 0 -418px;
+    }
+    .paytype-list .ccb {
+        background-position: 0 -58px;
+    }
+    .paytype-list .abc {
+        background-position: 0 -20px;
+    }
+    .paytype-list .boc {
+        background-position: 0 -178px;
+    }
+    .paytype-list .bofc {
+        background-position: 0 -911px;
+    }
+    .paytype-list .cib {
+        background-position: 0 -458px;
+    }
+    .paytype-list .cebb {
+        background-position: 0 -98px;
+    }
+    .paytype-list .spdb {
+        background-position: 0 -338px;
+    }
+    .paytype-list .gdb {
+        background-position: 0 -220px;
+    }
+    .paytype-list .zxyh {
+        background-position: 0 -259px;
+    }
+    .paytype-list .cmbc {
+        background-position: 0 -139px;
+    }
+    .paytype-list .pingan {
+        background-position: 0 -874px;
+    }
+    .paytype-list .sdb {
+        background-position: 0 -298px;
+    }
+    .paytype-list .bob {
+        background-position: 0 -588px;
+    }
+    .paytype-list .alipay {
+        background-position: 0 -1025px;
+    }
+</style>
+
+<div class="center">
+    <div class="breadCrumbs">
+        <span>当前位置：</span>
+        <a href="${rootUrl}">乐知推荐</a>
+        <span>&nbsp=&gt;&nbsp;</span>
+        <a href="${rootUrl}user/manage">管理中心</a>
+        <span>&nbsp=&gt;&nbsp;</span>
+        <a href="${rootUrl}user/ads/contact">账号信息</a>
+        <span>&nbsp=&gt;&nbsp;</span>
+        <a href="${rootUrl}user/ads/contact/edit">修改信息</a>
+    </div>
+    <div class="pageBody">
+        <form name="user" id="myform" action="/user/ads/contact" method="POST">
+            <div class="module-white-grey" style="padding:20px;">
+				<h3 class="cRed">联系人信息</h3>
+				<div class="clear spacer10"></div>
+				<table class="adsTable1">
+                    <tr>
+                        <td width="75">联系人：</td>
+                        <td><input class="bInput" required="required" type="text" name="name" value="${contactInfo.getName}"/></td>
+                    </tr>
+                    <tr>
+                        <td>手机：</td>
+                        <td><input class="bInput" type="mobile" name="mobile" value="${contactInfo.getMobile}"/></td>
+                    </tr>
+                    <tr>
+                        <td>QQ：</td>
+                        <td><input class="bInput" required="required" type="text" name="qq" value="${contactInfo.getQq}"/></td>
+                    </tr>
+                </table>
+                <div class="clear spacer20"></div>
+                <div class="line"></div>
+                <div class="clear spacer20"></div>
+                <h3 class="cRed">收款信息</h3>
+                <div class="clear spacer10"></div>
+                <table class="adsTable1">
+                    <tr id="order-check-typelist">
+			            <td style="vertical-align:middle;" width="78">收款方式：</td>
+            			<td>
+            				<div class="paytype-list">
+            					<div class="bank-area">
+            						<ul class="bank-list">
+                						<li class="item">
+                						    <input type="radio" value="0" checked="checked" id="bank-type-alipay" name="rcvMethod">
+                						    <label title="支付宝" for="bank-type-alipay" class="alipay">支付宝</label>
+                						</li>
+                						<!--
+                						<li class="item">
+                						    <input type="radio" value="1" id="bank-type-ICBCB2C" name="rcvMethod">
+                						    <label title="中国工商银行" for="bank-type-ICBCB2C" class="icbc">中国工商银行</label>
+                						</li>
+                						<li class="item">
+                						    <input type="radio" value="2" id="bank-type-CMB" name="rcvMethod">
+                						    <label title="招商银行" for="bank-type-CMB" class="cmb">招商银行</label></li>
+                						<li class="item">
+                						    <input type="radio" value="3" id="bank-type-CCB" name="rcvMethod">
+                						    <label title="中国建设银行" for="bank-type-CCB" class="ccb">中国建设银行</label>
+                						</li>
+                						<li class="item">
+                						    <input type="radio" value="4" id="bank-type-ABC" name="rcvMethod">
+                							<label title="中国农业银行" for="bank-type-ABC" class="abc">中国农业银行</label>
+                						</li>
+                						<li class="item">
+                						    <input type="radio" value="5" id="bank-type-COMM" name="rcvMethod">
+                							<label title="交通银行" for="bank-type-COMM" class="boc">交通银行</label>
+                						</li>
+                						<li class="item">
+                						    <input type="radio" value="6" id="bank-type-BOCB2C" name="rcvMethod">
+                							<label title="中国银行" for="bank-type-BOCB2C" class="bofc">中国银行</label>
+                						</li>
+                						<li class="item">
+                						    <input type="radio" value="7" id="bank-type-CIB" name="rcvMethod">
+                							<label title="兴业银行" for="bank-type-CIB" class="cib">兴业银行</label>
+                						</li>
+                						<li class="item">
+                						    <input type="radio" value="8" id="bank-type-CEBBANK" name="rcvMethod">
+                							<label title="光大银行" for="bank-type-CEBBANK" class="cebb">光大银行</label>
+                						</li>
+                						<li class="item">
+                						    <input type="radio" value="9" id="bank-type-SPDB" name="rcvMethod">
+                							<label title="上海浦东发展银行" for="bank-type-SPDB" class="spdb">上海浦东发展银行</label>
+                						</li>
+                						<li class="item">
+                						    <input type="radio" value="10" id="bank-type-GDB" name="rcvMethod">
+                							<label title="广东发展银行" for="bank-type-GDB" class="gdb">广东发展银行</label>
+                						</li>
+                						<li class="item">
+                						    <input type="radio" value="11" id="bank-type-CITIC" name="rcvMethod">
+                							<label title="中信银行" for="bank-type-CITIC" class="zxyh">中信银行</label>
+                						</li>
+                						<li class="item">
+                						    <input type="radio" value="12" id="bank-type-CMBC" name="rcvMethod">
+                							<label title="中国民生银行" for="bank-type-CMBC" class="cmbc">中国民生银行</label>
+                						</li>
+                						<li class="item">
+                						    <input type="radio" value="13" id="bank-type-SPABANK" name="rcvMethod">
+                							<label title="平安银行" for="bank-type-SPABANK" class="pingan">平安银行</label>
+                						</li>
+                						<li class="item">
+                						    <input type="radio" value="14" id="bank-type-BJBANK" name="rcvMethod">
+                							<label title="北京银行" for="bank-type-BJBANK" class="bob">北京银行</label>
+                					    </li>
+                					    -->
+            						</ul>
+            					</div>                
+            				</div>
+            			</td>
+            		</tr>
+                    <tr>
+                        <td width="78" id="accountName">收款人姓名：</td>
+                        <td><input class="bInput" required="required" name="rcvName" value="${contactInfo.getReceiveName}" type="text" maxlength="10" /></td>
+                    </tr>
+                    <tr id="bankInfo" style="display:none;">
+                        <td>开户行：</td>
+                        <td><input class="bInput" id="bank" name="rcvBank" value="${contactInfo.getReceiveBank}" type="text" maxlength="30" /></td>
+                    </tr>
+                    <tr>
+                        <td id="accountInfo">收款账号：</td>
+                        <td><input class="bInput" required="required" name="rcvAccount" value="${contactInfo.getReceiveAccount}" type="text" maxlength="30" /></td>
+                    </tr>
+                </table>
+				<div class="clear spacer20"></div>
+				#if (!link.equals("enable"))
+    				<div class="line"></div>
+    				<div class="clear spacer20"></div>
+    				<table class="adsTable1">
+    					<tr>
+    						<td style="vertical-align:top;"  width="75">修改原因：</td>
+    						<td>
+    						    <textarea class="bInput" id="editReason" style="width:250px;height:50px;"></textarea>
+    						    <p id="reasonValidator" style="color:red;text-align:left;line-height:24px;display:none;">最多输入不超过100个文字</p>
+    						</td>
+    						<td style="vertical-align:middle;line-height:18px;color:#999;">为了防止您的账户被盗用，请您填写您的更改原因。我们核实后会确认您的修改请求。</td>
+    					</tr>
+    				</table>
+    				<div class="clear spacer50"></div>
+				#end
+				<div class="lezhiGetCodeBtn">
+					#if (link.equals("enable"))
+					    <input type="submit" class="bButton orange" style="padding:10px 20px;" value="我已全面阅读且完全理解并同意服务条款和广告会员规范，并承诺履行 同意开通" />
+					    <div class="clear spacer20"></div>
+					    <div class="c999">请阅读乐知广告会员服务协议</div>
+                        <div class="clear spacer10"></div>
+                        <textarea style="width:100%;height:200px;">使用本服务之用户知悉以下条款，
+1.用户遵守中华人民共和国相关法律法规，包括但不限于《中华 人民共和国计算机信息系统安全保护条例》、《计算机软件保护条例》、《最高人民法院关于审理涉及计算机网络著作权纠纷案件适用法律若干问题的解释(法释 [2004]1号)》、《全国人大常委会关于维护互联网安全的决定》、《互联网电子公告服务管理规定》、《互联网新闻信息服务管理规定》、《互联网著作权 行政保护办法》和《信息网络传播权保护条例》等有关计算机互联网规定和知识产权的法律和法规、实施办法。
+2.不得利用本服务危害国家安全、泄露国家秘密，不得侵犯国家社会集体的和公民的合法权益，不得利用本服务制作、复制、查阅和传播下列信息：
+(1) 违反宪法确定的基本原则的；
+(2) 危害国家安全，泄漏国家机密，颠覆国家政权，破坏国家统一的；
+(3) 损害国家荣誉和利益的；
+(4) 煽动民族仇恨、民族歧视，破坏民族团结的；
+(5) 破坏国家宗教政策，宣扬邪教和封建迷信的；
+(6) 散布谣言，扰乱社会秩序，破坏社会稳定的；
+(7) 散布淫秽、色情、赌博、暴力、恐怖或者教唆犯罪的；
+(8) 侮辱或者诽谤他人，侵害他人合法权益的；
+(9) 煽动非法集会、结社、游行、示威、聚众扰乱社会秩序的；
+(10) 以非法民间组织名义活动的；
+(11) 含有法律、行政法规禁止的其它内容的。
+3.使用本服务之用户，同意本公司搜集分享及转贴之统计信息，本公司承诺不公布涉及隐私之注册资料，但下列情况除外：
+(1) 事先获得用户的明确授权；
+(2) 根据有关的法律法规要求；
+(3) 按照相关政府主管部门的要求；
+(4) 为维护社会公众的利益。
+4.有关版权议题，本服务仅负责出示原出处之联结，如原内容或转载内容触及版权侵犯，本服务不负责任。
+5.用户同意互相尊重，对自己的言论和行为负责。
+(1) 发布信息时必须遵守中华人民共和国的各项有关法律法规，遵守网上一般道德及规范；
+(2) 承担一切因不当行为而直接或间接导致的民事或刑事法律责任,所产生的不良后果与本服务无关；
+(3) 不干扰或扰乱网络服务。
+6.本服务有权对于严重损害用户权益（包括但不限于，分享次数超越平台及用户可接受范围、分享内容遭用户反映为垃圾讯息或分享讯息与原内容差异过大等）、公共权益或乙方利益的内容，乙方有权终止对该网站或用户进行服务，并支持协助互联网有关行政机关等进行追索和查处。
+7.本服务可随时根据实际情况中断服务，无需对任何个人或第三方负责而随时中断服务。
+8.本服务保留最终解释权。</textarea>
+					#else
+    					<input type="submit" value="保存" class="bButton orange" style="font-size:14px;padding:10px 50px;" />
+    					<input type="button" class="bButton" onclick="javascript:history.go(-1);" value="返回" style="font-size:14px;padding:10px 50px;margin-left:5px;" />
+					#end
+				</div>
+            </div>
+	    </form>
+    </div>
+</div>
+
+<a id="qqservicetab" target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=800087176&amp;site=qq&amp;menu=yes"></a>
+
+<div id="notifications" class="hidden" style="display: none; ">
+    <div class="notification-bar-container">
+        <div class="notification-bar-bkg" style="background-color: rgb(255, 248, 204); height: 25px;"></div>
+        <div class="notification-bar">
+            <div class="notification-bar-contents">
+                <div class="notification-msg heading1" style="color:#333; font-size:20px; font-weight:bold;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+    	$.tools.validator.localize('zh', {
+    		'[maxlength]' : '长度超过限制',
+    		'[required]': '不能为空'
+    	});
+    	$("#myform").validator({ lang: 'zh' });
+    	$.tools.validator.fn("[type=mobile]", function(input, value) {
+    	    return /^((1[3-9]{1})+\d{9})$/.test(value) ? true : {
+    		    zh: "请填写正确的手机号"
+    	    };
+    	});
+    	
+    	//otherReason validator
+        $("#editReason").live("keyup",function() {
+            if($(this).val().length > 100) {
+                //$(this).val($(this).val().substring(0,99));
+                $(this).next().show();
+            } else {
+                $(this).next().hide();
+            }
+        });
+    	
+    	//bank open adress without alipay
+        $("#order-check-typelist input").change(function(){
+            if($(this).val() == "0"){
+                $("#bankInfo").hide();
+                $("#bank").val("");
+                $("#bank").removeAttr("required");
+            }else{
+                $("#bankInfo").show();
+                $("#bank").attr("required","required");
+            }
+        });
+    
+        //bind selected bank
+        $("#order-check-typelist input").each(function(){
+            if($(this).val() == "${contactInfo.getReceiveMethod}"){
+                $(this).attr("checked","checked");
+                if($(this).val() != "0"){
+                    $("#bankInfo").show();
+                }
+            }
+        });
+    });
+</script>

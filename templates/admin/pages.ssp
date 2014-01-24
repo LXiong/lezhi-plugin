@@ -1,0 +1,170 @@
+<%@ var staticUrl: String %>
+<%@ var rootUrl: String %>
+
+<% attributes("title") = "乐知 页面数据" %>
+<% attributes("nav") = "navAdmin" %>
+<% attributes("backend") = "true" %>
+<%@ var domain: String ="" %>
+<%@ var date: String ="" %>
+<%@ var sortKey: String ="" %>
+<%@ var pages: List[com.buzzinate.lezhi.bean.Page] = null %>
+<%@ var link: String = "customize" %>
+
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/user.css" />
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/plugin.css" />
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/calendar-date.css" />
+
+<style>
+    .pageBody, .pageBodyIndex {width:auto;margin:20px 15px;}
+    .pageCenter {margin-bottom:0px;}
+    .wid980 {width:auto;margin:0 15px;}
+    .bTable2 td, .bTable2 th {text-align:right;}
+    .pagination {margin:10px 0 !important;}
+</style>
+
+<div class="center">
+    <div class="breadCrumbs">
+        <span>当前位置：</span>
+        <a href="${rootUrl}">乐知推荐</a>
+        <span>&nbsp=&gt;&nbsp;</span>
+        <a href="${rootUrl}admin/dashboard">乐知管理</a>
+        <span>&nbsp=&gt;&nbsp;</span>
+        <a href="${rootUrl}admin/stats/dashboard">数据中心</a>
+        <span>&nbsp=&gt;&nbsp;</span>
+        <a href="${rootUrl}admin/stats/pages">页面数据</a>
+    </div>
+    <div class="pageBodyIndex">
+        <form id="viewData" name="viewData" action="pages" method="GET">
+            <div class="pageCenter">
+                <div class="right">
+                    <a class="bButton" href="${rootUrl}admin/stats/dashboard" style="padding:9px 15px;margin-right:5px;">数据中心</a>
+                    <a class="bButton orange" href="${rootUrl}admin/stats/pages" style="padding:9px 15px;margin-right:5px;cursor:default;">页面数据</a>
+                    <a class="bButton" href="${rootUrl}admin/stats/sites" style="padding:9px 15px;">网站数据</a>
+                	<a class="bButton" href="${rootUrl}admin/uuidpaths" style="padding:9px 15px;">内容管理</a>
+                </div>
+                <div class="clear spacer15"></div>
+                <div class="clear spacer30" style="border-top:1px solid #ff7200;"></div>
+                
+                <div class="dataSearch" style="padding:0;">
+                    <div class="left">Domain&nbsp;&nbsp;<input class="bTextbox" type="text" name="domain" value="${domain}" />&nbsp;&nbsp;</div>
+                    <div class="left" style="line-height:20px;height:20px;margin-left:20px;">选择时间</div>
+                    <input class="bTextbox date left" type="date" data-orig-type="date" id="datePickerStart" name="date" value="${date}" data-value="" min="" max="">
+                    <input id="dateSubmit" type="button" value="搜索" class="left bButton" style="margin:0px;margin-left:20px;padding:1px 10px;" />
+                </div>
+				
+				<div class="clear spacer15"></div>
+                <div>
+		            <input name="sortKey" type="hidden" value="${sortKey}" />
+                    <table class="bTable2" id="pageStatsTable">
+                        <thead>
+                            <tr>
+                                <th style="text-align:left;">Domain&nbsp;<span title="该网站的Domain地址" class="help-popup-img"></span></th>
+                                <th style="text-align:left;">标题&nbsp;<span title="该篇内容的标题" class="help-popup-img"></span></th>
+                    			<th><span class="thead">推荐框展示数&nbsp;</span><span title="用户浏览该篇文章时，乐知推荐框在该文章中的打开数" class="help-popup-img"></span><span class="sortArr" val="showup"></span></th>
+                    			<th><span class="thead">点出数&nbsp;</span><span title="从该文章点出，进入另一篇文章的数量" class="help-popup-img"></span><span class="sortArr" val="outClick"></span></th>
+                    			<th><span class="thead">点入数&nbsp;</span><span title="从其他文章的推荐框中，点击到当前文章的点击数量" class="help-popup-img"></span><span class="sortArr" val="inClick"></span></th>
+                                <th><span class="thead">点出/推荐框展示比</span><span class="sortArr" val="clickToShowup"></span></th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+		                    #if(pages != null && pages.size > 0)
+                                #for(i <- 0 until pages.size)
+                                    #{
+                                        var _background = "#FFF";
+                                        if(i % 2 == 0) {
+                                            _background = "#F2F6F9";
+                                        }
+                                    }#
+                                    <tr>
+    								    <td style="text-align:left;background:${_background}">${pages(i).domain}</td>
+                                        <td style="text-align:left;background:${_background}"><a href="${pages(i).url}" class="bLinkUV" target="_blank">${pages(i).title}</a><img style="margin:0 0 3px 3px;" src="http://static.bshare.cn/images/icon_new_window.gif"></td>
+                                        <td style="background:${_background}">${pages(i).showup}</td>
+                                        <td style="background:${_background}">${pages(i).outClick}</td>
+    									<td style="background:${_background}">${pages(i).inClick}</td>
+    									<td style="background:${_background}">${"%,3.3f".format(pages(i).clickToShowup)}%</td>
+                                    </tr>
+                                #end
+                            #else 
+                                <tr><td colspan="6" class="no-data">尚无数据。</td></tr>
+                            #end
+                        </tbody>
+                    </table>
+					<% layout("../common/pagination.ssp") {%><%}%>
+                    <div id="pager" class="pagination right"></div>
+                    <div class="clear"></div>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/jquery.pagination.js"></script>
+<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/jquery.tools.toolbox.min.1.2.6.js"></script>
+<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/json2-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/ofc2-menu.js"></script>
+<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/jquer.autocomplete.pack.js"></script>
+
+<script type="text/javascript" charset="utf-8">
+    $(function(){
+        // init help popups
+        $("span.help-popup-img[title]").tooltip({
+            tipClass: 'helpPopupBoxes',
+            position: 'top right',
+            delay: 100,
+            layout: '<div><span></span></div>'
+        });
+    
+        //post paging item value
+        $("#pageStatsTable").find(".sortArr").live("click",function(){
+        	$("input[name=sortKey]").val($(this).attr("val"));
+        	$("#postPage").val(1);
+        	document.viewData.submit();
+        });
+    
+        //sort arrow mark
+        $("#pageStatsTable").find(".sortArr").each(function(){
+        	var _sortKey = $("input[name=sortKey]").val();
+        	if($(this).attr("val") == _sortKey){
+        		$(this).attr("class","sortedArr");
+        	}else{
+        		$(this).attr("class","sortArr");
+        	}
+        });
+        
+        <!-- calendar -->
+        // init date pickers
+        var fDay = 1;
+        $.tools.dateinput.localize("zh", {
+            months: "一月,二月,三月,四月,五月,六月,七月,八月,九月,十月,十一月,十二月",shortMonths: "一,二,三,四,五,六,七,八,九,十,十一,十二",days: "星期日,星期一,星期二,星期三,星期四,星期五,星期六",shortDays: "周日,周一,周二,周三,周四,周五,周六"
+        });
+
+        $(":date").dateinput({ trigger: true, format: 'yyyy-mm-dd', lang: 'zh', firstDay: fDay });
+        $(":date").bind("onShow onHide", function()  {
+            $(this).parent().toggleClass("active"); 
+        });
+        /*if ($(":date:first").length != 0) {
+            $(":date:first").data("dateinput").change(function() {
+                $(":date:last").data("dateinput").setMin(this.getValue(), true);
+            });
+            $(":date:last").data("dateinput").change(function() {
+                $(":date:first").data("dateinput").setMax(this.getValue(), true);
+            });
+        }*/
+
+        $("#dateSubmit").live("click",function(){
+        	$("#postPage").val(1);
+        	$("#viewData").submit();
+        });
+    
+        //pagination
+        $("#pagination a").live("click",function(){
+        	var _pageNum = $(this).html();
+        	$("#postPage").val(_pageNum);
+        	$("#viewData").submit();
+        });
+    });
+</script>

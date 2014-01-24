@@ -1,0 +1,86 @@
+<%@ var staticUrl: String %>
+<%@ var rootUrl: String %>
+<% attributes("title") = "乐知 代码领取" %>
+<% attributes("nav") = "navUser" %>
+<% attributes("backend") = "true" %>
+<%@ var err: (Int, String) = (-1,"") %>
+<%@ var uuid: String = "" %>
+<%@ var request: javax.servlet.http.HttpServletRequest%>
+<%@ var link: String = "code" %>
+<%@ var hasSite: Boolean = false %>
+
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/user.css" />
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/plugin.css" />
+
+<style>
+    .pageBody, .pageBodyIndex {width:auto;margin:20px 15px;}
+    .pageCenter {margin-bottom:0px;}
+    .wid980 {width:auto;margin:0 15px;}
+</style>
+
+<div class="center">
+    <div class="breadCrumbs">
+        <span>当前位置：</span>
+        <a href="${rootUrl}">乐知推荐</a>
+        <span>&nbsp=&gt;&nbsp;</span>
+        <a href="${rootUrl}user/manage">管理中心</a>
+        <span>&nbsp=&gt;&nbsp;</span>
+        <a href="${rootUrl}user/code?uuid=${uuid}">代码领取</a>
+    </div>
+	<div class="pageBodyIndex">
+		<div class="pageCenter">
+			<div>
+				<p class="lezhiCopyCodeP">使用说明：复制并粘贴下面的JS代码,放到您的网页，可以在&lt;body&gt;和&lt;/body&gt;的之间网页的任意位置放置。如果您的网站使用的是模板，您也可以复制代码到您的模板，推荐结果将在所有网页自动出现。</p>
+                <textarea id="getJsCode" class="taGetCode" readonly="" style="margin-bottom:0;width:100%;height:100px;font-family:courier new,monospace,宋体,sans-serif;">
+<!-- lezhi code start -->
+<div id="bShareRecommDiv"></div>
+#if (hasSite)<script type="text/javascript" charset="utf-8" src="${staticUrl}plugin/lz.js#uuid=${uuid}"></script>
+#else<script type="text/javascript" charset="utf-8" src="${staticUrl}plugin/lz.js"></script>
+#end
+<!-- lezhi code end -->
+			    </textarea>
+				<div class="clear"></div>
+			</div>
+				
+			<div class="clear spacer15"></div>
+	        <div class="lezhiGetCodeBtn" style="text-align:center;">
+				<input type="button" class="bButton orange" id="getJsCodeBtn" value="复制代码" style="font-size:14px;padding:6px 10px;font-weight:bold;background:#cbcbcb\9;" />
+			    <input type="button" class="bButton" style="padding:6px 10px;margin-left:5px;font-size:14px;font-weight:bold;" value="返回管理中心" onclick="document.location.href='${rootUrl}user/manage';"／>
+			</div>
+		</div>
+	</div>
+</div>
+
+<a id="qqservicetab" target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=800087176&amp;site=qq&amp;menu=yes"></a>
+
+<div id="notifications" class="hidden" style="display: none; ">
+	<div class="notification-bar-container">
+		<div class="notification-bar-bkg" style="background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 248, 204); height: 25px; background-position: initial initial; background-repeat: initial initial; "></div>
+		<div class="notification-bar">
+			<div class="notification-bar-contents">
+				<div class="notification-msg heading1" style="color: rgb(51, 51, 51); font-size:20px; font-weight:bold;"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/jquery.zclip.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+    $(function(){
+        $("select[name=uuid]").change(function(){
+            $("#viewData").submit();
+        })
+    
+    	#if(err._1 == 0)
+    	   displayStatusMessage('配置保存成功');
+    	#end
+    	
+		$('#getJsCodeBtn').zclip({
+		    path: '${staticUrl}js/resource/ZeroClipboard.swf',
+		    copy: function() { return $("#getJsCode").val(); },
+		    afterCopy: function() {
+		    	displayStatusMessage('复制成功，您可以粘贴(Ctrl-V)到您网站的页面模板中了。');
+		    }
+		});
+    });
+</script>

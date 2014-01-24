@@ -1,0 +1,1783 @@
+<%@ var staticUrl: String %>
+<%@ var rootUrl: String %>
+<%@ var link: String = "" %>
+#if(link.equals("userCustomize"))
+    <% attributes("nav") = "navUser" %>
+#else
+    <% attributes("nav") = "get" %>
+#end
+<%@ var bshareAuthServer: String %>
+<%@ var bshareAuthClient: String %>
+<%@ var service: String = java.net.URLEncoder.encode(bshareAuthClient + "/login")%>
+<%@ var targetUrl: String = java.net.URLEncoder.encode(bshareAuthClient + "/loginSuccess")%>
+<%@ var pic: Boolean %>
+<%@ var err: (Int, String) = (-1,"") %>
+<%@ var uuid: String = "" %>
+<%@ var row: Int = 4 %>
+<%@ var col: Int = 1 %>
+<%@ var pluginType: String %>
+<%@ var source: String = "insite" %>
+<%@ var promote: String = "您可能也喜欢" %>
+<%@ var picSize: Int = 88 %>
+<%@ var position: String = "right" %>
+<%@ var defaultPic: String = "" %>
+<%@ var htcolor: String = "333" %>
+<%@ var rtcolor: String = "333" %>
+<%@ var bdcolor: String = "dadada" %>
+<%@ var hvcolor: String = "009FCE" %>
+<%@ var highlight: Boolean = false %>
+<%@ var width: Int = 0 %>
+<%@ var height: Int = 0 %>
+<%@ var titleBgColor: String = "fff" %>
+<%@ var titleImage: String = "" %>
+<%@ var titleFontSize: Int = 12 %>
+<%@ var titleBold: Boolean = false %>
+<%@ var fontBold: Boolean = false %>
+<%@ var fontUnderline: Boolean = false %>
+<%@ var linkUnderline: Boolean = false %>
+<%@ var redirectType: String = "_blank" %>
+<%@ var picMatch: String = "insite" %>
+<%@ var bgcolor: String = "fff" %>
+<%@ var picBorderRadius: Boolean = true %>
+<%@ var lineHeight: Int = 15 %>
+<%@ var listType: String = "disc" %>
+<%@ var redirectMode: String = "js" %>
+<%@ var fontSize: Int = 12 %>
+<%@ var limit: Int = 0 %>
+<%@ var autoMatch: Boolean = true %>
+<%@ var adEnabled: Boolean = false %>
+<%@ var adCount: Int = 0 %>
+<%@ var adCountFlag: Boolean = false %>
+<%@ var count: Int =0%>
+<%@ var request: javax.servlet.http.HttpServletRequest%>
+<%@ val site : com.buzzinate.user.vo.UuidSite = null%>
+<%@ val sites : List[com.buzzinate.user.vo.UuidSite] = null%>
+<%@ var hasSite: Boolean = false %>
+
+#if(link.equals("userCustomize"))
+    <style>
+        .pageBody, .pageBodyIndex {width:auto;margin:20px 15px;}
+        .pageCenter {margin-bottom:0px;}
+        
+        .web_install_body { margin-top:20px; }
+    </style>
+#end
+
+<!-- content -->
+<div id="lezhi_content_wid986" class="lezhi_content_wid986">
+    #if(link.equals("userCustomize"))
+        <style>
+            .breadCrumbs { text-align:left; padding:20px 15px 0; }
+            .breadCrumbs a, .breadCrumbs span { font-size: 12px; text-decoration: none; color:#666; }
+            .breadCrumbs a:last-child { color: #ff7c00; }
+        </style>
+        <div class="breadCrumbs">
+            <span>当前位置：</span>
+            <a href="${rootUrl}">乐知推荐</a>
+            <span>&nbsp=&gt;&nbsp;</span>
+            <a href="${rootUrl}user/manage">管理中心</a>
+            <span>&nbsp=&gt;&nbsp;</span>
+            <a href="${rootUrl}user/customize?uuid=${uuid}">样式自定义</a>
+        </div>
+    #end
+    
+	<form name="form" action="/get/code" method="POST">
+    	#if(!link.equals("userCustomize"))
+    	    <input type="hidden" name="pic" value="${pic}" />
+    	    <input type="hidden" name="pluginType" value="${pluginType}" />
+    		<div class="web_lezhi_step">
+    			<div class="web_lezhi_step3"></div>
+    		</div>
+    	#end
+    	<input type="hidden" id="adEnabled" name="adEnabled" value="${adEnabled}" />
+    	<input type="hidden" id="uuid" name="uuid" value="${uuid}" />  
+    	#if (adEnabled == true && adCount == 0 )
+    	   <input type="hidden" id="adCountFlag" name="adCountFlag" value="true" /> 
+    	#end
+    	<div class="web_install_body" style="background:none;">
+    		<div id="web_install_set" class="web_install_set">
+                <!-- set_ads -->
+                <div id="adsSetModule" class="web_install_set_module" #if(adEnabled == false) style="display:none;" #end>
+                    <div class="web_install_set_title">广告设置</div>
+                    <table class="web_install_set_module_table">
+                        <tr>
+                            <td>
+                                开通条数：<select id="adCount" name="adCount" class="wid80">
+                                    #for(i <- 1 until 11)
+	                                    <option
+	                                        #if(i == adCount && adCount > 0)
+	                                            selected="selected"
+	                                        #end
+	                                    value='${i}'>${i}</option>
+	                                #end
+                                </select>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="clear"></div>
+    			<!-- set_module 1 -->
+    			<div class="web_install_set_module">
+    				<div class="web_install_set_title">基本设置</div>
+    				<table class="web_install_set_module_table">
+    					<tr>
+    						<td>
+    							#if (request.getAttribute("USER_NAME") != null)
+        							#if ( site != null)
+            							<div class="title">我要安装到的网站：&nbsp;&nbsp;<span style="color:#ff7c00;">${site.getName}</span></div>
+        							#end
+        							#if ( sites !=null && sites.size() > 0 )
+                                        <div class="title">我要安装到的网站</div>
+                                        <select id="uuidList">
+                                            #for(i <- 0 until sites.size)
+                                                <option value="${sites(i).getUuid}"
+                                                    #if (uuid == sites(i).getUuid)
+                                                    selected="selected"
+                                                    #end
+                                                >${sites(i).getName}</option>
+                                            #end
+                                        </select>
+                                    #end
+    							#end
+    						</td>
+    					</tr>
+                        #if (uuid == "new")
+                        <tr>
+                            <td>
+                                <div class="title">网站名称</div>
+                                <input type="text" class="input" name="siteName" id="siteName" />
+                                <div class="cRed" style="display:none;margin-top:5px;"></div>
+                            </td>
+                        </tr> 
+                        <tr>
+                            <td>
+                                <div class="title">网站地址</div>
+                                <input type="text" class="input" name="siteUrl" id="siteUrl" />
+                                <div class="cRed" style="display:none;margin-top:5px;"></div>
+                            </td>
+                        </tr>           
+                        #end
+    					#if (request.getAttribute("USER_NAME") == null)
+        					<tr id="dataNeedDiv">
+        						<td colspan="2">
+        							<div class="title">数据统计</div>
+        						</td>
+        					</tr>
+        					<tr>
+        						<td colspan="2">
+        							<input type="radio" name="dataNeed" id="dataNeedY" class="radio" value="1" /><label for="dataNeedY">是</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        							<input type="radio" name="dataNeed" id="dataNeedN" class="radio" value="0" checked="checked" />
+        							<label for="dataNeedN">否</label>
+        						</td>
+        					</tr>
+    					#end
+    					#if(link.equals("userCustomize"))
+        					<!--tr>
+                                <td>
+                                    <div class="title">插件类型</div>
+                                    样式:
+                                    <select id="pluginType" name="pluginType" class="wid60" style="width:100px;">
+                                        <option value="fixed" #if(pluginType.equals("fixed"))selected="selected"#end>样式插件</option>
+                                        <option value="slide" #if(pluginType.equals("slide"))selected="selected"#end>按钮插件</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <div class="title">&nbsp;</div>
+                                    图片:
+                                    <select id="pic" name="pic" class="wid80">
+                                        <option value="true" #if(pic)selected="selected"#end>图文</option>
+                                        <option value="false" #if(!pic)selected="selected"#end>文本</option>
+                                    </select>
+                                </td>
+                            </tr-->
+                        #end
+    					<tr>
+    						<td colspan="2">
+    							<div class="title">更多内容</div>
+    							<input id="source" type="checkbox"
+    							#if(source == "insite,trending")
+    								checked="checked"
+    							#end
+    							/> <label for="source">网站热文榜</label><input id="hideSource" name="source" type="hidden" value="${source}" />
+    						</td>
+    					</tr>
+    					#if(adEnabled == false)
+	                        <tr>
+	                            <td colspan="2">
+	                                    <input id="adEnabled1" name="adEnabled" type="checkbox" value="${adEnabled}"/> 
+	                                    <label for="adEnabled1" style="color:red;">开通广告盈利</label>
+	                            </td>
+	                        </tr>
+                        #end
+                        
+    					<tr>
+    						<td colspan="2">
+    							<div class="dotted"></div>
+    						</td>
+    					</tr>
+    					<tr id="promoteLine" #if(pluginType == "slide" && source == "insite") style="display:none;" #end>
+    						<td colspan="2">
+    							<div class="title">标题名称</div>
+    							<input id="promote" name="promote" type="text" class="input" value="${promote}" />
+    						</td>
+    					</tr>
+    					<tr id="promoteVlidator" style="display:none;color:red;">
+    						<td colspan="2"><td>
+    					</tr>
+    				</table>
+    			</div>
+    			<!-- set_module 2 -->
+    			<div class="web_install_set_module">
+    				<div class="web_install_set_title">推荐框设置</div>
+    				<table class="web_install_set_module_table">
+    					<tr>
+    						<td colspan="2">
+    							<input type="radio" id="widthMode1" class="widthMode" name="widthMode" value="0"
+    							#if(width == 0)
+    								checked="checked"
+    							#end
+    							 /> <label for="widthMode1">自适应宽高</label>
+    						</td>
+    					</tr>
+    					<tr>
+    						<td colspan="2">
+    							<input type="radio" id="widthMode2" class="widthMode" name="widthMode" value="1"
+    							#if(width > 0)
+    								checked="checked"
+    							#end
+    							/> <label for="widthMode2">自定义宽高</label>
+    						</td>
+    					</tr>
+    					<tr>
+    						<td>
+    							宽度: <input id="width" name="width" type="text" class="input wid60
+    							#if(width == 0 && height == 0)
+    								disabled" disabled="disabled"
+    							#else
+    								" value="${width}"
+    							#end
+    							 /> px
+    						</td>
+    						<td>
+    							高度: <input id="height" name="height" type="text" class="input wid60
+    							#if(height == 0 && width == 0)
+    								disabled"  disabled="disabled"
+    							#else
+    								" value="${height}"
+    							#end
+    							 /> px
+    						</td>
+    					</tr>
+    					<tr>
+    						<td colspan="2" id="autoSetWarn" style="color:red;display:none;">如果不填写宽高，则默认为自适应宽高</td>
+    					</tr>
+    					<tr>
+    						<td id="widthWarn" style="color:red;"></td>
+    						<td id="heightWarn" style="color:red;"></td>
+    					</tr>
+    					<tr>
+    						<td colspan="2">
+    							<div class="dotted"></div>
+    						</td>
+    					</tr>
+    					<tr>
+    						<td style="padding-top:12px;">
+    							行数: <select id="row" name="row" class="wid60">
+    							#if(pic == true)
+    								#for(i <- 1 until 3)
+    									<option value="${i}"
+    										#if (row == i)
+    											selected="selected"
+    										#end
+    									>${i}</option>
+    								#end
+    							#else
+    								#for(i <- 1 until 11)
+    									<option value="${i}"
+    										#if (row == i)
+    											selected="selected"
+    										#end
+    									>${i}</option>
+    								#end
+    							#end
+    							</select>
+    						</td>
+    						<td>
+    							列数: <select id="col" name="col" class="wid60">
+    							#if(pic == true)
+    								#for(i <- 1 until 6)
+    									<option value="${i}"
+    										#if (col == i)
+    											selected="selected"
+    										#end
+    									>${i}</option>
+    								#end
+    							#else
+    								#for(i <- 1 until 3)
+    									<option value="${i}"
+    										#if (col == i)
+    											selected="selected"
+    										#end
+    									>${i}</option>
+    								#end
+    							#end
+    							</select>
+    						</td>
+    					</tr>
+    					#if(pluginType == "slide")
+        					<tr>
+        						<td colspan="2">
+        							<div class="dotted"></div>
+        						</td>
+        					</tr>
+        					<tr>
+        						<td colspan="2">
+        							<div class="title">漂浮位置</div>
+        						</td>
+        					</tr>
+        					<tr id="positionLine">
+        						<td><div class="positionLeft"></div><input type="radio" name="position" value="left" #if(position == "left") checked="checked" #end />&nbsp;左边</td>
+        						<td><div class="positionRight"></div><input type="radio" name="position" value="right" #if(position == "right") checked="checked" #end />&nbsp;右边</td>
+        					</tr>
+    					#end
+    				</table>
+    			</div>
+    			<!-- set_module more -->
+    			<div class="web_install_set_module noBg">
+    				<div class="web_install_set_more" id="web_install_set_more">更多高级设置</div>
+    			</div>
+    			
+    			<!-- HIDDEN MODULES -->
+    			<div id="addtion" style="display:none;">
+        			<!-- set_module 3 -->
+        			<div class="web_install_set_module addtion">
+        				<div class="web_install_set_title">整体颜色</div>
+        				<table class="web_install_set_module_table">
+        					<tr>
+        						<td width="100">
+        							背景: <input id="bgcolor" name="bgcolor" type="text" class="input wid60" value="${bgcolor}" />  
+        						</td>
+        						<td width="30"><div class="color_set" onclick="getColorPicker(event)" style="background:${bgcolor}"></div></td>
+        						<td>
+        						    <input id="bgcolorTransParent" class="transparent" type="checkbox"
+            						#if(bgcolor == "transparent")
+            							checked="checked"
+            						#end
+            						/> <label for="bgcolorTransParent">透明色</label>
+            				    </td>
+        					</tr>
+        					<tr id="bgcolorWarn">
+        						<td colspan="4" style="color:red;"></td>
+        					</tr>
+        					<tr>
+        						<td width="100">
+        							边框: <input id="bdcolor" name="bdcolor" type="text" class="input wid60" value="${bdcolor}" />  
+        						</td>
+        						<td width="30"><div class="color_set" onclick="getColorPicker(event)" style="background:${bdcolor}"></div></td>
+        						<td>
+            						<input id="bdcolorTransParent" class="transparent" type="checkbox"
+            						#if(bdcolor == "transparent")
+            							checked="checked"
+            						#end
+            						/> <label for="bdcolorTransParent">透明色</label>
+            				    </td>
+        					</tr>
+        					<tr id="bdcolorWarn">
+        						<td colspan="4" style="color:red;"></td>
+        					</tr>
+        				</table>
+        			</div>
+        			<!-- set_module 4 -->
+        			<div class="web_install_set_module addtion" id="module4" #if(pluginType == "slide" && source == "insite") style="display:none;" #end>
+        				<div class="web_install_set_title">标题设置</div>
+        				<table class="web_install_set_module_table">
+        					<tr>
+        						<td colspan="3"><h4>标题栏背景</h4></td>
+        					</tr>
+        					<tr>
+        						<td width="150">
+        							<input type="radio" name="titleBg" value="0"
+        							#if(titleImage == "")
+        								checked="checked"
+        							#end
+        							 /> 颜色设置: <input id="titleBgColor" name="titleBgColor" type="text" class="input wid60" value="${titleBgColor}" />  
+        						</td>
+        						<td width="30"><div class="color_set" id="titleBgColorPicker" onclick="getColorPicker(event)" style="background:${titleBgColor}"></div></td>
+        						<td>
+        						    <input id="titleBgColorTransParent" name="titleBgColorTransparent" class="transparent" type="checkbox"
+            						#if(titleBgColor == "transparent")
+            							checked="checked"
+            						#end
+        						    /> <label for="titleBgColorTransParent">透明色</label>
+        						</td>
+        					</tr>
+        					<tr id="titleBgColorWarn">
+        						<td colspan="3" style="color:red;"></td>
+        					</tr>
+        					<!--tr>
+        						<td colspan="3">
+        							<input type="radio" name="titleBg" value="1"
+        							#if(titleImage != "")
+        								checked="checked"
+        							#end
+        							/> 图&nbsp;&nbsp;&nbsp;&nbsp;片: <input id="titleImage" name="titleImage" type="file" class="" style="width:160px;" disabled="disabled" />
+        						</td>
+        					</tr-->
+        					<tr>
+        						<td colspan="3">
+        							<div class="dotted"></div>
+        						</td>
+        					</tr>
+        				</table>
+        				<table class="web_install_set_module_table">
+        					<tr>
+        						<td><h4>标题栏字体</h4></td>
+        					</tr>
+        					<tr>
+        						<td width="100">
+        							 字号: <select id="titleFontSize" name="titleFontSize" class="wid60"><option value="12"
+        							 #if(titleFontSize == 12)
+        								selected="selected"
+        							 #end
+        							 >12</option><option value="14"
+        							 #if(titleFontSize == 14)
+        								selected="selected"
+        							 #end
+        							 >14</option></select>
+        						</td>
+        						<td colspan="2">
+            						<input id="titleBold" type="checkbox" value="${titleBold}"
+            						#if(titleBold == true)
+        								checked="checked"
+        							 #end
+            						/> <label for="titleBold">加粗</label><input name="titleBold" type="hidden" value="${titleBold}" />
+        						</td>
+        					</tr>
+        					<tr>
+        						<td width="100">
+        							颜色: <input id="htcolor" name="htcolor" type="text" class="input wid60" value="${htcolor}" />  
+        						</td>
+        						<td><div class="color_set" onclick="getColorPicker(event)" style="background:${htcolor}"></div></td>
+        						<td><input style="display:none;" type="checkbox" /></td>
+        					</tr>
+        					<tr id="htcolorWarn">
+        						<td colspan="3" style="color:red;"></td>
+        					</tr>
+        				</table>
+        			</div>
+        			#if(pic == true)
+            			<!-- set_module 5 -->
+            			<div class="web_install_set_module addtion">
+            				<div class="web_install_set_title">图片</div>
+            				<table class="web_install_set_module_table">
+            					<tr>
+            						<td colspan="2">
+            							图片尺寸: <input id="picSize" name="picSize" type="text" class="input wid60" value="${picSize}" /> px
+            						</td>
+            					</tr>
+            					<tr id="picSizeWarn">
+            						<td colspan="2" style="color:red;"></td>
+            					</tr>
+            					<tr>
+            						<td colspan="2">
+            							<div class="dotted"></div>
+            						</td>
+            					</tr>
+            					<tr>
+            						<td colspan="2">
+            							图片边框: <input id="picBorderRadius1" name="picBorderRadius" type="radio" value="true"
+            							#if(picBorderRadius == true)
+            								checked="checked"
+            							#end
+            							/> <label for="picBorderRadius1">圆角</label> <input id="picBorderRadius2" name="picBorderRadius" type="radio" value="false"
+            							#if(picBorderRadius == false)
+            								checked="checked"
+            							#end
+            							/> <label for="picBorderRadius2">直角</label>
+            						</td>
+            					</tr>
+            					<tr id="line1" #if (!hasSite ) style="display:none;" #end>
+            						<td colspan="2">
+            							<div class="dotted"></div>
+            						</td>
+            					</tr>
+            					<tr id="line2" #if (!hasSite ) style="display:none;" #end>
+            						<td colspan="2"><h4>图片匹配</h4></td>
+            					</tr>
+            					<tr id="line3" #if (!hasSite ) style="display:none;" #end>
+            						<td><input type="radio" id="autoMatch1" name="autoMatch" value="true" #if(autoMatch == true) checked="checked" #end /> <label for="autoMatch1">自动匹配</label></td>
+            						<td><input type="radio" id="autoMatch2" name="autoMatch" value="false" #if(autoMatch == false) checked="checked" #end /> <label for="autoMatch2">默认图片</label></td>
+            					</tr>
+            					<tr id="picMatchCol" #if(autoMatch == false)  style="display:none;" #end  #if (!hasSite ) style="display:none;" #end>
+            						<td colspan="2"><input type="radio" id="picMatch1" name="picMatch" #if(picMatch == "provided") checked="checked" #end value="provided" /> <label for="picMatch1">图库匹配</label>&nbsp;&nbsp;<input type="radio" id="picMatch2" name="picMatch" #if(picMatch == "insite") checked="checked" #end value="insite" /> <label for="picMatch2">站内匹配</label></td>
+            					</tr>
+            					<tr id="updateFileCol" #if(autoMatch == true)  style="display:none;" #end #if (!hasSite ) style="display:none;" #end>
+            						<td colspan="2">
+            							图片地址: <input id="updateFile" name="defaultPic" type="text" class="" style="width:160px;" value="${defaultPic}" />
+            						</td>
+            					</tr>
+            					<tr id="defaultPicWarn" #if (!hasSite ) style="display:none;" #end>
+            						<td colspan="2" style="color:red;"></td>
+            					</tr>
+            				</table>
+            			</div>
+        			#end
+        			<!-- set_module 6 -->
+        			<div class="web_install_set_module addtion">
+        				<div class="web_install_set_title">正文</div>
+        				<table class="web_install_set_module_table">
+        					<tr>
+        						<td width="100">
+        							 字号: <select id="fontSize" name="fontSize" class="wid60"><option value="12"
+        							 #if(fontSize == 12)
+        								selected="selected"
+        							 #end
+        							 >12</option><option value="14"
+        							 #if(fontSize == 14)
+        								selected="selected"
+        							 #end
+        							 >14</option></select>
+        						</td>
+        						<td>
+            						<input id="fontBold" type="checkbox" value="${fontBold}"
+            						#if(fontBold == true)
+            							checked="checked"
+            						#end
+            						/> <label for="fontBold">加粗</label><input name="fontBold" type="hidden" value="${fontBold}" />
+        						</td>
+        					</tr>
+        					<tr #if(pic == false) style="display:none;" #end>
+        						<td colspan="2">
+        							 行距: <select id="lineHeight" name="lineHeight" class="wid60"><option value="15"
+        							 #if(lineHeight == 15)
+        								selected="selected"
+        							 #end
+        							 >15</option>
+        							 <option value="20"
+        							 #if(lineHeight == 20)
+        								selected="selected"
+        							 #end
+        							 >20</option>
+        							 <option value="25"
+        							 #if(lineHeight == 25)
+        								selected="selected"
+        							 #end
+        							 >25</option>
+        							 <option value="30"
+        							 #if(lineHeight == 30)
+        								selected="selected"
+        							 #end
+        							 >30</option>
+        							 </select> px
+        						</td>
+        					</tr>
+        					<tr>
+        						<td colspan="2">
+        							<div class="dotted"></div>
+        						</td>
+        					</tr>
+        				</table>
+        				<table class="web_install_set_module_table">
+        					<tr>
+        						<td width="130">
+        							默认颜色: <input id="rtcolor" name="rtcolor" type="text" class="input wid60" value="${rtcolor}" />
+        						</td>
+        						<td width="30"><div class="color_set" onclick="getColorPicker(event)" style="background:${rtcolor}"></div></td>
+        						<td>
+            						<input id="fontUnderline" type="checkbox" value="${fontUnderline}"
+            						#if(fontUnderline == true)
+            							checked="checked"
+            						#end
+            						/> <label for="fontUnderline">下划线</label><input name="fontUnderline" type="hidden" value="${fontUnderline}" />
+        						</td>
+        					</tr>
+        					<tr id="rtcolorWarn">
+        						<td colspan="3" style="color:red;"></td>
+        					</tr>
+        					<tr>
+        						<td width="130">
+        							悬浮颜色: <input id="hvcolor" name="hvcolor" type="text" class="input wid60" value="${hvcolor}" />  
+        						</td>
+        						<td width="30"><div class="color_set" onclick="getColorPicker(event)" style="background:${hvcolor}"></div></td>
+        						<td>
+            						<input id="linkUnderline" type="checkbox" value="${linkUnderline}"
+            						#if(linkUnderline == true)
+            							checked="checked"
+            						#end
+            						/> <label for="linkUnderline">下划线</label><input name="linkUnderline" type="hidden" value="${linkUnderline}" />
+        						</td>
+        					</tr>
+        					<tr id="hvcolorWarn">
+        						<td colspan="3" style="color:red;"></td>
+        					</tr>
+        					#if(pic == false)
+            					<tr>
+            						<td colspan="3">
+            							着重号类型: <input type="radio" id="listType1" name="listType" value="none"
+            							#if(listType == "none")
+            								checked="checked"
+            							#end
+            							/>  <label for="listType1">无</label> <input type="radio" id="listType2" name="listType" value="square"
+            							#if(listType == "square")
+            								checked="checked"
+            							#end
+            							/>  <label for="listType2">方块</label> <input type="radio" id="listType3" name="listType" value="disc"
+            							#if(listType == "disc")
+            								checked="checked"
+            							#end
+            							/>  <label for="listType3">圆点</label>
+            						</td> 
+            					</tr>
+        					#end
+        					<tr>
+        						<td colspan="3">
+        							<div class="dotted"></div>
+        						</td>
+        					</tr>
+        					<tr>
+        						<td colspan="3">
+        							打开新链接方式: <input type="radio" id="redirectType1" name="redirectType" value="_blank"
+        							#if(redirectType == "_blank")
+        								checked="checked"
+        							#end
+        							/>  <label for="redirectType1">新开</label> <input type="radio" id="redirectType2" name="redirectType" value="_self"
+        							#if(redirectType == "_self")
+        								checked="checked"
+        							#end
+        							/>  <label for="redirectType2">跳转</label>
+        						</td> 
+        					</tr>
+        				</table>
+        			</div>
+        			<!-- set_module 7 -->
+        			<div class="web_install_set_module addtion">
+        				<div class="web_install_set_title">其他功能</div>
+        				<table class="web_install_set_module_table">
+        					<tr>
+        						<td width="60">
+        							 是否加红: 
+        						</td>
+        						<td>
+            						<input type="checkbox" id="highlight" value="${highlight}"
+            						#if(highlight == true)
+            							checked="checked"
+            						#end
+            						/> <input name="highlight" type="hidden" value="${highlight}" />
+        						</td>
+        						<td class="line16">为最热推荐列表里最相似的链接加红</td>
+        					</tr>
+        					<tr id="line5" #if (!hasSite ) style="display:none;" #end>
+        						<td>
+        							 JS 跳转: 
+        						</td>
+        						<td>
+            						<input type="checkbox" id="redirectMode" value="js"
+            						#if(redirectMode == "js")
+            							checked="checked"
+            						#end
+            						/> <input name="redirectMode" type="hidden" value="${redirectMode}" />
+        						</td>
+        						<td class="line16">内容连接使用乐知js跳转，不勾选的话可能会无法从第三方统计系统中了解哪些流量是来源于乐知</td>
+        					</tr>
+        					<!--tr>
+        						<td>
+        							 全站推荐: 
+        						</td>
+        						<td><input type="checkbox" /> </td>
+        						<td class="line16">站内所有频道的内容都可能出现在乐知推荐框内，若不勾选则仅推荐当前子域名的内容。</td>
+        					</tr-->
+        				</table>
+        			</div>
+    			</div>
+    		</div>
+    		<!-- plugin set end -->
+    		<div id="insall_preview" class="insall_preview">
+    			<div class="web_lezhi_title">
+    				<div class="web_lezhi_title_left yahei">预览效果</div>
+    				<div class="web_lezhi_title_right" style="width:440px;text-align:right;">
+    				    有问题？请联系qq客服 &nbsp;&nbsp;&nbsp;&nbsp;<a href="http://wpa.qq.com/msgrd?v=3&amp;uin=800087176&amp;site=qq&amp;menu=yes" class="qqIcon"></a>
+    				</div>
+    			</div>
+    			<iframe class="preview_iframe" name="preview_iframe" frameborder="0" id="preview_iframe" src="${staticUrl}iframeJs.html?pic=${pic}&type=${pluginType}&col=${col}&row=${row}"></iframe>
+                <div class="clear spacer10"></div>
+                #if(adEnabled == false)
+                <div style="display:none;"><input id="userAgreement" type="checkbox" checked="checked" style="position:relative;top:2px;" /> 我已详细阅读并接受<a href="${rootUrl}userAgreement" style="color:red;" target="_blank"><<乐知广告联盟合作协议>></a></div>
+                #end
+                #if(link.equals("userCustomize"))
+                <div>
+                    如果您想重新选择插件类型和插件样式，请点此<a href="${rootUrl}get?uuid=${uuid}" target="_self">重新配置</a>
+                
+                </div>
+    			#end
+                <div class="preview_buttons">
+    			    #if(!link.equals("userCustomize"))
+    			        <input type="hidden" name="isUserCustomize" value="false"/>
+    				    <input type="button" class="lightGrayButton" value="上一步" onclick="back()" />
+    				#else
+    				    <input type="hidden" name="isUserCustomize" value="true"/>
+    				    <input type="button" class="lightGrayButton" value="返&nbsp;&nbsp;回" onclick="javascript:window.location.href='${rootUrl}user/manage';" />
+    				#end
+    				
+    				#if (request.getAttribute("USER_NAME") == null)
+                        <input type="button" class="lightOrangeButton" value="领取代码" onclick="$('form').submit();" />
+                    #else
+                    	#if (hasSite )
+                         <input type="button" id="submitButton" class="lightOrangeButton" style="padding:6px 20px;" value="保存并领取代码" onclick="$('form').submit();" />
+                        #else
+                          <input type="button" id="submitButton" class="lightOrangeButton" value="领取代码" onclick="$('form').submit();" /> 
+                        #end
+                    #end
+    				<input id="reset" type="button" class="lightGrayButton" value="重&nbsp;&nbsp;置" />
+    			</div>
+    		</div>
+    	</div>
+	</form>
+</div>
+
+<!-- content end -->
+
+<div class="clear"></div>
+
+<div id="notifications" class="hidden" style="display: none; ">
+    <div class="notification-bar-container">
+        <div class="notification-bar-bkg" style="background-color: rgb(255, 248, 204); height: 25px;"></div>
+        <div class="notification-bar">
+            <div class="notification-bar-contents">
+                <div class="notification-msg heading1" style="color: rgb(51, 51, 51); font-size:20px; font-weight:bold;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/color-picker.js"></script>
+<script type="text/javascript" charset="utf-8">
+    var ADCOUNT = ${adCount};
+    //show error info if error
+    #if(err._1 > 0)
+    	displayStatusMessage('${err._2}');
+    #end
+    
+    //change uuid value
+    $("#uuidList").change(function(){
+        $("#uuid").val($(this).val());
+    });
+    $("#uuidList").change();
+    //if checked open ads then login in to refresh page so the ads counts select will be show
+    if(window.location.href.indexOf("&adEnabled=true") != -1){
+        $("#adsSetModule").show();
+        $("#adEnabled1").attr("checked",true);
+        $("#adEnabled").val("true");
+        $("#userAgreement").parent().show();
+    }
+
+    //remove , in width & height
+    if($("#width").val().indexOf(",") != -1){
+        $("#width").val($("#width").val().replace(",",""));
+    }
+    
+    if($("#height").val().indexOf(",") != -1){
+    	$("#height").val($("#height").val().replace(",",""));
+    }
+    
+    $("#promote").val(decodeURIComponent($("#promote").val()));
+    
+    //menu actived when not login
+    #if (request.getAttribute("USER_NAME") == null)
+    	$($(".n_lezhi_menu a").get(0)).attr("class","sel");
+    #end
+
+    var colGlobal = Number($("#col").val()), rowGlobal = Number($("#row").val()), maxAdsCount = colGlobal * rowGlobal;
+    if(${adCount} >= maxAdsCount){
+        $("#adCount option").attr("selected",false);
+        $($("#adCount option").get(maxAdsCount-1)).attr("selected",true);
+    }
+    
+    
+    
+    $(function(){
+         #if(link.equals("userCustomize"))
+             $("#pluginType").change(function() {
+                 window.location.href = "${rootUrl}user/customize?uuid=${uuid}&type=" + $(this).val() + "&pic=" + $("#pic").val();
+             });
+             $("#pic").change(function() {
+                 window.location.href = "${rootUrl}user/customize?uuid=${uuid}&pic=" + $(this).val() + "&type=" + $("#pluginType").val();
+             });
+         #end
+            
+    	//defined default event change color
+    	var hvcolorEvent = new customEvent(document.getElementById('hvcolor')),
+    		bdcolorEvent = new customEvent(document.getElementById('bdcolor')),
+    		bgcolorEvent = new customEvent(document.getElementById('bgcolor')),
+    		titleBgColorEvent = new customEvent(document.getElementById('titleBgColor')),
+    		htcolorEvent = new customEvent(document.getElementById('htcolor')),
+    		rtcolorEvent = new customEvent(document.getElementById('rtcolor'));
+    	
+    	//reload preview iframe
+    	$("#reset").bind("click",function(){
+    		loadPreview();
+    	});
+    	
+    	//col * row max 10 results, so should change option when user select anyone
+    	$("#row").bind("change",function(){
+    		if(${pic} == false){
+    			var _max = 10,
+    		    _val = parseInt($(this).val()),
+    		    _i;
+    			var _maxCol;
+    			
+    			_maxCol = Math.floor(_max / _val);
+    			var _len = $("#col option").length;
+    			$("#col option").each(function(){
+    				if(this.parentNode.tagName == "SPAN"){
+    					$(this).unwrap();
+    				}
+    			});
+    			for(_i = _maxCol; _i < _len; _i++){
+    				$($("#col option").get(_i)).wrap('<span style="display:none;" />');
+    			}
+    		}
+            var col = Number($("#col").val()), row = Number($("#row").val()), maxAdsCount = col * row;
+            $("#adCount option").each(function(){
+                    if(this.parentNode.tagName == "SPAN"){
+                        $(this).unwrap();
+                    }
+                });
+                var adsLens =  $("#adCount option").length;
+                for( var _j = maxAdsCount; _j < adsLens; _j++){
+                    $($("#adCount option").get(_j)).wrap('<span style="display:none;" />');
+                }
+                $("#adCount option").attr("selected",false);
+                if(maxAdsCount < ADCOUNT){
+                    $($("#adCount option").get(0)).attr("selected",true);
+                }else{
+                    if(ADCOUNT == 0){
+                        $($("#adCount option").get(0)).attr("selected",true);
+                    }else{
+                        $($("#adCount option").get(ADCOUNT - 1)).attr("selected",true);
+                    }
+                }
+    		if(!isAutoWidthMode()){
+    			minWidth();
+    			minHeight();
+    		}
+    		loadPreview();
+    	});
+    	
+    	$("#col").bind("change",function(){
+    		if(${pic} == false){
+    			var _max = 10,
+    		    _val = parseInt($(this).val()),
+    		    _i;
+    			var _maxCol;
+    			
+    			_maxCol = Math.ceil(_max / _val);
+    			var _len = $("#row option").length;
+    			$("#row option").each(function(){
+    				if(this.parentNode.tagName == "SPAN"){
+    					$(this).unwrap();
+    				}
+    			});
+    			for(_i = _maxCol; _i < _len; _i++){
+    				$($("#row option").get(_i)).wrap('<span style="display:none;" />');
+    			}
+    		}
+            var col = Number($("#col").val()), row = Number($("#row").val()), maxAdsCount = col * row;
+            $("#adCount option").each(function(){
+                if(this.parentNode.tagName == "SPAN"){
+                    $(this).unwrap();
+                }
+            });
+            var adsLens =  $("#adCount option").length;
+            for( var _j = maxAdsCount; _j < adsLens; _j++){
+                $($("#adCount option").get(_j)).wrap('<span style="display:none;" />');
+            }
+            $("#adCount option").attr("selected",false);
+            if(maxAdsCount < ADCOUNT){
+                $($("#adCount option").get(0)).attr("selected",true);
+            }else{
+                if(ADCOUNT == 0){
+                    $($("#adCount option").get(0)).attr("selected",true);
+                }else{
+                    $($("#adCount option").get(ADCOUNT - 1)).attr("selected",true);
+                }
+                
+            }
+			if(!isAutoWidthMode()){
+				minWidth();
+				minHeight();
+			}
+    
+    		loadPreview();
+    	});
+    	
+    	//validator width value and load preview
+    	$("#width").bind("change",function(){
+    		if(($("#width").val() != "0" && $("#width").val() != "") && ($("#height").val() != "0" && $("#height").val() != "")){
+    			hideWarn($("#autoSetWarn"));
+    		}
+    		if(intValidator($("#widthWarn"),$(this),Number($(this).val()),"","宽度请勿输入非法字符!")){
+    			minWidth();
+    			loadPreview();
+    		}else{
+    			Warn($("#widthWarn"),"宽度请勿输入非法字符!");
+    		}
+    	});
+    	
+    	//validator height value and load preview
+    	$("#height").bind("change",function(){
+    		if(($("#width").val() != "0" && $("#width").val() != "") && ($("#height").val() != "0" && $("#height").val() != "")){
+    			hideWarn($("#autoSetWarn"));
+    		}
+    		if(intValidator($("#heightWarn"),$(this),Number($(this).val()),"","高度请勿输入非法字符!")){
+    			minHeight();
+    			loadPreview();
+    		}else{
+    			Warn($("#heightWarn"),"高度请勿输入非法字符!");
+    		}
+    	});
+    
+    	//validator color value and load preview so then blow
+    	$("#hvcolor").bind("change",function(){
+    		var color = $.trim($(this).val());
+    		if(colorValidator($("#hvcolorWarn"),$(this),color,'${hvcolor}',"请勿输入非法字符!"))
+    		this.setValue(this.value,true);
+    	});
+    
+    	$("#htcolor").bind("change",function(){
+    		var color = $.trim($(this).val());
+    		if(colorValidator($("#htcolorWarn"),$(this),color,'${htcolor}',"请勿输入非法字符!"))
+    		this.setValue(this.value,true);
+    	});
+    
+    	$("#bdcolor").bind("change",function(){
+    		var color = $.trim($(this).val());
+    		if(colorValidator($("#bdcolorWarn"),$(this),color,'${bdcolor}',"请勿输入非法字符!"))
+    		this.setValue(this.value,true);
+    	});
+    	
+    	$("#bgcolor").bind("change",function(){
+    		var color = $.trim($(this).val());
+    		if(colorValidator($("#bgcolorWarn"),$(this),color,'${bgcolor}',"请勿输入非法字符!"))
+    		this.setValue(this.value,true);
+    	});
+    
+    	$("#rtcolor").bind("change",function(){
+    		var color = $.trim($(this).val());
+    		if(colorValidator($("#rtcolorWarn"),$(this),color,'${rtcolor}',"请勿输入非法字符!"))
+    		this.setValue(this.value,true);
+    	});
+    
+    	$("#titleBgColor").bind("change",function(){
+    		var color = $.trim($(this).val());
+    		if(colorValidator($("#titleBgColorWarn"),$(this),color,'${titleBgColor}',"请勿输入非法字符!"))
+    		this.setValue(this.value,true);
+    	});
+    	
+    	//validator url value and load preview
+    	$("#updateFile").bind("change",function(){
+    		//loadPreview();
+    		//urlValidator($("#defaultPicWarn"),$(this),$(this).val(),'',"请勿输入非法字符!");
+    	});
+    	
+    	//validator pic size value and load preview
+    	$("#picSize").bind("change",function(){
+    		if(intValidator($("#picSizeWarn"),$(this),$(this).val(),"${picSize}","请勿输入非法字符!",true)){
+				if(!isAutoWidthMode()){
+					minWidth();
+					minHeight();
+				}
+				loadPreview();
+    		}
+    	});
+    	
+    	//radio changed load preview
+    	$("[name=redirectType]").bind("change",function(){
+    		loadPreview();
+    	});
+    	
+    	//select changed load preview
+    	$("#fontSize").bind("change",function(){
+    		loadPreview();
+    	});
+    	
+    	//input changed validator load preview
+    	$("#promote").bind("change",function(){
+    		if(textValidator($("#promoteVlidator"),$(this),$(this).val(),decodeURIComponent("${promote}"),"请勿输入非法字符!")){
+    			if($(this).val().length > 8){
+    				$("#promoteVlidator").html("标题名称最多8个字符");
+    				$("#promoteVlidator").show();
+    				setTimeout(function(){$("#promoteVlidator").hide()},3000);
+    			}
+    			if(!isAutoWidthMode()){
+    				minWidth();
+    			}
+    			loadPreview();
+    		}
+    	});
+    	
+    	//select changed load preview
+    	$("#titleFontSize").bind("change",function(){
+    		if(!isAutoWidthMode()){
+				minWidth();
+			}
+    		loadPreview();
+    	});
+    	
+    	//radio changed and change hidden input value
+    	$("#titleBold").bind("change",function(){
+    		if($(this).attr("checked") == "checked"){
+    			$("input[name=titleBold]").val("true");
+    			$(this).val("true");
+    		}else{
+    			$("input[name=titleBold]").val("false");
+    			$(this).val("false");
+    		}
+    		loadPreview();
+    	});
+    	
+    	//radio changed and change hidden input value
+    	$("#highlight").bind("change",function(){
+    		if($(this).attr("checked") == "checked"){
+    			$("input[name=highlight]").val("true");
+    			$(this).val("true");
+    		}else{
+    			$("input[name=highlight]").val("false");
+    			$(this).val("false");
+    		}
+    		loadPreview();
+    	});
+    	
+    	//radio changed load preview
+    	$("input[name=picBorderRadius]").bind("change",function(){
+    		loadPreview();
+    	});
+    	
+    	//radio changed load preview
+    	$("[name=position]").bind("change",function(){
+    		loadPreview();
+    	});
+    	
+    	//radio changed and change hidden input value
+    	$("#fontBold").bind("change",function(){
+    		if($(this).attr("checked") == "checked"){
+    			$("input[name=fontBold]").val("true");
+    			$(this).val("true");
+    		}else{
+    			$("input[name=fontBold]").val("false");
+    			$(this).val("false");
+    		}
+    		loadPreview();
+    	});
+    	
+    	//select changed load preview
+    	$("#lineHeight").bind("change",function(){
+    		loadPreview();
+    	});
+    
+    	//checkbox changed and change hidden input value
+    	$("#source").bind("change",function(){
+    		if($(this).attr("checked") == "checked"){
+    			$("#hideSource").val("insite,trending");
+    		}else{
+    			$("#hideSource").val("insite");
+    		}
+    		if(!isAutoWidthMode()){
+    			minWidth();
+    		}
+    		loadPreview();
+    	});
+    	//checkbox changed and change hidden input value
+    	$("#fontUnderline").bind("change",function(){
+    		if($(this).attr("checked") == "checked"){
+    			$("input[name=fontUnderline]").val("true");
+    			$(this).val("true");
+    		}else{
+    			$("input[name=fontUnderline]").val("false");
+    			$(this).val("false");
+    		}
+    		loadPreview();
+    	});
+    
+    	//checkbox changed and change hidden input value
+    	$("#linkUnderline").bind("change",function(){
+    		if($(this).attr("checked") == "checked"){
+    			$("input[name=linkUnderline]").val("true");
+    			$(this).val("true");
+    		}else{
+    			$("input[name=linkUnderline]").val("false");
+    			$(this).val("false");
+    		}
+    		loadPreview();
+    	});
+    	
+    	//radio changed load preview
+    	$("input[name=listType]").bind("change",function(){
+    		loadPreview();
+    	});
+    	
+    	$("#redirectMode").bind("change",function(){
+    		if($("[name=redirectMode]").val() == "js"){
+    			$("[name=redirectMode]").val("http");
+    		}else{
+    			$("[name=redirectMode]").val("js");
+    		}
+    	});
+    	
+    	$(".transparent").bind("change",function(){
+    		var inputs = this.parentNode.parentNode.getElementsByTagName("td")[0].getElementsByTagName("input");
+    		inputs[inputs.length-1].setValue("transparent");
+    	});
+    
+        //radio changed and change hidden input value
+        $("input[name=adEnabled]").bind("change",function(){
+            if($(this).attr("checked") == "checked"){
+                $("#adEnabled").val("true");
+                $(this).val("true");
+            }else{
+                $("#adEnabled").val("false");
+                $(this).val("false");
+            }
+            loadPreview();
+        });
+        
+    	//show addtion set
+    	$("#web_install_set_more").bind("click",function(){
+    		if($(this).hasClass("upIcon")){
+    			$(this).removeClass("upIcon");
+    		}else{
+    			$(this).addClass("upIcon");
+    		}
+    		$("#addtion").toggle();
+    	});
+    
+    	//preview position
+    	var curBottomTop = 0;
+    	var diff = 40; // this is padding and margin top and bottom of the install preview and footer
+    	window.onscroll = function(){
+    		var ie6 = window.navigator.userAgent.indexOf("MSIE 6") != -1;
+    		var top = $.browser.webkit ? window.document.body.scrollTop : window.document.documentElement.scrollTop;
+    		/*if(top > 163){
+    			document.getElementById("insall_preview").style.position = 'fixed';	
+    			document.getElementById("insall_preview").style.top = '0px';
+    			if(!!ie6){
+    				document.getElementById("insall_preview").style.position = 'absolute';	
+    				document.getElementById("insall_preview").style.top = (top - 93) + "px";
+    			}	
+    		}else{
+				document.getElementById("insall_preview").style.position = 'absolute';	
+				document.getElementById("insall_preview").style.top = '';
+    		}*/
+    		if (top > $("#web_install_set").offset().top) {
+    		    var bottomTop = top + $("#insall_preview").height() + diff;
+    		    if ($(".footer").offset().top <= bottomTop) {
+    		        if (curBottomTop == 0) {
+    		            #if(link.equals("userCustomize"))
+    		                curBottomTop = top - (diff + 40);
+    		            #else
+    		                curBottomTop = top - (diff + 60);
+    		            #end
+    		        }
+    		        document.getElementById("insall_preview").style.position = 'absolute';    
+                    document.getElementById("insall_preview").style.top = curBottomTop + 'px';
+    		    } else {
+        			document.getElementById("insall_preview").style.position = 'fixed';	
+        			document.getElementById("insall_preview").style.top = '0px';
+        			curBottomTop = 0;
+    			}
+    		} else {
+    		    document.getElementById("insall_preview").style.position = 'absolute';    
+                document.getElementById("insall_preview").style.top = '';
+                curBottomTop = 0;
+            }
+    	}
+    	
+    	//switch raido for disabled conflict inputs
+    	$("input[name=widthMode]").bind("change",function(){
+    		if($(this).val() == "0"){
+    			$("#width").val("");
+    			$("#height").val("");
+    			$("#widthWarn").hide();
+    			$("#heightWarn").hide();
+    			$("#width").attr("disabled","disabled");
+    			$("#width").addClass("disabled");
+    			$("#height").attr("disabled","disabled");
+    			$("#height").addClass("disabled");
+    			hideWarn($("#autoSetWarn"));
+    		}else{
+    			$("#width").val("");
+    			$("#height").val("");
+    			if($("#width").val() == "0" || $("#width").val() == ""){
+    				minWidth();
+    			}
+    			if($("#height").val() == "0" || $("#height").val() == ""){
+    				minHeight();
+    			}
+    			if(($("#width").val() == "0" || $("#width").val() == "") && ($("#height").val() == "0" || $("#height").val() == "")){
+    				Warn($("#autoSetWarn"));
+    			}
+    			$("#width").removeAttr("disabled");
+    			$("#width").removeClass("disabled");
+    			$("#height").removeAttr("disabled");
+    			$("#height").removeClass("disabled");
+    		}
+    		loadPreview();
+    	});
+    
+    	$("input[name=titleBg]").bind("change",function(){
+    		if($(this).val() == "1"){
+    			$("#titleBgColor").attr("disabled","disabled");
+    			$("#titleBgColor").addClass("disabled");
+    			$("input[name=titleBgColorTransparent]").attr("disabled","disabled");
+    			$("input[name=titleBgColorTransparent]").addClass("disabled");
+    			document.getElementById("titleBgColorPicker").onclick = "";
+    			$("#titleImage").removeAttr("disabled");
+    		}else{
+    			$("#titleBgColor").removeAttr("disabled");
+    			$("#titleBgColor").removeClass("disabled");
+    			$("input[name=titleBgColorTransparent]").removeAttr("disabled");
+    			$("input[name=titleBgColorTransparent]").removeClass("disabled");
+    			document.getElementById("titleBgColorPicker").onclick = function(){getColorPicker(event)};
+    			$("#titleImage").attr("disabled","disabled");
+    		}
+    	});
+    
+    	$("input[name=autoMatch]").bind("change",function(){
+    		if($(this).val() == "true"){
+    			$("#picMatchCol").show();	
+    			$("#updateFileCol").hide();
+    		}else{
+    			$("#picMatchCol").hide();	
+    			$("#updateFileCol").show();
+    		}
+    	});
+    	
+    	//reset action
+    	$("#reset").bind("click",function(){
+    		reset();
+    		loadPreview();
+    	});
+    	
+    	//post form
+    	$("form").bind("submit",function(){
+            var flag = true;
+            #if(uuid == "new")
+            if($.trim($("#siteName").val()) == ""){
+                $("#siteName").next().html("不能为空");
+                $("#siteName").next().show();
+                flag = false;
+            } else{
+                $("#siteName").next().hide();
+            }
+            if(!httpValidator($("#siteUrl"),"不符合网站地址规范，必须以http://或https://开头")){
+                flag = false;
+            }
+            if(!flag){
+                return false;
+            }  
+            #end
+    		if($("[name=autoMatch]:checked").val() == "true"){
+    			$("[name=defaultPic]").val("");
+    		}else{
+    			$("[name=picMatch]:checked").val("");
+    		}
+    		//$("#promote").val(encodeURIComponent($("#promote").val()));
+    		/*$("#hvcolor").val(encodeURIComponent($("#hvcolor").val()));
+    		$("#htcolor").val(encodeURIComponent($("#htcolor").val()));
+    		$("#bdcolor").val(encodeURIComponent($("#bdcolor").val()));
+    		$("#bgcolor").val(encodeURIComponent($("#bgcolor").val()));
+    		$("#rtcolor").val(encodeURIComponent($("#rtcolor").val()));
+    		$("#titleBgColor").val(encodeURIComponent($("#titleBgColor").val()));*/
+    		
+    		if($("[name=widthMode]:checked").val() == "0"){
+    			$("#width").val("0");
+    			$("#height").val("0");
+    			$("#width").attr("disabled",false);
+    			$("#height").attr("disabled",false);
+    			return true;
+    		}else{
+    			if($("#width").val() == ""){
+    				$("#width").val("0");
+    			}
+    			if($("#height").val() == ""){
+    				$("#height").val("0");
+    			}
+    		}
+    	});
+    	
+    	//clear slide type promote
+    	#if(pluginType == "slide")
+    		$("#source").click(function(){
+    			if($(this).attr("checked") != "checked"){
+    				$("#module4").hide();
+    				$("#promoteLine").hide();
+    				$("#promoteVlidator").hide();
+    			}else{
+    				$("#module4").show();
+    				$("#promoteLine").show();
+    			}
+    		});
+    	#end
+    	
+    	//data need for require logged
+    	$("#dataNeedY").click(function(){
+			#if (request.getAttribute("USER_NAME") != null)
+				var _isUuid = true;
+			#else
+				var _isUuid = false;
+			#end
+			$("#dataNeedN").attr("checked","checked");
+			if(_isUuid){
+				$("#dataNeedY").attr("checked","checked");
+			}
+			$("#registerPopup").click();
+			$("#popupLoginLink").click();
+			$("#popupRegisterDivIframe").attr("src","${bshareAuthServer}/iframeRegister?service=${service}&targetUrl=${targetUrl}&enableOauth=false");
+			$("#popupLoginDivIframe").attr("src","${bshareAuthServer}/iframeLogin?service=${service}&targetUrl=${targetUrl}&enableOauth=false");
+		});
+
+        //open ads checkbox
+        $("#adEnabled1").change(function(){
+            if($(this).attr("checked") == "checked"){
+                $($("#adCount option").get(0)).attr("selected",true);
+                    #if (request.getAttribute("USER_NAME") != null)
+                        var _isUuid = true;
+                    #else
+                        var _isUuid = false;
+                    #end
+                    $(this).attr("checked",false);
+                    if(!!_isUuid){
+                        $(this).attr("checked",true);
+                    }
+                #if (request.getAttribute("USER_NAME") == null)
+                    
+                    $("#registerPopup").click();
+                    $("#popupLoginLink").click();
+                    $("#popupRegisterDivIframe").attr("src","${bshareAuthServer}/iframeRegister?service=${service}&targetUrl=${targetUrl}&enableOauth=false");
+                    $("#popupLoginDivIframe").attr("src","${bshareAuthServer}/iframeLogin?service=${service}&targetUrl=${targetUrl}&enableOauth=false");
+                #else
+                $("#userAgreement").attr("checked",true);
+                $("#adsSetModule").show();
+                $("#userAgreement").parent().show();
+
+                #end
+            }else{
+                $("#adsSetModule").hide();
+                $("#userAgreement").parent().hide();
+                $("#submitButton").attr("disabled",false);
+                $("#submitButton").attr("class","lightOrangeButton");
+                $("#submitButton").css({"cursor":"pointer"});
+            }
+            loadPreview();
+        });
+
+        //just userAgreement checked can submit
+        $("#userAgreement").change(function(){
+            if($(this).attr("checked") == "checked"){
+                $("#submitButton").attr("disabled",false);
+                $("#submitButton").attr("class","lightOrangeButton");
+                $("#submitButton").css({"cursor":"pointer"});
+            }else{
+                $("#submitButton").attr("disabled",true);
+                $("#submitButton").attr("class","lightGrayButton");
+                $("#submitButton").css({"cursor":"default"});
+            }
+        });
+        
+        //preview for adCount change
+        $("#adCount").change(function(){
+            ADCOUNT = parseInt($(this).val());
+            loadPreview();
+        });
+    	
+    	$("#col").change();
+    	$("#row").change();
+        $("#adCount option").each(function(){
+            if($(this).val() == "${adCount}"){
+                $(this).attr("selected",true);
+            }
+        });
+        //default load preview
+        loadPreview();
+    });
+    
+    //user-defined event handle
+    function customEvent(domEL){
+    	var value;
+    	this.domEl = domEL;       
+    	this.domEl.buttonObj = this;
+    	this.domEl.getValue = function() { return this.value; };
+    	this.domEl.setValue = function(newValue,changed) { 
+    		if(!!changed) this.onValueChange();
+    		var isChange = false || this.getValue() != newValue; 
+    		this.value = newValue; 
+    		if(isChange && this.onValueChange) this.onValueChange(); 
+    	};
+    	this.domEl.onValueChange=this.valueChangeHandler;
+    }
+    
+    customEvent.prototype.valueChangeHandler=function(){
+    	var tds = this.parentNode.parentNode.getElementsByTagName("td"),
+    		colorPicker = tds[1].getElementsByTagName("DIV")[0],
+    		checkbox = tds[2].getElementsByTagName("input")[0],
+    		color = this.getValue();
+    	if(colorValidatorForPlugin(color) || color == "transparent"){
+    		loadPreview();
+    	}
+    	colorPicker.style.background = color;
+    	var isChecked = color == "transparent" ? true : false;
+    	if(checkbox.className=="transparent"){
+    		$(checkbox).attr("checked",isChecked);
+    	}
+    	
+    }
+    
+    //show color picker
+	function getColorPicker(e){
+		var event = e || window.event;  
+		getColor(event, "选择颜色");
+		if (document.all) {  
+			event.cancelBubble = true;  
+		}  
+		else {  
+			event.stopPropagation();  
+		} 
+	}
+    				
+    //reload preview
+    function loadPreview(_width){
+    	var promote = encodeURIComponent($("#promote").val()),
+    		source = $("#source").attr("checked") == "checked" ? 'insite,trending' : 'insite',
+    		col = $("#col").val(),
+    		row = $("#row").val(),
+    		width = $("#width").val(),
+    		height = $("#height").val(),
+    		hvcolor = $("#hvcolor").val().substr(0,1) == "#" ? $("#hvcolor").val().substr(1) : $("#hvcolor").val(),
+    		bdcolor = $("#bdcolor").val().substr(0,1) == "#" ? $("#bdcolor").val().substr(1) : $("#bdcolor").val(),
+    		htcolor = $("#htcolor").val().substr(0,1) == "#" ? $("#htcolor").val().substr(1) : $("#htcolor").val(),
+    		rtcolor = $("#rtcolor").val().substr(0,1) == "#" ? $("#rtcolor").val().substr(1) : $("#rtcolor").val(),
+    		bgcolor = $("#bgcolor").val().substr(0,1) == "#" ? $("#bgcolor").val().substr(1) : $("#bgcolor").val(),
+    		defaultPic = $("#updateFile").val(),
+    		titleFontSize = $("#titleFontSize").val(),
+    		pic = "${pic}",
+    		picSize = $("#picSize").val(),
+    		fontSize = $("#fontSize").val(),
+    		titleBgColor = $("#titleBgColor").val().substr(0,1) == "#" ? $("#titleBgColor").val().substr(1) : $("#titleBgColor").val(),
+    		lineHeight = $("#lineHeight").val(),
+    		titleImage = $("#titleImage").val(),
+    		widthMode = $("input[name=widthMode]:checked").val(),
+    		titleBg = $("input[name=titleBg]").val(),
+    		titleBold = $("input[name=titleBold]").val(),
+    		picBorderRadius = $("input[name=picBorderRadius]:checked").val(),
+    		fontBold = $("input[name=fontBold]").val(),
+    		listType = $("input[name=listType]:checked").val(),
+    		redirectType = $("input[name=redirectType]:checked").val(),
+    		highlight = $("input[name=highlight]").val(),
+    		redirectMode = $("input[name=redirectMode]").val(),
+    		autoMatch = $("input[name=autoMatch]").val(),
+    		fontUnderline = $("input[name=fontUnderline]").val(),
+    		linkUnderline = $("input[name=linkUnderline]").val(),
+    		position = $("#positionLine").find("input:checked").val(),
+    		type = "${pluginType}",
+    		adEnabled = $("#adEnabled").val(),
+    		adCountFlag = $("#adCountFlag").val(),
+    		adCount = $("#adCount").val();
+		if(widthMode == "0"){
+			width = 0;
+			height = 0;
+		}
+		if(titleBg == "0"){
+			titleImage = "";
+		}else{
+			titleBgColor = "";
+		}
+		if(autoMatch == "0"){
+			defaultPic = "";
+		}
+		if(adEnabled == "false" || adCountFlag == "true"){
+		    adCount = 0 ;
+		}
+		if(_width > 0 && _width > Number(width)){
+			width = _width;
+		}
+		var iframe = document.getElementById("preview_iframe"),
+		iframeSrc = '${staticUrl}iframeJs.html?';
+		iframeSrc = iframeSrc + 'promote=' + promote + '&source=' + source + '&col=' + col + '&row=' + row + '&hvcolor=' + hvcolor + '&bdcolor=' + bdcolor + '&htcolor=' + htcolor + '&pic=' + pic + '&picSize=' + picSize + '&fontSize=' + fontSize + '&type=' + type + '&width=' + width + '&height=' + height + '&rtcolor=' + rtcolor + '&bgcolor=' + bgcolor + '&defaultPic=' + defaultPic + '&titleFontSize=' + titleFontSize + '&titleBgColor=' + titleBgColor + '&lineHeight=' + lineHeight + '&titleImage=' + titleImage + '&titleBold=' + titleBold + '&picBorderRadius=' + picBorderRadius + '&fontBold=' + fontBold + '&listType=' + listType + '&redirectType=' + redirectType + '&highlight=' + highlight + '&redirectMode=' + redirectMode + '&fontUnderline=' + fontUnderline + '&linkUnderline=' + linkUnderline + '&position=' + position+'&adCount='+ adCount;
+		iframe.src = iframeSrc;
+		//window.frames['preview_iframe'].location.reload();
+    }
+    
+    //reset 
+    function reset(){
+    	$("[name=promote]").val(decodeURIComponent("${promote}"));
+    	"${source}".indexOf("trending") != -1 ? $("#source").attr("checked","checked") : $("#source").attr("checked",false);
+    	$("[name=col]").val("${col}");
+    	$("[name=row]").val("${row}");
+        $("#col").change();
+    	$("[name=width]").val("${width}" == 0 ? "" : ${width});
+    	$("[name=height]").val("${height}" == 0 ? "" : ${height});
+    	$("#hvcolor").get(0).setValue("${hvcolor}",true);
+    	$("#bdcolor").get(0).setValue("${bdcolor}",true);
+    	$("#htcolor").get(0).setValue("${htcolor}",true);
+    	$("#rtcolor").get(0).setValue("${rtcolor}",true);
+    	$("#bgcolor").get(0).setValue("${bgcolor}",true);
+    	$("[name=defaultPic]").val("${defaultPic}");
+    	$("[name=titleFontSize]").val("${titleFontSize}");
+    	$("[name=pic]").val("${pic}");
+    	$("[name=picSize]").val("${picSize}");
+    	$("[name=fontSize]").val("${fontSize}");
+    
+    	$("#titleBgColor").get(0).setValue("${titleBgColor}",true);
+    	$("[name=lineHeight]").val("${lineHeight}");
+    	$("[name=titleImage]").val("${titleImage}");
+    	$("input[name=titleBold]").val("${titleBold}");
+    	"${titleBold}" == "true" ? $("#titleBold").attr("checked","checked") : $("#titleBold").attr("checked",false);
+    
+    	$("[name=picBorderRadius]").each(function(){
+    		if($(this).val() == "${picBorderRadius}"){
+    			$(this).attr("checked","checked");
+    		}
+    	});
+    	
+    	$("[name=redirectType]").each(function(){
+    		if($(this).val() == "${redirectType}"){
+    			$(this).attr("checked","checked");
+    		}
+    	});
+    	
+		if(${width} == 0 && ${height}  == 0){
+			$($("[name=widthMode]").get(0)).click();
+			$("#widthWarn").hide();
+			$("#heightWarn").hide();
+		}else{
+			$($("[name=widthMode]").get(1)).click();
+		}
+    	
+    	#if (hasSite )
+        	$("[name=picMatch]").each(function(){
+        		if($(this).val() == "${picMatch}"){
+        			$(this).attr("checked","checked");
+        		}
+        	});
+        	
+        	$("[name=autoMatch]").each(function(){
+        		if($(this).val() == "${autoMatch}"){
+        			$(this).attr("checked","checked");
+        			$("input[name=autoMatch]:checked").click();
+        		}
+        	});
+    	#end
+
+        #if(adEnabled == true) 
+            $("#adCount option").attr("selected",false);
+            var colGlobal = Number(${col}), rowGlobal = Number(${row}), maxAdsCount = colGlobal * rowGlobal;
+            if(${adCount} >= maxAdsCount){
+                $("#adCount option").each(function(){
+                    if(this.parentNode.tagName == "SPAN"){
+                        $(this).unwrap();
+                    }
+                });
+                $("#adCount option").attr("selected",false);
+                $($("#adCount option").get(maxAdsCount-1)).attr("selected",true);
+            }else{
+                $("#adCount option").each(function(){
+                    if(this.parentNode.tagName == "SPAN"){
+                        $(this).unwrap();
+                    }
+                });
+                $("#adCount option").attr("selected",false);
+                $($("#adCount option").get(${adCount}-1)).attr("selected",true);
+            }
+        #else
+            $("#adEnabled1").attr("checked",false);
+            $("#adEnabled1").change();
+            //$("#adCount").parent().parent().hide();
+            //$("#userAgreement").parent().hide();
+        #end
+    
+    	$("input[name=fontBold]").val("${fontBold}");
+    	"${fontBold}" == "true" ? $("#fontBold").attr("checked","checked") : $("#fontBold").attr("checked",false);
+    	$("[name=listType]").val("${listType}");
+    	$("input[name=highlight]").val("${highlight}");
+    	"${highlight}" == "true" ? $("#highlight").attr("checked","checked") : $("#highlight").attr("checked",false);
+    	"${redirectMode}" == "js" ? $("#redirectMode").attr("checked","checked") : $("#redirectMode").attr("checked",false);
+    	$("input[name=fontUnderline]").val("${fontUnderline}");
+    	"${fontUnderline}" == "true" ? $("#fontUnderline").attr("checked","checked") : $("#fontUnderline").attr("checked",false);
+    	$("input[name=linkUnderline]").val("${linkUnderline}");
+    	"${linkUnderline}" == "true" ? $("#linkUnderline").attr("checked","checked") : $("#linkUnderline").attr("checked",false);
+    }
+    
+    //back to previous page
+    function back(){
+    	var pic = ${pic}, type = "${pluginType}", rootUrl = '${rootUrl}', backUrl = '',
+    	picStyle = 'get/static/pic', style = 'get/static/text', picStyleSlide = 'get/float/pic', styeSlide = 'get/float/text';
+    	if(pic == true && type == "fixed"){
+    		backUrl = rootUrl + picStyle;
+    	}else if(pic == true && type == "slide"){
+    		backUrl = rootUrl + picStyleSlide;
+    	}else if(pic == false && type == "fixed"){
+    		backUrl = rootUrl + style;
+    	}else if(pic == false && type == "slide"){
+    		backUrl = rootUrl + styeSlide;
+    	}
+    	window.location.href = backUrl + "?uuid=${uuid}";
+    }
+    
+    //count min width and show tip info
+    function minWidth(){
+    	var width = $("#width").val();
+    	width = width == "" ? 0 : width;
+    	var titleOffsetWidth = $("#hideSource").val() == "insite,trending" ? 114 : 35;
+    	var minWidth = ($("input[name=titleBold]").val() == "true" ? titleOffsetWidth + 8 : titleOffsetWidth) + ($("#titleFontSize").val() == "12" ? 12 : 14) * $("#promote").val().length;
+		if(${pic} == true){
+			var _col = parseInt($("#col").val()), _picSize = parseInt($("#picSize").val()), _padding = 12, _width = _col*(_picSize+_padding) + 12;
+			if(_width < minWidth){
+				_width = minWidth;
+			}	
+		}else{
+			var _width = 200;
+		}
+		if(parseInt(width) < _width){
+			Warn($("#widthWarn"),"建议最小宽度为" + _width + "px");
+			return false;
+		}else{
+			hideWarn($("#widthWarn"));
+			return true;
+		}
+    }
+    
+    //count min height and show tip info
+    function minHeight(){
+    	var height = $("#height").val();
+    	height = height == "" ? 0 : height;
+    	if(${pic} == true){
+			var _row = parseInt($("#row").val()), _picSize = parseInt($("#picSize").val()), _height = _row*(_picSize+80) + 48;
+		}else{
+			var _row = parseInt($("#row").val()), _picSize = parseInt($("#lineHeight").val()), _height = _row*_picSize + 51;
+		}
+		if(parseInt(height) < _height){
+			Warn($("#heightWarn"),"建议最小高度为" + _height + "px");
+			return false;
+		}else{
+			hideWarn($("#heightWarn"));
+			return true;
+		}
+    }
+    
+    //validator
+    function colorValidator(dom,input,value,defaultValue,info){
+    	var str = /#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/;
+    	if(!str.test($.trim(value))){
+    		$(dom.find("td").get(0)).html(info);
+    		dom.show();
+    		setTimeout(function(){dom.hide()},3000);
+    		input.get(0).setValue(defaultValue,true);
+    		return false;
+    	}else{
+    		dom.hide();
+    		return true;
+    	}
+    }
+    
+    function colorValidatorForPlugin(value){
+    	var str = /#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/;
+    	if(!str.test($.trim(value))){
+    		return false;
+    	}else{
+    		return true;
+    	}
+    }
+    
+    function intValidator(dom,input,value,defaultValue,info,flag){
+    	var str = /^[0-9]\d*$/;
+    	if(!str.test($.trim(value))){
+    		$(dom.find("td").get(0)).html(info);
+    		dom.show();
+    		if(!!flag){
+    			setTimeout(function(){dom.hide()},3000);
+    		}
+    		
+    		input.val(defaultValue);
+    		return false;
+    	}else{
+    		dom.hide();
+    		return true;
+    	}
+    }
+    
+    function urlValidator(dom,input,value,defaultValue,info){
+    	var str = '(http|https)://[A-Za-z0-9\./=\?%_~@#:;\+\-]+(gif|jpg|png)';
+    	if(!$.trim(value).match(str)){
+    		$(dom.find("td").get(0)).html(info);
+    		dom.show();
+    		setTimeout(function(){dom.hide()},3000);
+    		input.val(defaultValue);
+    		return false;
+    	}else{
+    		dom.hide();
+    		return true;
+    	}
+    }
+
+    function httpValidator(dom,info){
+        var str = '(http|https)://[A-Za-z0-9\./=\?%_~@#:;\+\-]';
+        if(!$.trim(dom.val()).match(str)){
+            dom.next().html(info);
+            dom.next().show();
+            return false;
+        }else{
+            dom.next().hide();
+            return true;
+        }
+    }
+    
+    function textValidator(dom,input,value,defaultValue,info){
+    	var str = /^[\u4e00-\u9fa5a-zA-Z0-9&%]+$/;
+    	if(!str.test($.trim(value))){
+    		$(dom.find("td").get(0)).html(info);
+    		dom.show();
+    		setTimeout(function(){dom.hide()},3000);
+    		input.val(defaultValue);
+    		return false;
+    	}else{
+    		dom.hide();
+    		return true;
+    	}
+    }
+    
+    //show wran div
+    function Warn(dom,info){
+    	dom.html(info);
+    	dom.show();
+    }
+    
+    //hide Warn div
+    function hideWarn(dom){
+    	dom.hide();
+    }
+    
+    function width180(){
+    	if(Number($("#col").val()) < 2 && ${pic} == true && $("#hideSource").val() == "insite,trending" && Number($("#width").val()) < 180 && Number($("#picSize").val()) < 150){
+			if($(".widthMode:checked").val() == "1"){
+				Warn($("#widthWarn"),"建议最小宽度为" + 180 + "px");
+			}else{
+				//$("#width").val("180");
+				if('${pluginType}' == "slide"){
+					loadPreview(215);
+				}else{
+					loadPreview(180);
+				}
+			}
+			return true;
+    	}else{
+    		return false;
+    	}
+    }
+    
+    function isAutoWidthMode(){
+    	if($(".widthMode:checked").val() == "1"){
+    		return false;
+    	}else{
+    		return true;
+    	}
+    }
+</script>

@@ -1,0 +1,192 @@
+<%@ var staticUrl: String %>
+<%@ var rootUrl: String %>
+
+<% attributes("title") = "乐知 数据中心" %>
+<% attributes("nav") = "navStats" %>
+<% attributes("backend") = "true" %>
+<%@ var uuid: String = "" %>
+<%@ var dateStart: String="" %>
+<%@ var urlCounts: Long = 0 %>
+<%@ var dateEnd: String="" %>
+<%@ var request: javax.servlet.http.HttpServletRequest%>
+<%@ var jsonDataShowups: String = "" %>
+<%@ var jsonDataClicks: String = "" %>
+<%@ var jsonDataClickToShowups: String = "" %>
+
+<%@ var link: String = "dashboard" %>
+<%@ var siteName: String = "" %>
+
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/user.css" />
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/plugin.css" />
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/calendar-date.css" />
+
+<style>
+    .pageBody, .pageBodyIndex {width:auto;margin:20px 15px;}
+    .pageCenter {margin-bottom:0px;}
+    .wid980 {width:auto;margin:0 15px;}
+</style>
+
+<div class="center">
+    <div class="breadCrumbs">
+        <span>当前位置：</span>
+        <a href="${rootUrl}">乐知推荐</a>
+        <span>&nbsp=&gt;&nbsp;</span>
+        <a href="${rootUrl}user/manage">管理中心</a>
+        <span>&nbsp=&gt;&nbsp;</span>
+        <a href="${rootUrl}user/stats/dashboard?uuid=${uuid}">数据中心</a>
+    </div>
+    <div class="pageBodyIndex">
+          <div>
+                <div class="left" style="margin-right:10px;line-height:32px;"><h3 style="font-size:16px;font-weight:bold;">&nbsp;&nbsp;网站：${siteName}</h3></div>
+                <div class="clear spacer15"></div>
+          </div>
+          <form id="viewData" name="viewData" action="dashboard" method="GET">
+              <div class="pageCenter">
+                  <div class="left">
+                      <a class="bButton orange" href="${rootUrl}user/stats/dashboard?uuid=${uuid}" style="padding:9px 15px;margin-right:5px;cursor:default;">数据中心</a>
+                      <a class="bButton" href="${rootUrl}user/stats/pages?uuid=${uuid}" style="padding:9px 15px;">页面数据</a>
+                  </div>
+                  <div class="clear spacer15"></div>
+                  <div class="clear spacer20" style="border-top:1px solid #ff7200;"></div>
+                  <div class="dataSearch" style="padding:0;">
+                      <!-- 文章标题<input type="text" name="aticleTitle" /> -->
+                      <input type="hidden" id="uuid" name="uuid" value="${uuid}" >
+                      <div class="left" style="line-height:20px;height:20px;">选择时间</div><input class="bTextbox date left" type="date" data-orig-type="date" id="datePickerStart" name="dateStart" value="${dateStart}" data-value="${dateStart}" min="" max=""><div class="left" style="padding:0px 10px;line-height:20px;height:20px;">to</div>
+                      <input class="bTextbox date left" type="date" data-orig-type="date" id="datePickerEnd" name="dateEnd" value="${dateEnd}" data-value="${dateEnd}" min="" max="">
+                      <input type="submit" value="搜索" class="left bButton" style="margin:0px;margin-left:20px;padding:2px 10px;" />
+                  </div>
+                  <div class="clear spacer30"></div>
+                
+	              <div class="moduleBack module-white-grey" style="margin:0;">
+                       <h3 style="display:inline;">文章收录数&nbsp;<span title="共有多少篇独立的文章被乐知收录" class="help-popup-img"></span>：</h3>
+					   <span style="display:inline;margin-right:16px;color:red;font-size:16px;">${"%,d".format(urlCounts)}</span>
+                       <div class="clear"></div>
+                  </div>
+	              <div class="clear spacer30"></div>
+	    
+        	      <h3>文章点击数据&nbsp;<span title="从该文章点出，进入另一篇文章的数量" class="help-popup-img"></span></h3>
+                  <div class="clear spacer20"></div>
+                  <div class="aticleShowData">
+                      <div id="divChartClicks" style="height:200px;width:100%">
+                          <div style="text-align:center;padding:10px 0;">
+                              <img title="..." alt="..." src="${staticUrl}images/ajaxLoad.gif"/>&nbsp;...
+                          </div>
+                      </div>
+                  </div>
+        	      <div class="clear spacer30"></div>
+        	      
+        	      <h3>推荐框展示数&nbsp;<span title="用户浏览该篇文章时，乐知推荐框在该文章中的打开数" class="help-popup-img"></span></h3>
+        	      <div class="clear spacer20"></div>
+                  <div class="aticleShowData">
+                      <div id="divChartShowups" style="height:200px;width:100%">
+                          <div style="text-align:center;padding:10px 0;">
+                              <img title="..." alt="..." src="${staticUrl}images/ajaxLoad.gif"/>&nbsp;...
+                          </div>
+                      </div>
+                  </div>
+                  <div class="clear spacer30"></div>
+        	      
+        	      <h3>点击/推荐框比例</h3>
+    	          <div class="clear spacer20"></div>
+                  <div class="aticleShowData"> 
+                  <div id="divChartClickToShowups" style="height:200px;width:100%">
+                      <div style="text-align:center;padding:10px 0;">
+                          <img title="..." alt="..." src="${staticUrl}images/ajaxLoad.gif"/>&nbsp;...
+                      </div>
+                  </div>
+              </div>
+              <div class="clear spacer30"></div>
+          </form>
+    </div>
+</div>
+
+<a id="qqservicetab" target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=800087176&amp;site=qq&amp;menu=yes"></a>
+
+<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/jquery.tools.toolbox.min.1.2.6.js"></script>
+<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/json2-min.js"></script>
+<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/ofc2-menu.js"></script>
+<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/jquer.autocomplete.pack.js"></script>
+
+<script type="text/javascript" charset="utf-8">
+    $(function(){
+        $("select[name=uuid]").change(function(){
+            $("#viewData").submit();
+        });
+        // init help popups
+        $("span.help-popup-img[title]").tooltip({
+            tipClass: 'helpPopupBoxes',
+            position: 'top right',
+            delay: 100,
+            layout: '<div><span></span></div>'
+        });
+    })
+</script>
+
+<script type="text/javascript" charset="utf-8">
+    var appendTS = "";
+    if ($.browser.msie) {// && $.browser.version=="6.0") {
+        var timestamp = Number(new Date()); // current time as number.. this is needed for IE6 support
+        appendTS = "?ts="+timestamp;
+    }
+    var ofcSource = '${staticUrl}ofc2/open-flash-chart.swf'+appendTS;
+    var expInsSource = '${staticUrl}ofc2/expressInstall.swf';
+    var saveImageMsg = '保存图像...';
+    var loadingMsg = '加载中...';
+    var currentPath = window.location.pathname;
+
+    $(function() {
+        // init date pickers
+        var fDay = 1;
+        $.tools.dateinput.localize("zh", {
+            months: "一月,二月,三月,四月,五月,六月,七月,八月,九月,十月,十一月,十二月",shortMonths: "一,二,三,四,五,六,七,八,九,十,十一,十二",days: "星期日,星期一,星期二,星期三,星期四,星期五,星期六",shortDays: "周日,周一,周二,周三,周四,周五,周六"
+        });
+
+        $(":date").dateinput({ trigger: true, format: 'yyyy-mm-dd', lang: 'zh', firstDay: fDay });
+        $(":date").bind("onShow onHide", function()  {
+            $(this).parent().toggleClass("active"); 
+        });
+        if ($(":date:first").length != 0) {
+            $(":date:first").data("dateinput").change(function() {
+                // we use it's value for the seconds input min option
+                $(":date:last").data("dateinput").setMin(this.getValue(), true);
+            });
+            $(":date:last").data("dateinput").change(function() {
+                // we use it's value for the first input max option
+                $(":date:first").data("dateinput").setMax(this.getValue(), true);
+            });
+        }
+        
+        $("#pageStatsTable tr").mouseover(function(){
+            $(this).addClass("pageStatSel");
+        }).mouseout(function(){
+            $(this).removeClass("pageStatSel");
+        });
+    });
+</script>
+
+<script type="text/javascript" charset="utf-8">
+    var embedOptionsShowups = {id:'websiteChartShowups',src:ofcSource,version:[9,0],wmode:'opaque',expressInstall:expInsSource};
+    var embedOptionsClicks = {id:'websiteChartClicks',src:ofcSource,version:[9,0],wmode:'opaque',expressInstall:expInsSource};
+    var embedOptionsClickToShowups = {id:'websiteChartClickToShowups',src:ofcSource,version:[9,0],wmode:'opaque',expressInstall:expInsSource};
+
+    var flashConfigurationShowups = {"id":"websiteChartShowups","get-data":"getOfcDataShowups","save_image_message":saveImageMsg,"loading":loadingMsg};
+    var flashConfigurationClicks = {"id":"websiteChartClicks","get-data":"getOfcDataClicks","save_image_message":saveImageMsg,"loading":loadingMsg};
+    var flashConfigurationClickToShowups = {"id":"websiteChartClickToShowups","get-data":"getOfcDataClickToShowups","save_image_message":saveImageMsg,"loading":loadingMsg};
+
+    function getOfcDataShowups() {
+        return "${unescape(jsonDataShowups)}".replace(/'/g, "\"");
+    }
+    function getOfcDataClicks() {
+        return "${unescape(jsonDataClicks)}".replace(/'/g, "\"");
+    }
+	function getOfcDataClickToShowups() {
+        return "${unescape(jsonDataClickToShowups)}".replace(/'/g, "\"");
+    }
+	
+    $(function() {
+        // embed flash elements
+        flashembed("divChartShowups", embedOptionsShowups, flashConfigurationShowups);
+        flashembed("divChartClicks", embedOptionsClicks, flashConfigurationClicks);
+		flashembed("divChartClickToShowups", embedOptionsClickToShowups, flashConfigurationClickToShowups);
+    });
+</script>

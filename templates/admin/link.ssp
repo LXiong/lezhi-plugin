@@ -1,0 +1,136 @@
+<%@ var staticUrl: String %>
+<%@ var rootUrl: String %>
+<% attributes("title") = "乐知 友情链接" %>
+<% attributes("nav") = "navAdmin" %>
+<% attributes("backend") = "true" %>
+<%@ var links: List[com.buzzinate.lezhi.model.ExchangeLink.ExchangeLink] = null%>
+
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/user.css" />
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/plugin.css" />
+<style>
+    .pageBody, .pageBodyIndex {width:auto;margin:20px 15px;}
+    .pageCenter {margin-bottom:0px;}
+    .wid980 {width:auto;margin:0 15px;}
+    .bTable2 td, .bTable2 th {text-align:right;}
+    .error{background:yellow;}
+</style>
+
+<div class="center">
+    <div class="breadCrumbs">
+        <span>当前位置：</span>
+        <a href="${rootUrl}">乐知推荐</a>
+        <span>&nbsp=&gt;&nbsp;</span>
+        <a href="${rootUrl}admin/dashboard">乐知管理</a>
+        <span>&nbsp=&gt;&nbsp;</span>
+        <a href="${rootUrl}admin/link">友情链接</a>
+    </div>
+    <div class="pageBodyIndex">
+        <div class="pageCenter">
+            <div>
+                <div style="line-height:32px;"><h3 style="font-size:16px;font-weight:bold;">友情链接</h3></div>
+                <div class="clear spacer15"></div>
+            </div>
+            <div class="clear spacer20" style="border-top:1px solid #ff7200;"></div>
+            
+            <table class="bTable2">
+                <tr>
+                    <th style="text-align:left;">序号</th>
+                    <th style="text-align:left;">标题</th>
+                    <th style="text-align:left;">链接</th>
+                    <th style="text-align:center;">操作</th>
+                </tr>
+
+                #for(i <- 0 until links.size)
+                    #{
+                        var _background = "#FFF";
+                        if(i % 2 == 0) {
+                            _background = "#F2F6F9";
+                        }
+                    }#
+	                <tr>
+	                    <td style="text-align:left;background:${_background};"><input class="bTextbox linkOrder" type="text" value="${links(i).order}" style="width:60px;" /></td>
+	                    <td style="text-align:left;background:${_background};"><input class="bTextbox" type="text" value="${links(i).title}" /></td>
+	                    <td style="text-align:left;background:${_background};"><input class="bTextbox" type="text" value="${links(i).url}" style="width:200px;" /></td>
+	                    <td style="text-align:center;background:${_background};"><a href="${rootUrl}admin/link/del?url=${links(i).url}" class="delete bLinkU" />删除</a></td>
+	                </tr>
+                #end
+                <tr><td colspan="4" style="text-align:left;padding-top:20px;border-bottom:0;background:#fff !important;"><h3 style="font-weight:bold;">新增</h3></td></tr>
+                <tr>
+                    <td style="text-align:left;border-bottom:0;background:#fff !important;"><input class="bTextbox" type="text" id="order" value="" style="width:60px;" /></td>
+                    <td style="text-align:left;border-bottom:0;background:#fff !important;"><input class="bTextbox" type="text" id="title" name="title" /></td>
+                    <td style="text-align:left;border-bottom:0;background:#fff !important;"><input class="bTextbox" type="text" id="url" name="url" style="width:200px;" /><span style="color:#666;margin-left:5px;">链接要以http或https开头,并且长度不能超过256个字符</span></td>
+                    <td style="text-align:center;border-bottom:0;background:#fff !important;"><a href="javascript:void(0)" id="add" class="bLinkU" />新增</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+    $(function(){
+        $("#add").click(function(){
+            hideStatusMessage();
+            var order = $("#order").val(), title = $("#title").val(), url = $("#url").val();
+            if(!intValidator($("#order"),parseInt(order)) || !linkOrderValidator($("#order"),order) || !textValidator($("#title"),title) || !urlValidator($("#url"),url)){
+                displayStatusMessage("序列号不能重复，请重新填写");
+                return false;
+            }
+            window.location.href = "${rootUrl}admin/link/update?order=" + order + "&title=" + title + "&url=" + url;
+        });
+        $(".edit").click(function(){
+            hideStatusMessage();
+            var orderInput = $($(this).parent().parent().find("input").get(0)), order = orderInput.val(), titleInput = $($(this).parent().parent().find("input").get(1)), title = titleInput.val(), urlInput = $($(this).parent().parent().find("input").get(2)), url = urlInput.val();
+            if(!intValidator(orderInput,parseInt(order)) || !linkOrderValidator(orderInput,order) || !textValidator(titleInput,title) || !urlValidator(urlInput,url)){
+                displayStatusMessage("序列号不能重复，请重新填写.");
+                return false;
+            }
+            window.location.href = "${rootUrl}admin/link/update?order=" + order + "&title=" + title + "&url=" + url;
+        });
+    });
+    
+    function linkOrderValidator(dom,value) {
+        var linkOrders = [];
+        $(".bTable2").find(".linkOrder").each(function() {
+            linkOrders.push($(this).val());
+        });
+        if (linkOrders.indexOf(value) >= 0) {
+            dom.addClass("error");
+            return false;
+        }
+        dom.removeClass("error");
+        return true;
+    }
+    
+    function urlValidator(dom,value){
+        var str = '(http|https)://[A-Za-z0-9\./=\?%_~@#:;\+\-]*';
+
+        if(!$.trim(value).match(str)){
+            dom.addClass("error");
+            return false;
+        }
+        dom.removeClass("error");
+        return true;
+    }
+    function textValidator(dom,value){
+        var str = /^[\u4e00-\u9fa5a-zA-Z0-9&%]+$/;
+        if(!str.test($.trim(value))){
+            dom.addClass("error");
+            return false;
+        }
+        dom.removeClass("error");
+        return true;
+    }
+    function intValidator(dom,value){
+        var str = /^[0-9]\d*$/;
+        if(!str.test($.trim(value))){
+            dom.addClass("error");
+            return false;
+        }
+        if (value == 0) {
+            dom.addClass("error");
+            return false;
+        }
+        dom.removeClass("error");
+        return true;
+    }
+</script>

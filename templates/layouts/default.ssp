@@ -1,0 +1,191 @@
+<%@ var staticUrl: String %>
+<%@ var rootUrl: String %>
+<%@ var bshareAuthServer: String %>
+<%@ var bshareAuthClient: String %>
+<%@ var body: String %>
+<%@ var title: String = "个性化阅读，个性化推荐—国内最精准，最受欢迎的个性化阅读类应用软件" %>
+<%@ var description: String = "bShare乐知是目前最强大，最精准的个性化阅读类应用软件，登录乐知便可以立即获取最精准的个性化的喜好信息。" %>
+<%@ var nav: String = "navIndex" %>
+<%@ var backend: String = "false" %>
+<%@ var uuid: String = "nologin" %>
+<%@ var adEnabled: Boolean = false %>
+<%@ var request: javax.servlet.http.HttpServletRequest%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="Content-Language" content="UTF-8">
+        <meta name="author" content="Buzzinate">
+    
+        <title>${title}</title>
+        <meta name="description" content="bShare乐知是目前最强大，最精准的个性化阅读类应用软件，登录乐知便可以立即获取最精准的个性化的喜好信息。"/>
+        <meta name="keywords" content="个性化阅读，个性化推荐，阅读类软件" />
+        
+        <link rel="icon" href="http://lezhi.me/favicon.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="http://lezhi.me/favicon.ico" type="image/x-icon" />
+        <link rel="stylesheet" type="text/css" href="${staticUrl}css/common.css?t=20130808.css" />
+    	<link rel="stylesheet" type="text/css" href="${staticUrl}css/lezhi.css?t=20130808.css" />
+        <link rel="stylesheet" type="text/css" href="${staticUrl}css/lzWeb.css" />
+        <link rel="stylesheet" type="text/css" href="${staticUrl}css/plugin.css" />
+    	<script type="text/javascript" charset="utf-8">
+    		var BSHARE_STATIC_HOST = "${staticUrl}"; // used by unitpngfix.js
+    	</script>
+    
+    	<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/jquery-1.7.min.js"></script>
+    	<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/jquery.tools.ui.min.1.2.6.js"></script>
+    	<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/bgiframe.min.js"></script>
+    	<script type="text/javascript" charset="utf-8" src="${staticUrl}js/common/bshare-web-common.js"></script>
+    	<script type="text/javascript" charset="utf-8" src="${staticUrl}js/login/ajaxLogout.js"></script>
+    	<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/jquery.tools.forms.min.1.2.6.js"></script>
+    	<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/webtoolkit.sha1.js"></script>
+    	<!--[if lt IE 7]> 
+    	<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/unitpngfix.js"></script>
+    	<![endif]-->
+    </head>
+    <body>
+    <div style="height:100%;overflow:hidden;">
+    	<div class="web_lezhi_products">
+    		<div class="web_lezhi_productsList wid980 relative">
+    		    <ul>
+    			    <li><a href="http://mobile.lezhi.me" target="_blank">乐知手机</a></li>
+    	            <li><a href="http://www.bshare.cn" target="_blank">bShare插件</a></li>
+                    <li><a href="http://points.bshare.cn" target="_blank">bShare微积分</a></li>  
+    			    <li><a href="${rootUrl}" class="sel">乐知推荐</a></li>
+    			</ul>
+    		</div>
+    	</div>
+    	<div class="web_lezhi_top">
+    	    <div class="wid980 relative">
+    			<a href="${rootUrl}" name="top" class="lezhi_logo"><img src="${staticUrl}images/webLz/logoWeb.png"/></a>
+    			<div class="n_lezhi_menu">           
+    				<ul>	
+    					<li><a href="
+                        #if (request.getAttribute("USER_NAME") != null)
+                        ${rootUrl}user/manage
+                        #else
+                        ${rootUrl}get?uuid=${uuid}
+                        #end
+                        " alt="" #if(nav == "get")class="sel" #end>安装插件</a></li>
+    					<li><a href="${rootUrl}help" alt="" #if(nav == "navHelp")class="sel" #end>帮助中心</a></li>
+    					<li><a href="http://blog.lezhi.me" alt="" target="_blank">乐知博客</a></li>
+        			    #if (request.getAttribute("USER_NAME") != null)
+        			        #if (request.getAttribute("IS_ADMIN") != null)
+                                <li class="admin"><a href="${rootUrl}admin/stats/dashboard" #if(nav == "navAdmin")class="sel" #end>乐知管理</a></li>
+                            #end
+                            <li><a href="${rootUrl}user/manage" alt="" #if(nav == "navUser")class="sel" #end>管理中心</a></li>
+                            #if(backend == "true")
+                                #if(adEnabled == true)
+                                <li><a href="http://admax.buzzinate.com/publisher/home" alt="" target="_blank">广告管理</a></li>
+                                #end
+                            #end
+                        #end
+                    </ul>
+                </div>  
+                
+    			<div class="web_lezhi_topMenu_right">
+    				<div class="web_lezhi_topMenu_right_border">
+    					<!-- login -->
+    					<div id="mainTopNavDiv">
+    						#if (request.getAttribute("USER_NAME") == null)
+        						<div class="lezhiLogin" style="text-align:right;">
+        							<a href="javascript:void(0)" id="lzRegister" onclick="$('#registerPopup').click();$('#popupRegisterLink').click();" class="reg" style="color:#e8e8e8;display:inline;line-height:45px;top:0;text-decoration:none;">免费注册</a>
+        							<a href="javascript:void(0)" id="lzLogin" rel="#dialogRegister" onclick="$('#registerPopup').click();$('#popupLoginLink').click();" style="color:#e8e8e8;display:inline;font-weight:bold;line-height:45px;top:0;text-decoration:none;">登录</a>
+        						</div>
+    						#else
+        						<div id="userInfo" style="color:#e8e8e8;">
+        						   <span title="${request.getAttribute("USER_NAME")}">Hi,&nbsp;${if(request.getAttribute("USER_NAME").toString().length>20) request.getAttribute("USER_NAME").toString().substring(0,20)+"..." else request.getAttribute("USER_NAME")}!</span>
+        						   <div class="clear"></div>
+        						   <a id="lezhi_logout" href="javascript:void(0)" title="注销${request.getAttribute("USER_NAME")}" style="text-decoration:none;">注销</a>
+        						</div>
+    						#end
+    					</div>
+    					<!-- top -->
+    				</div>
+    			</div>
+    		</div>
+    	</div>
+    	
+    	${unescape(body)}
+    	
+    	<!-- footer -->
+    	<div class="footer">
+    		<div class="break_line"></div>
+    		<div class="website">
+    			<a href="http://www.lezhi.me" target="_blank">首页</a>|
+    			<a href="http://blog.lezhi.me/" target="_blank">关于我们</a>|
+    			<a href="http://www.bshare.cn/career" target="_blank">诚聘英才</a>|
+    			<a href="http://www.bshare.cn/contact" target="_blank">联系我们</a>|
+    			<a href="http://www.bshare.cn/privacy" target="_blank">隐私条款</a>|
+    			<a href="http://www.bshare.cn/feedback" target="_blank">问题反馈</a>
+    		</div>
+    		<div class="clear spacer15"></div>
+    		
+    		<div>
+    			<span><a target="_blank" title="沪ICP备09026724号" href="http://www.miibeian.gov.cn/" style="font-size:10px;">沪ICP备09026724号</a></span>
+    			<div class="clear spacer2"></div>
+    			<span style="font-size:10px;">&copy; 2009-<%=java.util.Calendar.getInstance().get(java.util.Calendar.YEAR).toString()%> <a style="font-size:10px;" title="擘纳" href="http://www.buzzinate.com" class="bLinkOrangeU" target="_blank">擘纳</a>（上海）信息科技有限公司。版权所有。</span>
+    			<div class="clear spacer15"></div>
+    			<div style="text-align: center;">
+    				<a target="_blank" href="http://www.sgs.gov.cn/lz/licenseLink.do?method=licenceView&amp;entyId=20120703161312773"><img src="http://static.bshare.cn/images/sgs_license.gif" border="0"></a>
+    			</div>
+    		</div>
+    	    <div class="right" style="margin:-11px 15px 0 0;"><a target="_blank" title="Buzzinate" href="http://www.buzzinate.com/"><img alt="a buzzinate company" title="Buzzinate" src="http://static.bshare.cn/images/buzzinate-company-grey.png"></a></div>
+        </div>
+    </div>
+    
+    #if (request.getAttribute("USER_NAME") == null)
+        <% layout("common/registerPop.ssp") {%><%}%>
+    #end
+    <div id="notifications" class="hidden" style="display:none;">
+    	<div class="notification-bar-container">
+    		<div class="notification-bar-bkg" style="background-color:#fff8cc;height: 25px;"></div>
+    		<div class="notification-bar">
+    			<div class="notification-bar-contents">
+    				<div class="notification-msg" style="color:#333;font-size:20px;font-weight:bold;"></div>
+    			</div>
+    		</div>
+    	</div>
+    </div>
+    <script type="text/javascript" charset="utf-8">
+        $(function(){
+            $("#lezhi_logout").live("click", function(e) {
+                passport_ajax_logout("${bshareAuthServer}", "${bshareAuthClient}");
+                setTimeout(function(){window.location.href='/logout';}, 100);
+                return false;
+            });
+        });
+    
+        function afterLogin(name) {
+            // redirect to user manage page
+            if(window.location.href.indexOf("customize") != -1){
+                window.location.href = window.location.href + "&adEnabled=true";
+            }else{
+                window.location.href = window.location.href;
+            }
+        	
+        }
+        
+        function failLogin() {
+            passport_ajax_logout("${bshareAuthServer}");
+            displayStatusMessage('登录没有成功，请稍后重新登录');
+        }
+        
+        function failRegister() {
+            passport_ajax_logout("${bshareAuthServer}");
+            displayStatusMessage('注册没有成功，请稍后重新注册');
+        }
+    </script>
+    <script type="text/javascript" charset="utf-8">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-34918367-1']);
+        _gaq.push(['_trackPageview']);
+        
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,14 @@
+/*notifications*/
+#notifications {position:fixed;top:0;left:0;width:100%;overflow:visible;z-index:10000;}
+.notification-bar-container {position:relative;display:block;width:100%;overflow:visible;text-align:center;}
+.notification-bar-bkg {display:block;height:23px;background-color:#fff8cc;opacity:.85;-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=85)";filter:alpha(opacity=85);position:static;}
+.notification-bar{display:block;position:absolute;top:0;left:0;width:100%;cursor:pointer;}
+.notification-bar, .notification-bar-bkg {padding:1.2em 0;}
+.notification-bar-contents{margin:0 auto;text-align:center;position:relative;}
+* html #notifications { position: absolute; }
+/*
+
+/* qq service */
+a#qqservicetab { display: block; width: 95px; height: 95px; background: url(http://static.bshare.cn/images/tab-service-corner-zh.png) no-repeat 7px 28px; curosr: pointer; position: fixed; bottom: 0; right: 0; z-index: 10000; transition: 0.2s; -moz-transition: 0.2s; -webkit-transition: 0.2s; -o-transition: 0.2s;}
+a#qqservicetab:hover { background:url(http://static.bshare.cn/images/tab-service-corner-zh.png) no-repeat 0 0;}
+* html a#qqservicetab { position: absolute; top:expression(documentElement.scrollTop + documentElement.clientHeight-this.offsetHeight);}

@@ -1,0 +1,741 @@
+<%@ var staticUrl: String %>
+<%@ var rootUrl: String %>
+
+<% attributes("title") = "乐知 内容管理" %>
+<% attributes("nav") = "navUser" %>
+<% attributes("backend") = "true" %>
+<%@ var err: (Int, String) = (-1,"") %>
+<%@ var uuid: String = "" %>
+<%@ var status: String = "" %>
+<%@ var articleTitle: String = "" %>
+<%@ var pagination: Int = 0 %>
+<%@ var pageSize: Int =0 %>
+<%@ var totalSize: Int = 0 %>
+<%@ var flag: String = "next" %>
+<%@ var showPrevious: Boolean = false %>
+<%@ var showNext: Boolean = false %>
+<%@ var pageDatas: Seq[com.buzzinate.lezhi.bean.PageData] = null%>
+<%@ var request: javax.servlet.http.HttpServletRequest%>
+<%@ var link: String = "listPages" %>
+<%@ var siteName: String = "" %>
+
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/user.css" />
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/plugin.css" />
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/uploadify.css" />
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/calendar-date.css" />
+
+<style>
+    .pageBody, .pageBodyIndex {width:auto;margin:20px 15px;}
+    .pageCenter {margin-bottom:0px;}
+    .wid980 {width:auto;margin:0 15px;}
+    #keyWordList li { text-align:left !important; width: auto !important; margin: 5px 2px !important; padding:3px 5px; background:#eee; float: left; }
+</style>
+
+<div class="center">
+    <div class="breadCrumbs">
+        <span>当前位置：</span>
+        <a href="${rootUrl}">乐知推荐</a>
+        <span>&nbsp=&gt;&nbsp;</span>
+        <a href="${rootUrl}user/manage">管理中心</a>
+        <span>&nbsp=&gt;&nbsp;</span>
+        <a href="${rootUrl}user/content?uuid=${uuid}">内容管理</a>
+    </div>
+	<div class="pageBodyIndex">
+		<div class="pageCenter">
+			<div>
+                <div class="left" style="margin-right:10px;line-height:32px;"><h3 style="font-size:16px;font-weight:bold;">网站：${siteName}</h3></div>
+                <div class="clear spacer15"></div>
+            </div>
+			<form id="listData" name="listData" action="content" method="GET">
+				<div class="clear spacer20" style="border-top:1px solid #ff7200;"></div>
+				<div class="dataSearch" style="margin:10px 0;padding:0;">
+				    <div class="left" style="margin-right:16px;"><span style="vertical-align:text-top\9;">文章标题</span>&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="articleTitle" value="${articleTitle}" class="wid100 bInput" style="width:150px;" /></div>
+				    <div class="left" style="margin-right:16px;"><span style="vertical-align:text-top\9;">地址</span>&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" name="url" class="wid100 bInput" style="width:300px;" /></div>
+				    <div class="left" style="margin-right:16px;"><span style="vertical-align:text-top\9;">状态</span>&nbsp;&nbsp;&nbsp;&nbsp;<select id="searchStatus" name="status" class="bInput select"><option value="all" #if(status == "all") selected="selected" #end>全部</option><option value="hidden" #if(status == "hidden") selected="selected" #end>隐藏</option><option value="prior" #if(status == "prior") selected="selected" #end>优先</option></select></div>
+				    <input id="searchBtn" type="button" value="检索" class="left bButton" style="padding:8px 15px;margin:0;" />
+				    <input id="uuid" type="hidden" name="uuid" value="${uuid}" />
+				    <div class="clear"></div>
+				</div>
+	        </form>
+				
+		    <table id="artileList" class="bTable2">
+				<tr>
+                    <th><input type="checkbox" id="allSelArticles" /> 全选</th>
+					<th style="width:160px;text-align:center;">图片</th>
+					<th>标题</th>
+					<th style="text-align:center;">状态</th>
+					<th style="text-align:center;">操作</th>
+					<th>黑名单</th>
+				</tr>
+				#if(pageDatas != null && pageDatas.size > 0)
+					#for(i <- 0 until pageDatas.size)
+					    #{
+                            var _background = "#FFF";
+                            if(i % 2 == 0) {
+                                _background = "#F2F6F9";
+                            }
+                        }#
+        				<tr picUrl='${pageDatas(i).imgUrls}' keywords='${pageDatas(i).keywords}' picTit='${pageDatas(i).imgTitles}'>
+                            <td style="text-align:center;background:${_background}">
+                                <input type="checkbox" name="articleLine" />
+                            </td>
+        					<td style="text-align:center;background:${_background}">
+        					    <img alt="" style="width:88px;height:88px;"
+            						#if (pageDatas(i).metadata.thumbnail == "")
+            							src="${staticUrl}plugin/img/default.gif"
+            						#else
+            							src="${pageDatas(i).metadata.thumbnail}"
+            						#end
+        						/>
+        					</td>
+        					<td style="text-align:left;background:${_background}">
+        						<h5 title="${pageDatas(i).metadata.title}">${if(pageDatas(i).metadata.title.length>30) pageDatas(i).metadata.title.substring(0,30)+"..." else pageDatas(i).metadata.title}</h5>
+        						<div class="spacer5"></div>
+        						<p title="${pageDatas(i).metadata.url}" class="listurl"><a class="bLinkU" href="${pageDatas(i).metadata.url}" target="_blank">${if(pageDatas(i).metadata.url.length>30) pageDatas(i).metadata.url.substring(0,30)+"..." else pageDatas(i).metadata.url}</a></p>
+        						<div class="spacer5"></div>
+        						<p class="key"><span>关键词：</span><span class="blKeywords" title="${pageDatas(i).keywords}">${if(pageDatas(i).keywords.length>30) pageDatas(i).keywords.substring(0,30)+"..." else pageDatas(i).keywords}</span></p>
+        						<!--<p class="key"><span>黑名单关键词：</span><span title="${pageDatas(i).metadata.keywords}">${if(pageDatas(i).metadata.keywords.length>30) pageDatas(i).metadata.keywords.substring(0,30)+"..." else pageDatas(i).metadata.keywords}</span></p>-->
+        					</td>
+        					<td style="text-align:center;background:${_background}">
+        					    <select class="lzStatusChange bInput select">
+        					        <option value="normal" #if(pageDatas(i).metadata.status == "normal") selected="selected" #end>正常</option>
+        					        <option value="hidden" #if(pageDatas(i).metadata.status == "hidden") selected="selected" #end>隐藏</option>
+        					        <option value="prior" #if(pageDatas(i).metadata.status == "prior") selected="selected" #end>优先</option>
+        					    </select>
+        					</td>
+        					<td style="text-align:center;background:${_background}">
+        						<a href="javascript:void(0)" class="cPic bLinkU">更改图片</a>
+        						<!--a href="javascript:void(0)" class="cTitle bLinkU">更改标题</a-->
+        						<a href="javascript:void(0)" class="cReset bLinkU">重置</a>
+        					</td>
+        					<td style="text-align:left;background:${_background}">
+        					    <a href="javascript:void(0)" class="cKeyWord bLinkU">关键词</a>
+        					</td>
+        			    </tr>
+				    #end
+                #else 
+                    <tr>
+                        <td colspan="6" class="no-data">
+							#if(err._1 == 1)
+								${err._2}
+							#else
+						        暂无数据
+							#end
+						</td>
+					</tr>
+                #end
+			</table>
+            <div class="clear spacer10"></div>
+            #if(pageDatas != null && pageDatas.size > 0)
+                <div class="left"><input type="button" value="删除" id="deleteButton" class="bButton" style="padding:5px 10px;" /></div>&nbsp;&nbsp;
+                <a class="bButton" style="padding:7px 10px;" href="${rootUrl}user/manage">&lt;&lt;&nbsp;返回管理中心</a>
+                <div id="pager" class="pagination right"></div>
+            #end
+			<div class="clear"></div>
+			
+			
+		</div>
+		<div class="clear"></div>	
+	</div>
+	<div class="clear"></div> 
+</div>
+<div class="clear"></div>  
+
+<a id="qqservicetab" target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=800087176&amp;site=qq&amp;menu=yes"></a>
+
+<div id="notifications" class="hidden" style="display: none; ">
+	<div class="notification-bar-container">
+		<div class="notification-bar-bkg" style="background-image: initial; background-attachment: initial; background-origin: initial; background-clip: initial; background-color: rgb(255, 248, 204); height: 25px; background-position: initial initial; background-repeat: initial initial; "></div>
+		<div class="notification-bar">
+			<div class="notification-bar-contents">
+				<div class="notification-msg heading1" style="color: rgb(51, 51, 51); font-size:20px; font-weight:bold;"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="maskDiv" class="maskDiv"></div>
+<div id="lzWindowPop" class="lzWindowPop">
+	<div id="closeBtn" class="closeBtn"></div>
+	<div id="lzWindowPopDiv"></div>
+</div>
+<div id="lzResetDiv" style="display:none;">
+	<div class="reset" style="font-size:16px;">确定要将此内容重置？</div>
+	<div class="lezhiGetCodeBtn" style="text-align:center;">
+		<input id="resetCol" type="submit" value="保存" class="bButton orange" style="font-size:14px;padding:6px 22px;padding:6px 10px\9; font-weight:bold;background:#00c3b7\9;" />&nbsp;&nbsp;
+		<input type="button" class="bButton backBtn" value="返回" style="font-size:14px;padding:6px 22px;padding:6px 10px\9; font-weight:bold;background:#cbcbcb\9;" />
+	</div>
+</div>
+<div id="lzDeleteSelected" style="display:none;">
+    <div class="reset" style="font-size:16px;">确定要将此内容删除？</div>
+    <div class="lezhiGetCodeBtn" style="text-align:center;">
+        <input id="deleteLine" type="submit" value="确定" class="lightOrangeButton" style="font-size:14px;padding:6px 22px;padding:6px 10px\9; font-weight:bold;background:#00c3b7\9;" />&nbsp;&nbsp;
+        <input type="button" class="bButton backBtn" value="返回" style="font-size:14px;padding:6px 22px;padding:6px 10px\9; font-weight:bold;background:#cbcbcb\9;" />
+    </div>
+</div>
+<div id="lzModifyTitle" style="display:none;">
+	<div class="reset">输入标题<input id="lzEditTitle" type="text" style="width:300px;margin-left:35px;" /></div>
+	<div class="lezhiGetCodeBtn" style="text-align:center;">
+		<input id="saveTitle" type="submit" value="保存" class="bButton orange" style="font-size:14px;padding:6px 22px;padding:6px 10px\9; font-weight:bold;background:#00c3b7\9;" />&nbsp;&nbsp;
+		<input type="button" class="bButton backBtn" value="返回" style="font-size:14px;padding:6px 22px;padding:6px 10px\9; font-weight:bold;background:#cbcbcb\9;" />
+	</div>
+</div>
+<div id="lzPicPop" class="lzWindowPop" style="display:none;">
+	<div id="closePicBtn" class="closeBtn"></div>
+	<div id="lzPicDiv" style="width:576px;">
+		<div class="picSelect">
+		    <div class="clear spacer20"></div>
+			<div class="picSelTit" style="font-size:16px;">文章内图片选择</div>
+			<div class="picList">
+				<ul id="picList"></ul>
+			</div>
+			<div class="clear spacer10"></div>
+			<p class="picTit">网络图片URL地址（也可以手动输入图片地址）:</p>
+			<p style="text-align:left;">
+			    <input id="lzPicUrl" type="text" class="bInput" style="width:400px;margin-right:10px;vertical-align:top;height:20px;" />
+			    <input type="file" name="uploadify" id="uploadify" />
+			</p>
+		</div>
+		<div class="lezhiGetCodeBtn" style="text-align:center;">
+			<input id="savePicUrl" type="submit" value="保存" class="bButton orange" style="font-size:14px;padding:6px 22px;padding:6px 10px\9; font-weight:bold;background:#00c3b7\9;" />&nbsp;&nbsp;
+			<input type="button" class="bButton backBtn" value="返回" style="font-size:14px;padding:6px 22px;padding:6px 10px\9; font-weight:bold;background:#cbcbcb\9;" />
+		</div>
+	</div>
+</div>
+<div id="lzModifyKeyWord" style="display:none;">
+    <div style="width:500px;">
+        <div class="clear spacer20"></div>
+        <div class="picSelTit" style="font-size:16px;">关键词</div>
+    	<div class="picSelect" style="text-align:left;">
+    	    <input type="text" id="keyWordTB" class="bInput" style="width:200px;" />&nbsp;&nbsp;
+    	    <input id="addKeyWord" type="button" class="bButton" style="padding:7px 10px;" value="添加" />
+    	</div>
+    	<div class="picSelTit" style="margin-bottom:5px;">已经添加关键词：</div>
+    	<div class="keyWordList" style="border:1px solid #f8f8f8;padding:10px;width:auto;">
+    		<ul id="keyWordList"></ul>
+    		<div class="clear"></div>
+    	</div>
+    	<div class="clear spacer20"></div>
+    	<div class="lezhiGetCodeBtn" style="text-align:center;">
+    		<input id="saveKeyWords" type="submit" value="保存" class="bButton orange" style="font-size:14px;padding:6px 22px;padding:6px 10px\9; font-weight:bold;background:#00c3b7\9;" />&nbsp;&nbsp;
+    		<input type="button" class="bButton backBtn" value="返回" style="font-size:14px;padding:6px 22px;padding:6px 10px\9; font-weight:bold;background:#cbcbcb\9;" />
+    	</div>
+    </div>
+</div>
+
+<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/jquery.pagination.js"></script>
+<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/jquery.tools.toolbox.min.1.2.6.js"></script>
+<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/swfobject.js"></script>
+<script type="text/javascript" charset="utf-8" src="${staticUrl}js/tools/jquery.uploadify-3.1.min.js"></script>
+<script type="text/javascript" charset="utf-8">
+    $(function(){
+    	#if(err._1 == 0)
+    	   displayStatusMessage('配置保存成功');
+    	#end
+	
+	    // init date pickers
+        var fDay = 1;
+        $.tools.dateinput.localize("zh", {
+            months: "一月,二月,三月,四月,五月,六月,七月,八月,九月,十月,十一月,十二月",shortMonths: "一,二,三,四,五,六,七,八,九,十,十一,十二",days: "星期日,星期一,星期二,星期三,星期四,星期五,星期六",shortDays: "周日,周一,周二,周三,周四,周五,周六"
+        });
+
+        $(":date").dateinput({ trigger: true, format: 'yyyy-mm-dd', lang: 'zh', firstDay: fDay });
+        $(":date").bind("onShow onHide", function()  {
+            $(this).parent().toggleClass("active"); 
+        });
+        if ($(":date:first").length != 0) {
+            $(":date:first").data("dateinput").change(function() {
+                // we use it's value for the seconds input min option
+                $(":date:last").data("dateinput").setMin(this.getValue(), true);
+            });
+            $(":date:last").data("dateinput").change(function() {
+                // we use it's value for the first input max option
+                $(":date:first").data("dateinput").setMax(this.getValue(), true);
+            });
+        }
+
+    	// mask
+    	function maskShow(){
+    		var _hei = $(document).height();
+    		$("#maskDiv").css({height:_hei+"px"});
+    		$("#maskDiv").show();
+    	}
+
+    	function maskHide(){
+    		$("#maskDiv").hide();
+    	}
+		
+    	// action function here
+    	$("#closeBtn").live("click",function() {
+    		$("#lzWindowPop").removeClass("showPop");
+    		$("#lzWindowPopDiv").html("");
+    		$("select").show();
+    		maskHide();
+    		
+    	});
+
+    	$("#closePicBtn").live("click",function() {
+    		try {
+    			//var query = $(".uploadifyQueueItem").attr("id").substring(9);
+    			$('#uploadify').uploadify('cancel', '*');
+    		} catch(err) {}
+    		
+    		$("#lzPicPop").hide();
+    		$("select").show();
+    		maskHide();
+    	});
+
+    	$(".cReset").live("click",function() {
+    		var _index = $(".cReset").index(this);
+    		$("#lzResetDiv").attr("url",$($(this).parent().parent().find(".listurl").find("a").get(0)).attr("href"));
+    		$("#lzResetDiv").attr("status",$(this).parent().parent().find(".lzStatusChange").val());
+    		$("#lzResetDiv").attr("index",_index);
+    		$("#lzWindowPopDiv").html($("#lzResetDiv").html());
+    		var _width = $("#lzWindowPop").width();
+    		document.getElementById("lzWindowPop").style.marginLeft = _width/-2 + "px";
+    		$("#lzWindowPop").css("margin-top", "-" + ($("#lzWindowPop").outerHeight()/2) + "px");
+    		$("#lzWindowPop").addClass("showPop");
+    		$("#closePicBtn").click();
+    		$("select").hide();
+    		maskShow();
+    	});
+
+    	$(".cPic").live("click",function() {
+    		var _html = "";
+    		try{
+    			var _picUrls = $(this).parent().parent().attr("picUrl"),
+    			_picTit = $(this).parent().parent().attr("picTit");
+    			if($.trim(_picUrls).length > 0){
+    				_picUrls = _picUrls.split(",");
+    				_picTit = _picTit.split(",");
+    			}
+    		} catch(err) {
+    			return;
+    		}
+    		_index = $(".cPic").index(this);
+    		$("#lzPicPop").attr("url",$(this).parent().parent().find(".listurl a").attr("href"));
+    		$("#lzPicPop").attr("index",_index);
+    		for(var i=0;i<_picUrls.length;i++){
+    			_html += '<li><img width="100" height="100" src="' + _picUrls[i] + '" /><p>' + _picTit[i] + '</p></li>';
+    		}
+    		$("#picList").html(_html);
+    		$("#lzPicUrl").val("");
+    		$("#lzPicPop").show();
+    		var _width = $("#lzPicPop").width();
+    		document.getElementById("lzPicPop").style.marginLeft = _width/-2 + "px";
+    		$("#lzPicPop").css("margin-top", "-" + ($("#lzPicPop").outerHeight()/2) + "px");
+    		$("#closeBtn").click();
+    		$("select").hide();
+    		maskShow();
+    	});
+
+    	$(".cTitle").live("click",function() {
+    		var _tit = $(this).parent().parent().find("h5").html(),
+    		_index = $(".cTitle").index(this);
+    		$("#lzModifyTitle").attr("url",$(this).parent().parent().find(".listurl").html());
+    		$("#lzModifyTitle").attr("index",_index);
+    		$("#lzWindowPopDiv").html($("#lzModifyTitle").html());
+    		$("#lzEditTitle").val(_tit);
+    		var _width = $("#lzWindowPop").width();
+    		document.getElementById("lzWindowPop").style.marginLeft = _width/-2 + "px";
+    		$("#lzWindowPop").css("margin-top", "-" + ($("#lzWindowPop").outerHeight()/2) + "px");
+    		$("#lzWindowPop").addClass("showPop");
+    		$("#closePicBtn").click();
+    		$("select").hide();
+    		maskShow();
+    	});
+
+    	$(".cKeyWord").live("click",function() {
+    		var _html = "",
+    		_index = $(".cKeyWord").index(this);
+    		try{
+    			var _keywords = $(this).parent().parent().attr("keywords");
+    			if($.trim(_keywords).length > 0){
+    				_keywords = _keywords.split(",");
+    			}
+    		}catch(err){
+    			return;
+    		}
+    		$("#lzModifyKeyWord").attr("url",$(this).parent().parent().find(".listurl a").attr("href"));
+    		$("#lzModifyKeyWord").attr("index",_index);
+    		if (_keywords.length == 0) {
+
+    		    _html += "<li class='noKeywords' style='color:red;'>没有关键词</li>";
+    		} else {
+        		for(var i=0;i<_keywords.length;i++){
+        			_html += '<li><span title="' + $.trim(_keywords[i]) + '">' + $.trim(_keywords[i]) + '</span><input type="button" value="移除" style="margin-left:15px;" class="removeBtn bButton" /></li>';
+        		}
+    		}
+    		$("#keyWordList").html(_html);
+    		$("#lzWindowPopDiv").html($("#lzModifyKeyWord").html());
+    		var _width = $("#lzWindowPop").width();
+    		document.getElementById("lzWindowPop").style.marginLeft = _width/-2 + "px";
+    		$("#lzWindowPop").css("margin-top", "-" + ($("#lzWindowPop").outerHeight()/2) + "px");
+    		$("#lzWindowPop").addClass("showPop");
+    		$("#closePicBtn").click();
+    		$("select").hide();
+    		maskShow();
+    	});
+
+    	$(".backBtn").live("click",function() {
+    		$("#closeBtn").click();
+    		$("#closePicBtn").click();
+    	});
+    	
+    	//select pic from pic lists
+    	$(".picList img").live("click",function() {
+    		$("#lzPicUrl").val($(this).attr("src"));
+    		$(".picList img").removeClass("sel");
+    		$(this).addClass("sel");
+    	});
+	
+    	//ajax request for save title change
+    	$("#saveTitle").live("click",function(){
+    		var _data = $("#lzEditTitle").val().substring(0,24),
+    		_url = $("#lzModifyTitle").attr("url"),
+    		_index = parseInt($("#lzModifyTitle").attr("index")),
+    		_this = this;
+    		$.ajax({
+    			type: "POST",
+    			url: "editTitle",
+    			dataType: "json",
+    			data: "url=" + encodeURI(_url)  + "&title=" + _data,
+    			success: function(callback){
+    				if(callback.result == 0){
+    					displayStatusMessage(callback.message);
+    					$("#closeBtn").click();
+    					$("#closePicBtn").click();
+    					$("#artileList h5").get(_index).innerHTML = callback.title;
+    				}else{
+    					//$(_this).parent().parent().find("h5").html(callback.title);
+    					displayStatusMessage(callback.message);
+    				}
+    			}
+    		});
+    	});
+    
+    	//ajax request for save pic change
+    	$("#savePicUrl").live("click",function(){
+    		var _uploadFile = $("#uploadify-queue").find(".fileName").html(),
+    		_localFile = $("#lzPicUrl").val(),
+    		_url = $("#lzPicPop").attr("url"),
+    		_index = parseInt($("#lzPicPop").attr("index")) + 1,
+    		_data;
+    		if($.trim(_uploadFile) == "" && $.trim(_localFile) != ""){
+    			_data = _localFile;
+    		}else if($.trim(_uploadFile) == "" && $.trim(_localFile) == ""){
+    			displayStatusMessage("图片路径不能为空");
+    		}else{
+    			$('#uploadify').uploadify('settings', 'formData', { 'url':_url}); 
+    			$('#uploadify').uploadify('upload');
+    			
+    			return;
+    		}
+    		$.ajax({
+    			type: "POST",
+    			url: "uploadPic",
+    			dataType: "json",
+    			data: "url=" + encodeURI(_url) + "&picUrl=" + _data,
+    			success: function(callback){
+    				if(callback.result == 0){
+    					displayStatusMessage(callback.message);
+    					$("#closeBtn").click();
+    					$("#closePicBtn").click();
+    					$($("#artileList tr").get(_index)).find("img").attr("src",callback.imgUrl);
+    				}else{
+    					displayStatusMessage(callback.message);
+    				}
+    			}
+    		});
+    	});
+    
+    	//reset 
+    	$("#resetCol").live("click",function(){
+    		var _uuid = $("#uuid").val(),
+    		_url = $("#lzResetDiv").attr("url"),
+    		_index = parseInt($("#lzResetDiv").attr("index")) + 1,
+    		_status = $("#lzResetDiv").attr("status");
+    		$.ajax({
+    			type: "POST",
+    			url: "recrawl",
+    			dataType: "json",
+    			data: "uuid=${uuid}" + "&url=" + encodeURI(_url) + "&status=" + _status,
+    			success: function(callback){
+    				if(callback.result == 0){
+    					displayStatusMessage(callback.message);
+    					$("#closeBtn").click();
+    					$("#closePicBtn").click();
+    					$($("#artileList tr").get(_index)).attr("keywords",'');
+    					$($($("#artileList tr").get(_index)).find("select option").get(0)).attr("selected","selected");
+    				}else{
+    					displayStatusMessage(callback.message);
+    				}
+    			}
+    		});
+    	});
+    	
+    	//modify keywords
+    	$("#saveKeyWords").live("click",function(){
+    		var _rmListTmp = [],
+    		_addListTmp = [];
+    		_addListTmp = arrayUniq(addList,rmList);
+    		_rmListTmp = arrayUniq(rmList,addList);
+    		if(_addListTmp.length == 0 && _rmListTmp.length == 0){
+    			displayStatusMessage('未修改不得提交');
+    			return;
+    		}	
+    		
+    		var _url = $("#lzModifyKeyWord").attr("url")
+    		_index = parseInt($("#lzModifyKeyWord").attr("index")) + 1,
+    		_rmList = '', _addList = '';
+    		for(var i = 0; i < _rmListTmp.length; i++){
+    			_rmList += ',"' + _rmListTmp[i] + '"';
+    		}
+    		for(var i = 0; i < _addListTmp.length; i++){
+    			_addList += ',"' + _addListTmp[i] + '"';
+    		}
+    		_rmList = _rmList.substring(1);
+    		_addList = _addList.substring(1);
+    		$.ajax({
+    			type: "POST",
+    			url: "editKeywords",
+    			dataType: "json",
+    			data: "url=" + encodeURI(_url) + "&rmWords=" + "[" + _rmList + "]" + "&adWords=" + "[" + _addList + "]",
+    			success: function(callback){
+    				if(callback.result == 0){
+    					displayStatusMessage(callback.message);
+    					$("#closeBtn").click();
+    					$("#closePicBtn").click();
+    					rmList = [];
+    					addList = [];
+    					
+    					$($("#artileList tr").get(_index)).attr("keywords",callback.keywords);
+    				}else{
+    					displayStatusMessage(callback.message);
+    				}
+    			}
+    		});
+    	});
+        initPage("${pagination}".replace(/,/g,""), "${pageSize}", "${totalSize}".replace(/,/g,""));
+    	$('#uploadify').uploadify({
+			'swf': '${staticUrl}js/resource/uploadify.swf',
+			'uploader': '${rootUrl}user/uploadPic',
+			'formData': {'url':'http://www.buzzinate36.cn'},
+			'cancelImg': '${staticUrl}images/uploadify-cancel.png',
+			'buttonText': '上传',
+			'width': 80,
+			'height': 24,
+			'auto': false,
+			'multi': false,
+			'onUploadSuccess': function(file,data,response){
+				var callback = jQuery.parseJSON(data);
+				if(callback.result == 0){
+					displayStatusMessage(callback.message);
+					$('#uploadify').uploadify('cancel', '*');
+					$("#closeBtn").click();
+					$("#closePicBtn").click();
+					var _index = parseInt($("#lzPicPop").attr("index")) + 1;
+					$($("#artileList tr").get(_index)).find("img").attr("src",callback.imgUrl);
+				}else{
+					displayStatusMessage(callback.message);
+				}
+			},
+			'onUploadError': function(file, errorCode, errorMsg, errorString){
+				displayStatusMessage(errorString);
+			}
+		});
+    	
+    	//remove keyword
+    	var rmList = [], addList = [];
+    	$(".removeBtn").live("click",function(){
+    		$(this).parent().remove();
+    		rmList.push($(this).parent().find("span").html());
+    		if ($("#keyWordList").children('li').length == 0) {
+                $("#keyWordList").html("<li class='noKeywords' style='color:red;'>没有关键词</li>");
+            }
+    	});
+    
+    	$("#addKeyWord").live("click",function(){
+    	    hideStatusMessage();
+            $(".keyWordList .noKeywords").remove();
+            
+    		var _flag = true;
+    		if($.trim($("#keyWordTB").val()) != ""){
+    			$("#keyWordList").find("li").each(function(){
+    				if($.trim($("#keyWordTB").val()) == $(this).find("span").attr("title")){
+    					_flag = false;
+    				}
+    			});
+    		}else{
+    			_flag = false;
+    		}
+    		if(_flag){
+    			var keywd = $.trim($("#keyWordTB").val());
+                $("#keyWordList").append('<li><span title="' + keywd + '">'+keywd+'</span><input type="button" value="移除" style="margin-left:15px;" class="removeBtn bButton" /></li>');
+                addList.push(keywd);
+                $("#keyWordTB").val(""); // reset
+    		} else {
+                displayStatusMessage("关键词不能空白还是已经有了", "error");
+            }
+    	});
+    
+    	//selected change status
+    	$(".lzStatusChange").live("change",function(){
+    		var _nStatus = $(this).val(),
+    		_oStatus = $(this).attr("cValue"),
+    		_this = this;
+    		//_index = $(".lzStatusChange").index(this),
+    		_url = $($(this).parent().parent().find(".listurl").find("a").get(0)).attr("href");
+    		$.ajax({
+    			type: "POST",
+    			url: "editStatus",
+    			dataType: "json",
+    			data: "uuid=${uuid}" + "&url=" + encodeURI(_url) + "&newStatus=" + _nStatus + "&oldStatus=" + _oStatus,
+    			success: function(callback){
+    				if(callback.result == 0){
+    					displayStatusMessage(callback.message);
+    					$(_this).attr("cValue",_nStatus);
+    					
+    				}else{
+    					displayStatusMessage(callback.message);
+    					$(_this).find("option").each(function(){
+    						if(_oStatus == $(this).val()){
+    							$(this).attr("selected","selected");
+    						}
+    					});
+    				}
+    			}
+    		});
+    	});
+    
+    	//set current Status value
+    	$(".lzStatusChange").each(function(){
+    		var _val = $(this).find("option:selected").val();
+    		$(this).attr("cValue",_val);
+    	});
+    
+    	$("#uuid").change(function(){
+    		//document.install.method = "GET";
+    		document.listData.submit();
+    	})
+    
+    	$("#searchBtn").click(function(){
+    		if($.trim($("input[name=url]").val()).length <= 0 && $.trim($("#searchStatus").val()).length <= 0){
+    			return false;
+    		}else{
+    			$("#listData").submit();
+    		}
+    	});
+
+        //all select checkbox
+        $("#allSelArticles").bind("change",function(){
+            if($(this).attr("checked") == "checked"){
+                $("[name='articleLine']").attr("checked",true);
+            }else{
+                $("[name='articleLine']").attr("checked",false);
+            }
+        });
+
+        //delete selected article
+        $("#deleteButton").click(function(){
+            var values = "[";
+            $("[name='articleLine']:checked").each(function(){
+                values +=  ',"' + $(this).parent().parent().find(".listurl").attr("title") + '"';
+            });
+            values = values.replace(",","");
+            values += "]";
+            //console.log(values);
+            $("#lzDeleteSelected").attr("url",values);
+            $("#lzWindowPopDiv").html($("#lzDeleteSelected").html());
+            var _width = $("#lzWindowPop").width();
+            document.getElementById("lzWindowPop").style.marginLeft = _width/-2 + "px";
+            $("#lzWindowPop").css("margin-top", "-" + ($("#lzWindowPop").outerHeight()/2) + "px");
+            $("#lzWindowPop").addClass("showPop");
+            $("select").hide();
+            maskShow();
+        });
+
+        //delete selected article button action
+        $("#deleteLine").live("click",function(){
+            var values = $("#lzDeleteSelected").attr("url");
+            //console.log(values);
+            $.ajax({
+                type: "POST",
+                url: "delete",
+                dataType: "json",
+                data: "uuid=${uuid}"+ "&urls=" + encodeURI(values),
+                success: function(callback){
+                        displayStatusMessage(callback.message);
+                        window.location.reload();
+                    
+                }
+            });
+        });
+
+        //delete single line
+        $(".cDel").click(function(){
+            var values =  "[" + $(this).parent().parent().find(".listurl").attr("title") + "]";
+            $("#lzDeleteSelected").attr("url",values);
+            $("#lzWindowPopDiv").html($("#lzDeleteSelected").html());
+            var _width = $("#lzWindowPop").width();
+            document.getElementById("lzWindowPop").style.marginLeft = _width/-2 + "px";
+            $("#lzWindowPop").css("margin-top", "-" + ($("#lzWindowPop").outerHeight()/2) + "px");
+            $("#lzWindowPop").addClass("showPop");
+            $("select").hide();
+            maskShow();
+        });
+
+    	function arrayUniq(a,b){
+    	   var obj = new Object();
+    	  for(var i =0,len = a.length;i<len;i++){
+    		if(obj[a[i]] <= 0 ){
+    			obj[a[i]] = obj[a[i]] - 1;
+    		}else{
+    			obj[a[i]] = 0;
+    		}
+    	  }
+    	  for(var i =0,len = b.length;i<len;i++){
+    		if(obj[b[i]] <= 0){
+    			obj[b[i]] = obj[b[i]] + 1;
+    			
+    		}
+    		
+    
+    	  }
+    	  var arr = new Array();
+    	  var i = 0; 
+    	  for(var per in obj){
+    	    if(obj[per] == 0){
+    	      arr.push(per);
+    	    }
+    	  }
+    	  
+    	  return arr;
+    	}
+    });
+</script>
+
+<script type="text/javascript" charset="utf-8">
+    //paging
+	function initPage(_pageNo, pageSize, totalRecords) {
+            try{
+                var pn = parseInt(_pageNo,10);
+                var ps = parseInt(pageSize,10);
+                var tr = parseInt(totalRecords,10);
+                if (pn < 0)
+                    return;
+                $("#pager").pagination(tr, {
+                    current_page:pn,
+                    num_edge_entries: 2,
+                    num_display_entries: 6,
+                    next_text:'',
+                    prev_text:'',
+                    items_per_page:ps,
+                    callback: pageCallback
+                });
+            } catch(e){}
+     }
+
+     function pageCallback(pageNo) {
+             window.location.href = window.location.pathname + "?pagination=" + pageNo + "&uuid=${uuid}" + "&articleTitle=${articleTitle}" + "&status=${status}";
+     }
+</script>

@@ -1,0 +1,315 @@
+<%@ var staticUrl: String %>
+<%@ var rootUrl: String %>
+<% attributes("title") = "乐知 管理中心" %>
+<% attributes("nav") = "navUser" %>
+<% attributes("backend") = "true" %>
+<%@ var err: (Int, String) = (-1,"") %>
+<%@ var request: javax.servlet.http.HttpServletRequest%>
+<%@ var userSites: List[com.buzzinate.lezhi.bean.SiteAds] = null%>
+<%@ var remainingWebsiteNum: Int = 0%>
+
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/user.css" />
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/plugin.css" />
+
+<style>
+    .pageBody, .pageBodyIndex {width:auto;margin:20px 15px;}
+    .pageCenter {margin-bottom:0px;}
+    .wid980 {width:auto;margin:0 15px;}
+</style>
+
+<div class="center">
+    <div class="breadCrumbs">
+        <span>当前位置：</span>
+        <a href="${rootUrl}">乐知推荐</a>
+        <span>&nbsp=&gt;&nbsp;</span>
+        <a href="${rootUrl}user/manage">管理中心</a>
+    </div>
+	<div class="pageBodyIndex">
+		<div class="pageCenter">
+	        <div>
+                <div style="line-height:32px;"><h3 style="font-size:16px;font-weight:bold;">这是您的网站列表，您可以在此管理你所有的网站，对这些网站进行自定义、设置、查看数据等操作。</h3></div>
+                <div class="clear spacer15"></div>
+            </div>
+            <div class="clear spacer20" style="border-top:1px solid #ff7200;"></div>
+            
+            #if(remainingWebsiteNum>0)
+                <a class="bButton orange" style="padding:10px 20px;" href="${rootUrl}get?uuid=new">添加网站</a>
+            #end
+            <div class="clear spacer10"></div>
+	        <table class="bTable2">
+                <tr>
+                    <th>网站名</th>
+                    <th>网址</th>
+                    <th>UUID</th>
+                    <th style="text-align:center;">类型</th>
+                    <th style="text-align:center;">广告开通</th>
+                    <th style="text-align:center;">广告条数</th>
+                    <th style="text-align:center;">广告操作</th>
+                    <th style="text-align:center;">操作</th>
+                </tr>
+                #if(userSites != null && userSites.size > 0)
+                    #for(i <- 0 until userSites.size)
+                        #{
+                            var _background = "#FFF";
+                            if(i % 2 == 0) {
+                                _background = "#F2F6F9";
+                            }
+                        }#
+                        <tr>
+                            <td style="background:${_background}" title="${userSites(i).siteName}">${if(userSites(i).siteName.length>15) userSites(i).siteName.substring(0,15)+"..." else userSites(i).siteName}</td>
+                            <td style="background:${_background}"><a title="${userSites(i).domain}" href="${userSites(i).domain}" class="bLinkU" target="_blank">${if(userSites(i).domain.length>30) userSites(i).domain.substring(0,30)+"..." else userSites(i).domain}</a></td>
+                            <td style="background:${_background}" class="uuid" title="${userSites(i).uuid}">${userSites(i).uuid}</td>
+                            <td style="text-align:center;background:${_background}">
+                                #if (userSites(i).pluginType == "fixed")
+                                    插件
+                                #end
+                                #if (userSites(i).pluginType == "slide")
+                                    按钮
+                                #end
+                                /
+                                #if (userSites(i).pic)
+                                    图文
+                                #end
+                                #if (!userSites(i).pic)
+                                    文字
+                                #end
+                            </td>
+                            <td style="text-align:center;background:${_background}">
+	                            #if(userSites(i).adsStatus)
+	                               <a class="bButton closeAd" href="javascript:;" style="padding:2px 10px;">关闭</a>
+	                            #else
+	                               <a id="adsOpenBtn" class="bButton orange openAd" href="${rootUrl}user/ads/setting/edit?uuid=${userSites(i).uuid}" style="padding:2px 10px;">开启</a>
+	                            #end
+                            </td>
+                            <td style="text-align:center;background:${_background}">
+                                #if(userSites(i).adsStatus)
+                                    ${userSites(i).adsCount}
+                                #end
+                            </td>
+                            <td style="text-align:center;background:${_background}">
+                                #if(userSites(i).adsStatus)
+                                    <a class="bLinkU" href="${rootUrl}user/ads/setting/edit?uuid=${userSites(i).uuid}" style="margin-right:5px;">广告设置</a>
+                                    <a class="bLinkU" href="http://admax.buzzinate.com/publisher/home" style="margin-right:5px;" target="_blank">广告数据<img style="margin:0 0 5px 3px;" src="http://static.bshare.cn/images/icon_new_window.gif"></a>
+                                    <a class="bLinkU" href="http://admax.buzzinate.com/publisher/settings" target="_blank">账号信息<img style="margin:0 0 5px 3px;" src="http://static.bshare.cn/images/icon_new_window.gif"></a>
+                                #end
+                            </td>
+                            <td style="text-align:center;background:${_background}">
+                                #if(userSites(i).getCode)
+	                                <a class="bLinkU" href="${rootUrl}user/customize?uuid=${userSites(i).uuid}" style="margin-right:5px;">样式自定义</a>
+	                                <a class="bLinkU" href="${rootUrl}user/content?uuid=${userSites(i).uuid}" style="margin-right:5px;">内容管理</a>
+	                                <a class="bLinkU" href="${rootUrl}user/stats/dashboard?uuid=${userSites(i).uuid}" style="margin-right:5px;">数据统计</a>
+	                            #end
+	                            <a class="bLinkU" href="${rootUrl}user/code?uuid=${userSites(i).uuid}">代码领取</a>
+	                            #if(userSites(i).getCode)
+	                                <a class="deleteSite bLinkU" href="javascript:;" style="margin-left:0;">删除</a>
+                                #end
+                            </td>
+                        </tr>
+                    #end
+                #else 
+                    <tr>
+                        <td colspan="8" class="no-data">
+                            #if(err._1 == 1)
+                                ${err._2}
+                            #else
+                                暂无数据
+                            #end
+                        </td>
+                    </tr>
+                #end
+            </table>
+            #if(remainingWebsiteNum>0)
+            <h1 class="cRed" style="margin-top:15px;">你还可以开通${remainingWebsiteNum}个站点</h1>
+            #end
+	    </div>
+	</div>
+</div>
+
+<div id="maskDiv" class="maskDiv"></div>
+
+<div id="lzWindowPop" class="lzWindowPop">
+    <div id="closeBtn" class="closeBtn"></div>
+    <div id="lzWindowPopDiv"></div>
+</div>
+
+<div id="deleteSiteDiv" style="display:none;">
+    <div style="width:300px;">
+        <h1 class="reset" style="font-size:16px;">你确定要删除这个网站？<br/><br/>这个网站的数据会被丢失！</h1>
+        <div class="lezhiGetCodeBtn" style="text-align:center;">
+            <input id="deleteSiteBtn" type="submit" value="确定" class="bButton orange" style="font-size:14px;padding:6px 22px;margin-right:10px;" />
+            <input type="button" class="bButton backBtn" value="返回" style="font-size:14px;padding:6px 22px;" />
+        </div>
+    </div>
+</div>
+
+<div id="adsCloseDiv" style="display:none;">
+    <div style="width:500px;">
+        <div class="clear spacer10" style="font-size:16px;"></div>
+        <h1 class="cRed">请问您放弃乐知广告的原因是</h1>
+        <div class="spacer10"></div>
+        <div class="adsCloseReason">
+            <ul>
+                <li><input type="checkbox" id="reason1" value="收入太少" /><label for="reason1">收入太少</label></li>
+                <li><input type="checkbox" id="reason2" value="帐期太长" /><label for="reason2">帐期太长</label></li>
+                <li><input type="checkbox" id="reason3" value="广告内容不符合网站风格" /><label for="reason3">广告内容不符合网站风格</label></li>
+                <li><input type="checkbox" id="reason4" value="广告加载太慢" /><label for="reason4">广告加载太慢</label></li>
+                <li><input type="checkbox" id="reason5" value="广告推送不准确" /><label for="reason5">广告推送不准确</label></li>
+            </ul>
+        </div>
+        <div class="clear spacer10"></div>
+        <div class="tLeft">其他</div>
+        <div class="clear spacer10"></div>
+        <textarea id="otherReason" style="width:100%;height:60px;color:#333;" placeholder="输入文字..."></textarea>
+        <div class="clear spacer10"></div>
+        <p id="reasonValidator" style="color:red;text-align:left;display:none;">最多输入不超过100个文字</p>
+        <div class="clear spacer20"></div>
+        <div class="lezhiGetCodeBtn" style="text-align:center;">
+            <input type="button" id="adsCloseBtn" value="提交" class="bButton orange" style="font-size:14px;padding:6px 22px;margin-right:10px;" />
+            <input type="button" class="bButton backBtn" value="返回" style="font-size:14px;padding:6px 22px;" />
+        </div>
+    </div>
+</div>
+
+<a id="qqservicetab" target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=800087176&amp;site=qq&amp;menu=yes"></a>
+
+<div id="notifications" class="hidden" style="display:none;">
+	<div class="notification-bar-container">
+		<div class="notification-bar-bkg" style="background-color:#FFF8CC;height:25px;"></div>
+		<div class="notification-bar">
+			<div class="notification-bar-contents">
+				<div class="notification-msg heading1" style="color:#333;font-size:20px;font-weight:bold;"></div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+    //mask
+    function maskShow(){
+        var _hei = $(document).height();
+        $("#maskDiv").css({height:_hei+"px"});
+        $("#maskDiv").show();
+    }
+
+    function maskHide(){
+        $("#maskDiv").hide();
+    }
+    
+    function resetOffset(of){
+        document.getElementById("lzWindowPop").style.marginLeft = of/-1 + "px";
+        $("#lzWindowPop").css("margin-top", "-" + ($("#lzWindowPop").outerHeight()/2) + "px");
+    }
+
+    $(function(){
+        #if(err._1 == 1)
+            displayStatusMessage("${err._2}");
+        #end
+        
+        $(".deleteSite").live("click", function() {
+            var uuid = $(this).parent().parent().children(".uuid").attr("title");
+            maskShow();
+            $("#deleteSiteBtn").attr("uuid", uuid);
+            $("#lzWindowPopDiv").html($("#deleteSiteDiv").html());
+            resetOffset(150);
+            $("#lzWindowPop").addClass("showPop");
+        });
+        $(".closeAd").live("click", function() {
+            var uuid = $(this).parent().parent().children(".uuid").attr("title");
+            maskShow();
+            $("#adsCloseBtn").attr("uuid", uuid);
+            $("#lzWindowPopDiv").html($("#adsCloseDiv").html());
+            resetOffset(250);
+            $("#lzWindowPop").addClass("showPop");
+        });
+        
+        $(".backBtn").live("click",function(){
+            $("#closeBtn").click();
+            $("#closePicBtn").click();
+        });
+        $("#closeBtn").live("click",function(){
+            $("#lzWindowPop").removeClass("showPop");
+            $("#lzWindowPopDiv").html("");
+            maskHide();
+        });
+        
+        $("#deleteSiteBtn").live("click", function() {
+            var uuid = $(this).attr("uuid");
+            $.ajax({
+                type: "GET",
+                url: "/user/website/delete",
+                dataType: "json",
+                data: "uuid=" + uuid,
+                success: function(callback) {
+                    if(callback.result == "-1") {
+                        displayStatusMessage(callback.message);
+                        $("#closeBtn").click();
+                        
+                        
+                    } else {
+                        displayStatusMessage(callback.message);
+                        setTimeout(function() {
+                            window.location.href = "${rootUrl}user/manage";
+                        }, 500);
+                    }
+                }
+            });
+        });
+        
+        
+    
+        $("#adsCloseBtn").live("click",function() {
+            $("#reasonValidator").hide();
+            hideStatusMessage();
+            var uuid = $(this).attr("uuid"),
+                reason = "",
+                otherReason = $("#otherReason").val();
+            if(otherReason == "输入文字..."){
+                otherReason = "";
+            }
+            $(".adsCloseReason input[type=checkbox]:checked").each(function() {
+                reason += $(this).val() + ",";
+            });
+            reason = reason.substring(0,reason.length-1) + otherReason;
+            if (otherReason.length > 100) {
+                $("#reasonValidator").show();
+                return;
+            }
+            if (reason == "") {
+                displayStatusMessage("请选一个关闭乐知广告的原因", "error");
+                return;
+            }
+            $.ajax({
+                type: "POST",
+                url: "ads/close",
+                dataType: "json",
+                data: "uuid=" + uuid + "&reason=" + reason,
+                success: function(callback) {
+                    if(callback.result == "-1") {
+                        displayStatusMessage(callback.message);
+                        $("#closeBtn").click();
+                        setTimeout(function() {
+                            window.location.href = "${rootUrl}user/manage";
+                        }, 500);
+                    } else {
+                        displayStatusMessage(callback.message);
+                    }
+                }
+            });
+        });
+        
+        // otherReason validator
+        $("#otherReason").live("keyup",function() {
+            if($(this).val().length > 100) {
+                //$(this).val($(this).val().substring(0, 99));
+                $("#reasonValidator").show();
+            } else {
+                $("#reasonValidator").hide();
+            }
+        });
+        
+        // for frozen
+        //if($status}){
+        //   displayStatusMessage("您的网站广告已经被冻结!");
+        //}
+    });
+</script>

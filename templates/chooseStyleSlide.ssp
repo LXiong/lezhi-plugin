@@ -1,0 +1,69 @@
+<%@ var staticUrl: String %>
+<%@ var rootUrl: String %>
+<% attributes("nav") = "get" %>
+<%@ var uuid: String = "" %>
+
+<!-- content -->
+<form name="form" action="/get/customize" method="GET">
+	<input id="row" name="row" value="1" type="hidden" />
+	<input id="col" name="col" value="1" type="hidden" />
+	<input id="type" name="type" type="hidden" value="slide" />
+	<input id="pic" name="pic" type="hidden" value="false" />
+	<input id="uuid" name="uuid" type="hidden" value="${uuid}" />
+	<div class="lezhi_content_wid986">
+		<div class="web_lezhi_step">
+			<div class="web_lezhi_step2"></div>
+		</div>
+		<div class="web_lezhi_body">
+			<div class="web_lezhi_body_left" style="height:404px;">
+				<a class="textSel" href="${rootUrl}get/float/text?uuid=${uuid}"></a>
+				<a class="pic" href="${rootUrl}get/float/pic?uuid=${uuid}"></a>
+			</div>
+			<div class="web_lezhi_body_right">
+				<div class="web_lezhi_fixed">
+					<div class="web_lezhi_title">
+						<div class="web_lezhi_title_left">放在文章底部</div>
+						<div class="web_lezhi_title_right">
+							<!--div class="color_series">
+								<div class="color_series_text">色系</div>
+								<ul class="left">
+									<li class="sel"><a href="" class="red"></a></li>
+									<li><a href="" class="yellow"></a></li>
+								</ul>
+							</div-->
+						</div>
+					</div>
+					<div class="web_lezhi_exsample left" col="1" row="5">
+						<div class="web_lezhi_exsample_show">
+							<img src="${staticUrl}images/webLz/example1.jpg" style="width:325px;position:relative;left:37px;top:45px;"/>
+						</div>
+						<div class="web_lezhi_exsample_title">单列推荐</div>
+					</div>
+					<div class="web_lezhi_exsample right" col="2" row="5">
+						<div class="web_lezhi_exsample_show">
+							<img src="${staticUrl}images/webLz/sample2.jpg" style="width:380px;position:relative;left:5px;top:45px;"/>
+						</div>
+						<div class="web_lezhi_exsample_title">双列推荐 <span class="new">NEW</span></div>
+					</div>
+					<div class="clear"></div>
+					
+					
+				</div>
+				<div class="clear"></div>
+				<div class="web_lezhi_button" style="margin-top:30px;">
+					<button type="button" class="backBtn buttonLightGray yahei" onclick="window.location.href='${rootUrl}get?uuid=${uuid}'" >返回上一步</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>
+
+<script type="text/javascript" charset="utf-8">
+	$(function(){
+		$(".web_lezhi_exsample").bind("click",function(){
+			$("#row").val($(this).attr("row"));
+			$("#col").val($(this).attr("col"));
+			$("form").submit();
+		});
+	});
+</script>

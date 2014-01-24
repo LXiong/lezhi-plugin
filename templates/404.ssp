@@ -1,0 +1,47 @@
+<%@ var staticUrl: String %>
+<%@ var rootUrl: String %>
+<% attributes("nav") = "navUser" %>
+<%@ var err: (Int, String) = (-1,"") %>
+<%@ var uuid: String = "" %>
+<%@ var request: javax.servlet.http.HttpServletRequest%>
+<%@ val userUuids : Seq[(String, String, String)] = null %>
+
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/user.css" />
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/plugin.css" />
+<style>
+    .pageBodyIndex {
+    	margin-bottom:25px;
+    	background:#fff;
+    	-moz-border-radius:5px;
+    	-khtml-border-radius:5px;
+    	-webkit-border-radius:5px;
+    }
+    .pageCenter{margin-bottom:0;}
+</style>
+
+	<div class="center">
+		<div class="pageBodyIndex">
+			<div class="pageCenter">
+			    <div class="left"><img src="${staticUrl}images/404.jpg"/></div>
+                <div class="left" style="margin-left:20px;">
+                    <div class="clear spacer20"></div>
+                    <h1 style="color:red;font-size:40px;">页面不存在!</h1>
+                    <div class="clear spacer30"></div>
+                    <p style="font-size:24px;">
+                        很抱歉，您所查找的页面不存在
+                    </p>
+                    <div class="clear spacer30"></div>
+                    <p style="font-size:18px;color:#555;">
+                        若有其他疑问或是建议，<br/><br/>
+                        请和我们联系：<a class="bLinkU" style="font-size:18px;" title="feedback@buzzinate.com" href="mailto:feedback@buzzinate.com">feedback@buzzinate.com</a>
+                    </p>
+                    <div class="clear spacer30"></div>
+                    <p style="font-size:24px;font-weight:bold;">谢谢您的合作！</p>
+                    <div class="clear spacer30"></div>
+                    <a class="bLinkU" href="${rootUrl}get">安装插件</a>
+                </div>
+                <div class="clear"></div>
+			</div>
+		</div>
+	</div>
+	<a id="qqservicetab" target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=800087176&amp;site=qq&amp;menu=yes"></a>

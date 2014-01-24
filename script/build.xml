@@ -1,0 +1,250 @@
+<project name="bshare" basedir="." default="compress_main">
+    
+    <property name="api.hostname" value="http://api\\.bshare\\.cn" />
+    <property name="plugin.hostname" value="http://lzplugin\\.bshare\\.cn/plugin" />
+    <property name="static.hostname" value="http://lzstatic\\.bshare\\.cn" />
+    <property name="trending.title" value="\\\\u6700\\\\u70ed\\\\u6587\\\\u7ae0"/>
+    
+    <target name="compress_main" description="Compress the JS files" depends="compress_lezhi2.0,replaceLezhi,compress_personal,compress_zhongxin"></target>
+
+    <target name="replace" description="replace hostname for server">
+        <tstamp/>
+        <copy file="../www/plugin/lzOrg.js" tofile="../www/plugin/lzTmp.js"/>
+        <replaceregexp file="../www/plugin/lzTmp.js" match='LEZHI_PLUGIN_BASE = ".+?"' replace='LEZHI_PLUGIN_BASE = "${plugin.hostname}"' encoding="utf-8"/>
+        <replaceregexp file="../www/plugin/lzTmp.js" match='LEZHI_STATIC_BASE = ".+?"' replace='LEZHI_STATIC_BASE = "${static.hostname}"' encoding="utf-8"/>
+
+        <replaceregexp file="../www/plugin/lzKDSTmp.js" match='LEZHI_PLUGIN_BASE = ".+?"' replace='LEZHI_PLUGIN_BASE = "${plugin.hostname}"' encoding="utf-8"/>
+        <replaceregexp file="../www/plugin/lzKDSTmp.js" match='LEZHI_STATIC_BASE = ".+?"' replace='LEZHI_STATIC_BASE = "${static.hostname}"' encoding="utf-8"/>
+
+        <replaceregexp file="../templates/layouts/default.ssp" match='common.*css\"' replace='common.css?t=${DSTAMP}.css\"' encoding="utf-8"/>
+        <replaceregexp file="../templates/layouts/default.ssp" match='lezhi.*css\"' replace='lezhi.css?t=${DSTAMP}.css\"' encoding="utf-8"/>
+    </target>
+    
+    <target name="replaceLezhi" description="replace trending encoding" depends="compress_lezhi2.0">
+        <copy file="../www/plugin/lezhiTmp.js" tofile="../www/plugin/lz.js"/>
+        <replaceregexp file="../www/plugin/lz.js" match='trending:".+?"' replace='trending:"${trending.title}"' encoding="utf-8"/>
+        <delete file="../www/plugin/lezhiTmp.js"/>
+
+        <copy file="../www/plugin/lezhiKDSTmp.js" tofile="../www/plugin/lzKDS.js"/>
+        <replaceregexp file="../www/plugin/lzKDS.js" match='trending:".+?"' replace='trending:"${trending.title}"' encoding="utf-8"/>
+        <delete file="../www/plugin/lezhiKDSTmp.js"/>              
+    </target>
+    
+    <target name="compress_lezhi2.0" description="Compress the JS files" depends="replace_lezhi2.0">
+        <java jar="closure-compiler.jar" fork="true" failonerror="true">
+            <arg line="--compilation_level SIMPLE_OPTIMIZATIONS --warning_level VERBOSE --jscomp_off=missingProperties --jscomp_off=undefinedVars"/>
+            <arg line="--charset UTF-8"/>
+            <arg line="--js=../www/plugin/lz-utilOrg.js"/>
+            <arg line="--js=../www/plugin/lzTmp.js"/>
+            <arg line="--js_output_file"/>
+            <arg value="../www/plugin/lezhiU.js"/>
+        </java>
+        <exec executable="native2ascii">
+            <arg line="-encoding UTF-8"/>
+            <arg value="../www/plugin/lezhiU.js"/>
+            <arg value="../www/plugin/lezhiTmp.js"/>
+        </exec>
+        <delete file="../www/plugin/lezhiU.js"/>
+
+        <java jar="closure-compiler.jar" fork="true" failonerror="true">
+            <arg line="--compilation_level SIMPLE_OPTIMIZATIONS --warning_level VERBOSE --jscomp_off=missingProperties --jscomp_off=undefinedVars"/>
+            <arg line="--charset UTF-8"/>
+            <arg line="--js=../www/plugin/lz-utilOrg.js"/>
+            <arg line="--js=../www/plugin/lzKDSTmp.js"/>
+            <arg line="--js_output_file"/>
+            <arg value="../www/plugin/lezhiKDSU.js"/>
+        </java>
+        <exec executable="native2ascii">
+            <arg line="-encoding UTF-8"/>
+            <arg value="../www/plugin/lezhiKDSU.js"/>
+            <arg value="../www/plugin/lezhiKDSTmp.js"/>
+        </exec>
+        <delete file="../www/plugin/lezhiKDSU.js"/>
+		
+		<java jar="closure-compiler.jar" fork="true" failonerror="true">
+            <arg line="--compilation_level SIMPLE_OPTIMIZATIONS --warning_level VERBOSE --jscomp_off=missingProperties --jscomp_off=undefinedVars"/>
+            <arg line="--charset UTF-8 --js"/>
+            <arg value="../www/plugin/lz-engineOrg.js"/>
+            <arg line="--js_output_file"/>
+            <arg value="../www/plugin/lz-engineU.js"/>
+        </java>
+        <exec executable="native2ascii">
+            <arg line="-encoding UTF-8"/>
+            <arg value="../www/plugin/lz-engineU.js"/>
+            <arg value="../www/plugin/lz-engine.js"/>
+        </exec>
+        <delete file="../www/plugin/lz-engineU.js"/>
+        
+        <java jar="closure-compiler.jar" fork="true" failonerror="true">
+            <arg line="--compilation_level SIMPLE_OPTIMIZATIONS --warning_level VERBOSE --jscomp_off=missingProperties --jscomp_off=undefinedVars"/>
+            <arg line="--charset UTF-8 --js"/>
+            <arg value="../www/plugin/lz-style-defaultOrg.js"/>
+            <arg line="--js_output_file"/>
+            <arg value="../www/plugin/lz-style-defaultU.js"/>
+        </java>
+        <exec executable="native2ascii">
+            <arg line="-encoding UTF-8"/>
+            <arg value="../www/plugin/lz-style-defaultU.js"/>
+            <arg value="../www/plugin/lz-style-default.js"/>
+        </exec>
+        <delete file="../www/plugin/lz-style-defaultU.js"/>
+        
+        <java jar="closure-compiler.jar" fork="true" failonerror="true">
+            <arg line="--compilation_level SIMPLE_OPTIMIZATIONS --warning_level VERBOSE --jscomp_off=missingProperties --jscomp_off=undefinedVars"/>
+            <arg line="--charset UTF-8 --js"/>
+            <arg value="../www/plugin/lz-style-300x250Org.js"/>
+            <arg line="--js_output_file"/>
+            <arg value="../www/plugin/lz-style-300x250U.js"/>
+        </java>
+        <exec executable="native2ascii">
+            <arg line="-encoding UTF-8"/>
+            <arg value="../www/plugin/lz-style-300x250U.js"/>
+            <arg value="../www/plugin/lz-style-300x250.js"/>
+        </exec>
+        <delete file="../www/plugin/lz-style-300x250U.js"/>
+        
+        <java jar="closure-compiler.jar" fork="true" failonerror="true">
+            <arg line="--compilation_level SIMPLE_OPTIMIZATIONS --warning_level VERBOSE --jscomp_off=missingProperties --jscomp_off=undefinedVars"/>
+            <arg line="--charset UTF-8 --js"/>
+            <arg value="../www/plugin/lz-style-200x200Org.js"/>
+            <arg line="--js_output_file"/>
+            <arg value="../www/plugin/lz-style-200x200U.js"/>
+        </java>
+        <exec executable="native2ascii">
+            <arg line="-encoding UTF-8"/>
+            <arg value="../www/plugin/lz-style-200x200U.js"/>
+            <arg value="../www/plugin/lz-style-200x200.js"/>
+        </exec>
+        <delete file="../www/plugin/lz-style-200x200U.js"/>
+
+        <java jar="closure-compiler.jar" fork="true" failonerror="true">
+            <arg line="--compilation_level SIMPLE_OPTIMIZATIONS --warning_level VERBOSE --jscomp_off=missingProperties --jscomp_off=undefinedVars"/>
+            <arg line="--charset UTF-8 --js"/>
+            <arg value="../www/plugin/lz-style-728x90Org.js"/>
+            <arg line="--js_output_file"/>
+            <arg value="../www/plugin/lz-style-728x90U.js"/>
+        </java>
+        <exec executable="native2ascii">
+            <arg line="-encoding UTF-8"/>
+            <arg value="../www/plugin/lz-style-728x90U.js"/>
+            <arg value="../www/plugin/lz-style-728x90.js"/>
+        </exec>
+        <delete file="../www/plugin/lz-style-728x90U.js"/>
+
+        <java jar="closure-compiler.jar" fork="true" failonerror="true">
+            <arg line="--compilation_level SIMPLE_OPTIMIZATIONS --warning_level VERBOSE --jscomp_off=missingProperties --jscomp_off=undefinedVars"/>
+            <arg line="--charset UTF-8 --js"/>
+            <arg value="../www/plugin/lz-style-610x100Org.js"/>
+            <arg line="--js_output_file"/>
+            <arg value="../www/plugin/lz-style-610x100U.js"/>
+        </java>
+        <exec executable="native2ascii">
+            <arg line="-encoding UTF-8"/>
+            <arg value="../www/plugin/lz-style-610x100U.js"/>
+            <arg value="../www/plugin/lz-style-610x100.js"/>
+        </exec>
+        <delete file="../www/plugin/lz-style-610x100U.js"/>
+    </target>
+    
+    <target name="replace_lezhi2.0" description="replace hostname for server" depends="replaceJs">
+        <tstamp/>
+        <replaceregexp file="../www/plugin/lzTmp.js" match='BSHARE_FEEDS_BASE=".+?"' replace='BSHARE_FEEDS_BASE="${api.hostname}"' encoding="utf-8"/>
+        <replaceregexp file="../www/plugin/lzTmp.js" match='LEZHI_PLUGIN_BASE=".+?"' replace='LEZHI_PLUGIN_BASE="${plugin.hostname}"' encoding="utf-8"/>
+        <replaceregexp file="../www/plugin/lzTmp.js" match='LEZHI_STATIC_BASE=".+?"' replace='LEZHI_STATIC_BASE="${static.hostname}"' encoding="utf-8"/>
+        <replaceregexp file="../www/plugin/lzKDSTmp.js" match='BSHARE_FEEDS_BASE=".+?"' replace='BSHARE_FEEDS_BASE="${api.hostname}"' encoding="utf-8"/>
+        <replaceregexp file="../www/plugin/lzKDSTmp.js" match='LEZHI_PLUGIN_BASE=".+?"' replace='LEZHI_PLUGIN_BASE="${plugin.hostname}"' encoding="utf-8"/>
+        <replaceregexp file="../www/plugin/lzKDSTmp.js" match='LEZHI_STATIC_BASE=".+?"' replace='LEZHI_STATIC_BASE="${static.hostname}"' encoding="utf-8"/>
+    </target>
+    
+    <target name="replaceJs" description="Replace the js files" >
+        <tstamp/>
+        <copy file="../www/plugin/lzOrg.js" tofile="../www/plugin/lzTmp.js"/>
+        <replace file="../www/plugin/lzTmp.js" token='Org.js' value='.js?v=${DSTAMP}'/>
+        <copy file="../www/plugin/lzKDSOrg.js" tofile="../www/plugin/lzKDSTmp.js"/>
+        <replace file="../www/plugin/lzKDSTmp.js" token='Org.js' value='.js?v=${DSTAMP}'/>
+    </target>
+    
+    <target name="compress_personal" description="Compress the JS files" depends="replace_personal">
+        <java jar="closure-compiler.jar" fork="true" failonerror="true">
+            <arg line="--compilation_level SIMPLE_OPTIMIZATIONS --warning_level VERBOSE --jscomp_off=missingProperties --jscomp_off=undefinedVars"/>
+            <arg line="--charset UTF-8 --js"/>
+            <arg value="../www/plugin/lzChinaZTmp.js"/>
+            <arg line="--js_output_file"/>
+            <arg value="../www/plugin/lzChinaZU.js"/>
+        </java>
+        <exec executable="native2ascii">
+            <arg line="-encoding UTF-8"/>
+            <arg value="../www/plugin/lzChinaZU.js"/>
+            <arg value="../www/plugin/lzChinaZ.js"/>
+        </exec>
+        <delete file="../www/plugin/lzChinaZU.js"/>
+    </target>
+
+    <target name="replace_personal" description="replace hostname for server">
+        <tstamp/>
+        <copy file="../www/plugin/lzChinaZOrg.js" tofile="../www/plugin/lzChinaZTmp.js"/>
+
+        <replaceregexp file="../www/plugin/lzChinaZTmp.js" match='LEZHI_PLUGIN_BASE = ".+?"' replace='LEZHI_PLUGIN_BASE = "${plugin.hostname}"' encoding="utf-8"/>
+        <replaceregexp file="../www/plugin/lzChinaZTmp.js" match='LEZHI_STATIC_BASE = ".+?"' replace='LEZHI_STATIC_BASE = "${static.hostname}"' encoding="utf-8"/>
+
+        <replaceregexp file="../templates/layouts/default.ssp" match='common.*css\"' replace='common.css?t=${DSTAMP}.css\"' encoding="utf-8"/>
+        <replaceregexp file="../templates/layouts/default.ssp" match='lezhi.*css\"' replace='lezhi.css?t=${DSTAMP}.css\"' encoding="utf-8"/>
+
+    </target>
+
+    <target name="compress_zhongxin" description="Compress the JS files" depends="replace_zhongxin">
+        <java jar="closure-compiler.jar" fork="true" failonerror="true">
+            <arg line="--compilation_level SIMPLE_OPTIMIZATIONS --warning_level VERBOSE --jscomp_off=missingProperties --jscomp_off=undefinedVars"/>
+            <arg line="--charset UTF-8 --js"/>
+            <arg value="../www/plugin/lzChinaNewsTmp.js"/>
+            <arg line="--js_output_file"/>
+            <arg value="../www/plugin/lzChinaNewsU.js"/>
+        </java>
+        <exec executable="native2ascii">
+            <arg line="-encoding UTF-8"/>
+            <arg value="../www/plugin/lzChinaNewsU.js"/>
+            <arg value="../www/plugin/lzChinaNews.js"/>
+        </exec>
+        <delete file="../www/plugin/lzChinaNewsU.js"/>
+    </target>
+
+    <target name="replace_zhongxin" description="replace hostname for server">
+        <tstamp/>
+        <copy file="../www/plugin/lzChinaNewsOrg.js" tofile="../www/plugin/lzChinaNewsTmp.js"/>
+
+        <replaceregexp file="../www/plugin/lzChinaNewsTmp.js" match='LEZHI_PLUGIN_BASE = ".+?"' replace='LEZHI_PLUGIN_BASE = "${plugin.hostname}"' encoding="utf-8"/>
+        <replaceregexp file="../www/plugin/lzChinaNewsTmp.js" match='LEZHI_STATIC_BASE = ".+?"' replace='LEZHI_STATIC_BASE = "${static.hostname}"' encoding="utf-8"/>
+
+        <replaceregexp file="../templates/layouts/default.ssp" match='common.*css\"' replace='common.css?t=${DSTAMP}.css\"' encoding="utf-8"/>
+        <replaceregexp file="../templates/layouts/default.ssp" match='lezhi.*css\"' replace='lezhi.css?t=${DSTAMP}.css\"' encoding="utf-8"/>
+
+    </target>
+
+    <target name="compress_zhongxin_news" description="Compress the JS files" depends="replace_zhongxin_news">
+        <java jar="closure-compiler.jar" fork="true" failonerror="true">
+            <arg line="--compilation_level SIMPLE_OPTIMIZATIONS --warning_level VERBOSE --jscomp_off=missingProperties --jscomp_off=undefinedVars"/>
+            <arg line="--charset UTF-8 --js"/>
+            <arg value="../www/plugin/lzChinaNews2Tmp.js"/>
+            <arg line="--js_output_file"/>
+            <arg value="../www/plugin/lzChinaNews2U.js"/>
+        </java>
+        <exec executable="native2ascii">
+            <arg line="-encoding UTF-8"/>
+            <arg value="../www/plugin/lzChinaNews2U.js"/>
+            <arg value="../www/plugin/lzChinaNews2.js"/>
+        </exec>
+        <delete file="../www/plugin/lzChinaNews2U.js"/>
+    </target>
+
+    <target name="replace_zhongxin_news" description="replace hostname for server">
+        <tstamp/>
+        <copy file="../www/plugin/lzChinaNews2Org.js" tofile="../www/plugin/lzChinaNews2Tmp.js"/>
+
+        <replaceregexp file="../www/plugin/lzChinaNews2Tmp.js" match='LEZHI_PLUGIN_BASE = ".+?"' replace='LEZHI_PLUGIN_BASE = "${plugin.hostname}"' encoding="utf-8"/>
+        <replaceregexp file="../www/plugin/lzChinaNews2Tmp.js" match='LEZHI_STATIC_BASE = ".+?"' replace='LEZHI_STATIC_BASE = "${static.hostname}"' encoding="utf-8"/>
+
+        <replaceregexp file="../templates/layouts/default.ssp" match='common.*css\"' replace='common.css?t=${DSTAMP}.css\"' encoding="utf-8"/>
+        <replaceregexp file="../templates/layouts/default.ssp" match='lezhi.*css\"' replace='lezhi.css?t=${DSTAMP}.css\"' encoding="utf-8"/>
+
+    </target>
+</project>

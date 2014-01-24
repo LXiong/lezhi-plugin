@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- For assistance related to logback-translator or configuration  -->
+<!-- files in general, please contact the logback user mailing list -->
+<!-- at http://www.qos.ch/mailman/listinfo/logback-user             -->
+<!--                                                                -->
+<!-- For professional support please see                            -->
+<!--    http://www.qos.ch/shop/products/professionalSupport         -->
+<!--                                                                -->
+<configuration>
+  <property name="LOG_HOME" value="/var/log/lezhi" /> 
+
+  <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- encoders are assigned the type
+         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>INFO</level>
+    </filter>
+    <encoder>
+      <pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20} - %msg%n</pattern>
+    </encoder>
+  </appender>
+  
+  <appender name="A1" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+    <encoder>
+      <pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20} - %msg%n</pattern>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>DEBUG</level>
+    </filter>
+    <!-- Support multiple-JVM writing to the same log file -->
+    <prudent>true</prudent>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- rollover daily -->
+      <fileNamePattern>${LOG_HOME}/${APP_NAME:-lezhi}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+      <timeBasedFileNamingAndTriggeringPolicy
+            class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <!-- or whenever the file size reaches 100MB -->
+        <maxFileSize>100MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+      <maxHistory>30</maxHistory> 
+    </rollingPolicy>
+  </appender>
+  
+  <appender name="Err" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <!--See also http://logback.qos.ch/manual/appenders.html#RollingFileAppender-->
+    <encoder>
+      <pattern>%d{yyyy-MM-dd/HH:mm:ss.SSS} %level [%thread] %logger{20}.%method:%line - %msg%n</pattern>
+    </encoder>
+    <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+      <level>ERROR</level>
+    </filter>
+    <!-- Support multiple-JVM writing to the same log file -->
+    <prudent>true</prudent>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- rollover daily -->
+      <fileNamePattern>${LOG_HOME}/error_${APP_NAME:-lezhi}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+      <timeBasedFileNamingAndTriggeringPolicy
+            class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <!-- or whenever the file size reaches 100MB -->
+        <maxFileSize>100MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+      <maxHistory>30</maxHistory> 
+    </rollingPolicy>
+  </appender>
+  
+  <logger name="freemarker" level="INFO"/>
+  <logger name="code.google.struts2jsonresult" level="FATAL"/>
+  <logger name="ognl.OgnlValueStack" level="FATAL"/>
+  <logger name="org.apache.commons.httpclient" level="INFO"/>
+  <logger name="com.opensymphony.xwork2.ognl.OgnlUtil" level="FATAL"/>
+  <logger name="httpclient" level="INFO"/>
+  <logger name="MemCached.MemCachedClient" level="FATAL"/>
+  <logger name="ognl" level="INFO"/>
+  <logger name="com.google.code.yanf4j" level="INFO"/>
+  <logger name="net.rubyeye.xmemcached" level="INFO"/>
+  <logger name="me.prettyprint.cassandra" level="INFO"/>
+    
+  <root level="DEBUG">
+    <appender-ref ref="A1"/>
+    <appender-ref ref="Err"/>
+    <appender-ref ref="Console"/>
+  </root>
+</configuration>

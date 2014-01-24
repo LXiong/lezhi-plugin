@@ -1,0 +1,25 @@
+<% attributes("layout") = "" %>
+<%@ var request: javax.servlet.http.HttpServletRequest%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+    <title>登陆成功</title>
+</head>
+<body>
+    #if (request.getAttribute("USER_NAME") != null)
+        <div style="text-align:center;">
+            <img src="http://static.bshare.cn/images/green-check-big.gif"/>&nbsp;&nbsp;&nbsp;
+            <span id="rSuccessMsg" class="heading1" style="color:#ff5c00;font-size:50px;">登陆成功</span>
+        </div>
+    #end
+    
+	<script type="text/javascript" charset="utf-8">
+		if ('${request.getAttribute("USER_NAME")}' != '') {
+		    window.parent.loginSuccess('${request.getAttribute("USER_NAME")}', '');
+		} else {
+            window.parent.loginFail();
+        } 	
+	</script>
+</body>
+</html>

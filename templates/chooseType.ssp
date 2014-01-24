@@ -1,0 +1,25 @@
+<%@ var rootUrl: String %>
+<%@ var uuid: String = "nologin" %>
+<% attributes("nav") = "get" %>
+<%@ var uuid: String = "" %>
+
+<!-- content -->
+<div class="lezhi_content_wid986">
+	<div class="web_lezhi_step">
+		<div class="web_lezhi_step1"></div>
+	</div>
+	<div class="web_lezhi_body" style="padding-bottom:160px;">
+		<h1 class="web_lezhi_head">您需要的插件类型是？</h1>
+		<div class="web_lezhi_type_title">
+		    根据用户搜索行为、网页内容、网站热词，精准匹配网民兴趣，智能推荐网页相关内容，以文字链、图片或图文结合的形式嵌入到页面中。
+		</div>
+		<a href="${rootUrl}get/static/pic?uuid=${uuid}" class="fixed_type">
+			<div class="filterDiv"></div>
+			<div class="fixed_type_button"></div>
+		</a>
+		<a href="${rootUrl}get/float/pic?uuid=${uuid}" class="slide_type">
+			<div class="filterDiv"></div>
+			<div class="slide_type_button"></div>
+	    </a>
+	</div>
+</div>

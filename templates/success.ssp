@@ -1,0 +1,27 @@
+<%@ var staticUrl: String %>
+<%@ var rootUrl: String %>
+<% attributes("nav") = "navUser" %>
+<%@ var message: String = "" %>
+
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/user.css" />
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/plugin.css" />
+
+<style>
+    .pageBodyIndex {
+    	margin-bottom:25px;
+    	background:#fff;
+    	-moz-border-radius:5px;
+    	-khtml-border-radius:5px;
+    	-webkit-border-radius:5px;
+    }
+    .pageCenter{margin-bottom:0;}
+</style>
+	
+<div class="center">
+	<div class="pageBodyIndex">
+		<div class="pageCenter">
+			执行成功
+		</div>
+	</div>
+</div>
+<a id="qqservicetab" target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=800087176&amp;site=qq&amp;menu=yes"></a>

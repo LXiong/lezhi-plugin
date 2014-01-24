@@ -1,0 +1,33 @@
+<%@ var total: Int = 0 %>
+<%@ var cur: Int = 0 %>
+
+<div id="pagination" class="pagination right" style="margin:30px 0;">	
+	#if(cur > 3)
+    	<a href="javascript:void(0);">1</a>
+    	<span class="left">...</span>
+	#end
+	#if(cur == 2)
+        <a href="javascript:void(0);">${(cur - 1)}</a>
+	#end
+	#if(cur -2 > 0)
+        <a href="javascript:void(0);">${(cur - 2)}</a>
+    	<a href="javascript:void(0);">${(cur - 1)}</a>
+	#end
+	#if(cur != 0)
+	   <a href="javascript:void(0);" class="current">${cur}</a>
+	#end
+	#if(cur + 1 == total)
+		<a href="javascript:void(0);">${total}</a>
+	#end
+	#if(cur + 2 <= total)
+    	<a href="javascript:void(0);">${(cur + 1)}</a>
+    	<a href="javascript:void(0);">${(cur + 2)}</a>
+	#end
+	#if(cur + 3 < total)
+    	<span class="left">...</span>
+    	<a href="javascript:void(0);">${total}</a>
+	#end
+	
+    <span class="pagination right" style="*vertical-align:super;">共&nbsp;${total}&nbsp;页</span>
+    <input type="hidden" id="postPage" name="pagination" value="${cur}" />
+</div>

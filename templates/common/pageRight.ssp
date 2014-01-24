@@ -1,0 +1,12 @@
+<%@ var staticUrl: String %>
+<%@ var rootUrl: String %>
+
+<div class="pageRight">
+	<div class="lezhiFAQ">
+		<h3 style="margin-top:0;">遇到问题</h3>
+		<ul>
+			<li>1. 到 <a target="_blank" class="bLinkU" href="${rootUrl}help">帮助中心</a>，查找您遇到的问题和答案</li>
+			<li>2. <a target="_blank" class="bLinkU" href="http://wpa.qq.com/msgrd?v=3&amp;uin=800087176&amp;site=qq&amp;menu=yes">在线提交反馈</a>，我们会第一时间为您提供帮助！</li>
+		</ul>
+	</div>
+</div>

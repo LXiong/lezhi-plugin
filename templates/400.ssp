@@ -1,0 +1,57 @@
+<%@ var staticUrl: String %>
+<%@ var rootUrl: String %>
+<% attributes("nav") = "navUser" %>
+<%@ var err: (Int, String) = (-1,"") %>
+<%@ var request: javax.servlet.http.HttpServletRequest%>
+<%@ var fails: unfiltered.request.QParams.Log[java.lang.String] = null%>
+
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/user.css"/>
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/plugin.css"/>
+<style>
+    .pageBodyIndex {
+        margin-bottom:25px;
+        background:#fff;
+        -moz-border-radius:5px;
+        -khtml-border-radius:5px;
+        -webkit-border-radius:5px;
+    }
+    .pageCenter{margin-bottom:0px;}
+</style>
+
+    <div class="center">
+        <div class="pageBodyIndex">
+            <div class="pageCenter">
+                <div class="left"><img src="${staticUrl}images/error.jpg"/></div>
+                <div class="left" style="margin-left:20px;">
+                    <div class="clear spacer20"></div>
+                    <h1 style="color:red;font-size:40px;">错误!</h1>
+                    <div class="clear spacer30"></div>
+                    <p style="font-size:24px;">
+                        对不起，链接中参数可能存在错误， 请检查以下参数：
+                    </p>
+                    <div class="clear spacer10"></div>
+                    <p>
+                        #if(fails != null && fails.size > 0)
+                            #for(i <- 0 until fails.size)
+                                <span style="color:#666;font-size:14px;">
+                                    ${fails(i).name} =>  ${fails(i).error}
+                                </span>
+                                <div class="clear spacer5"></div>
+                            #end
+                        #end
+                    </p>
+                    <div class="clear spacer30"></div>
+                    <p style="font-size:18px;color:#555;">
+                        若有其他疑问或是建议，<br/><br/>
+                        请和我们联系：<a class="bLinkU" style="font-size:18px;" title="feedback@buzzinate.com" href="mailto:feedback@buzzinate.com">feedback@buzzinate.com</a>
+                    </p>
+                    <div class="clear spacer30"></div>
+                    <p style="font-size:24px;font-weight:bold;">谢谢您的合作！</p>
+                    <div class="clear spacer30"></div>
+                    <a class="bLinkU" href="${rootUrl}get">安装插件</a>
+                </div>
+                <div class="clear"></div>
+            </div>
+        </div>
+    </div>
+    <a id="qqservicetab" target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=800087176&amp;site=qq&amp;menu=yes"></a>

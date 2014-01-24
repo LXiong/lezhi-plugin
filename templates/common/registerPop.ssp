@@ -1,0 +1,201 @@
+<%@ var staticUrl: String %>
+<%@ var bshareAuthServer: String %>
+<%@ var bshareAuthClient: String %>
+<%@ var service: String = java.net.URLEncoder.encode(bshareAuthClient + "/login")%>
+<%@ var loginCallbackUrl: String = java.net.URLEncoder.encode(bshareAuthClient + "/loginCallback")%>
+<%@ var registerCallbackUrl: String = java.net.URLEncoder.encode(bshareAuthClient + "/registerCallback")%>
+
+<!-- REGISTER POPUP -->
+
+<!-- 
+本文件登陆和注册弹窗，只需在页面include此文件即可载入。
+1. 如果要立即弹出，则直接调用$("#registerPopup").click()即可
+2. 父页面可以提供一个afterLogin(name, uuid)，登陆完成后会回调此函数
+3. 如果要自己定义弹出窗口的锚点，请参考BsyncShare.jsp
+ -->
+
+<style>
+    .bOverlay2 { background-color: white; display: none; width: 500px; padding: 0; text-align: left; opacity: 1; -moz-box-shadow: 2px 2px 7px #000; -webkit-box-shadow: 2px 2px 7px #666; }
+    .bOverlay2 .close { background-image: url(${staticUrl}images/close-blue.png); position: absolute; right: -20px; top: -20px; cursor: pointer; height: 39px; width: 39px; display:block; left:auto; }
+    .bOverlay2 .header { color: white; background: #2b2b2b; height: 45px; line-height: 45px; padding: 0 25px 0 15px; font-size: 16px; }
+    .bOverlay2 .body { padding: 15px; }
+    .hidden { display: none; }
+    .floatFix { _height: 0; }
+    .bOverlay2 .header a { color: white; }
+    .bLinkU { color: #2E3192; text-decoration: underline; }
+    .bLinkU:hover { text-decoration: none; }
+    .heading1 { font-size: 20px; color: black; font-weight: bold; font-family: Helvetica,Calibri,Tahoma,Arial,sans-serif,微软雅黑,宋体; }
+</style>
+
+<a rel="#dialogRegister" id="registerPopup" class="hidden"></a>
+<div class="bOverlay2" id="dialogRegister">
+    <div class="header">
+        <div id="popupRegisterTitle" class="left floatFix" style="font-size:16px;">免费注册</div>
+        <div id="popupLoginTitle" class="left floatFix hidden" style="font-size:16px;">登录</div>
+        <div id="popupRegisterTitle2" class="right floatFix" style="text-align:right;font-weight:normal;font-size:14px;">已经有一个账户？&nbsp;<a id="popupLoginLink" class="bAuthLink gotoLogin bLinkU" style="font-weight:bold;color:#fff !important;font-size:14px;" href="javascript:void(0);">登录</a></div>
+        <div id="popupLoginTitle2" class="right floatFix hidden" style="text-align:right;font-weight:normal;font-size:14px;">您可以用bShare账号登陆，如没有，&nbsp;<a id="popupRegisterLink" class="bAuthLink bLinkU" style="font-weight:bold;color:#fff !important;font-size:14px;" href="javascript:;">注册</a>&nbsp;一个新账号</div>
+    </div>
+    <div id="rSuccess" class="body hidden">
+        <div class="clear spacer30"></div>
+        <div style="text-align:center;">
+            <img src="http://static.bshare.cn/images/green-check-big.gif"/>&nbsp;&nbsp;&nbsp;
+            <span id="rSuccessMsg" class="heading1" style="color:#ff5c00;font-size:50px;">注册成功</span>
+        </div>
+        <div class="clear spacer30"></div>
+        <div style="text-align:center;color:#666;">
+            此页面将在<span id="closeSuccess" style="color:#333;font-weight:bold;">5</span>秒后自动关闭&nbsp;&gt;&gt;&nbsp;<a class="closeRegister bLinkU" href="javascript:;">立即返回</a>
+        </div>
+        <div class="clear spacer30"></div>
+    </div>
+    
+    <div id="rRegister" class="body">
+        <style>
+            .frame-register { height: 300px; }
+            .frame-login { height: 220px; }
+            .frame-register.enableOauth { height: 370px; }
+            .frame-login.enableOauth { height: 270px; }
+        </style>
+        <div id="popupAuthDiv" class="frame-register">
+            <iframe style="height:100%; width:100%;" scrolling="no"; frameborder="0"></iframe> 
+        </div>
+    </div>
+    <div class="clear"></div>
+</div>
+
+<script type="text/javascript" charset="utf-8">
+    var seconds = 5, timer;
+    function displayCounter() { 
+        if (!$("#dialogRegister").is(":visible")) {
+            clearTimeout(timer);
+            return;
+        }
+        if (seconds <= 0) {
+            clearTimeout(timer);
+            $("#registerPopup").data("overlay").close();
+            $("#closeSuccess").text(seconds);
+            return;
+        }
+        $("#closeSuccess").text(seconds);
+        seconds -= 1;
+        timer = setTimeout(displayCounter, 1000);
+    }
+    
+    var isSubmitting = false;
+    
+    // handles ajax connects
+    function loginOauth(platformName) {
+        window.open(BSHARE_WEBSITE_HOST + "iframeLoginByOauth?site=" + platformName + "&login=true");
+        return false;
+    }
+    
+    function loginSuccess(name, uuid) {
+    	$("#rSuccessMsg").text("登录成功");
+    	successHandler(name, uuid);
+    }
+    
+    function loginFail() {
+        $("#rSuccessMsg").text("登录失败");
+        $("#registerPopup").data("overlay").close();
+        failLogin();
+    }
+    
+    function registerFail() {
+        $("#rSuccessMsg").text("注册失败");
+        $("#registerPopup").data("overlay").close();
+        failRegister();
+    }
+    
+    function registerSuccess(name, uuid) {
+        $("#rSuccessMsg").text("注册成功");
+        successHandler(name, uuid);
+    }
+    
+    function successHandler(name, uuid) {
+        hideStatusMessage();
+        $("#dialogRegister > .header").text("");
+        $("#dialogRegister > #rRegister").hide();
+        $("#dialogRegister > #rSuccess").show();
+        displayCounter();
+    
+        if (typeof afterLogin === "function") {
+        	afterLogin(name, uuid)
+        }
+    }
+
+    $(function() {
+        $("#registerPopup").overlay({
+            // some mask tweaks suitable for modal dialogs
+            mask: {
+                color: '#666',
+                loadSpeed: 200,
+                opacity: 0.8
+            },
+            closeOnClick: false,
+            top: 'center',
+            onLoad: function(e) {
+                $("#userSite").focus();
+            },
+            onBeforeClose: function(e) {
+                hideStatusMessage();
+            }
+        });
+        
+        $(".closeRegister").click(function() {
+            $("#registerPopup").data("overlay").close();
+        });
+        
+        $.tools.validator.localize('zh', {
+            '*'         : '无效的值。',
+            ':email'    : '请输入有效的邮件地址。',
+            ':number'   : '请输入一个数字。',
+            ':url'      : '请输入有效的链接。',
+            '[max]'     : '此数字必须小于$1.',
+            '[min]'     : '此数字必须大于$1.',
+            '[required]': '此域不能为空。'
+        });
+        
+        $("#popupLoginLink").click(function(e) {
+            hideStatusMessage();
+            $("#popupRegisterDiv").hide();
+            $("#popupRegisterTitle").hide();
+            $("#popupRegisterTitle2").hide();
+            $("#popupLoginDiv").show();
+            $("#popupLoginTitle").show();
+            $("#popupLoginTitle2").show();
+        });
+        
+        $("#popupRegisterLink").click(function(e) {
+            hideStatusMessage();
+            $("#popupLoginDiv").hide();
+            $("#popupLoginTitle").hide();
+            $("#popupLoginTitle2").hide();
+            $("#popupRegisterDiv").show();
+            $("#popupRegisterTitle").show();
+            $("#popupRegisterTitle2").show();
+        });
+       
+        $(".bAuthLink").click(function(e) {
+            hideStatusMessage();
+            var _gotoLogin = $(this).hasClass("gotoLogin");
+            var _src = "${bshareAuthServer}/iframe" + (_gotoLogin ? "Login" : "Register") + "?service=${service}&targetUrl=" + 
+                    (_gotoLogin ? "${loginCallbackUrl}" : "${registerCallbackUrl}") + "&enableOauth=false";
+            $("#popupAuthDiv").find("iframe").attr("src", _src);
+            if (_gotoLogin) {
+                $("#popupAuthDiv").removeClass("frame-register").addClass("frame-login");
+                $("#popupRegisterTitle").hide();
+                $("#popupRegisterTitle2").hide();
+                $("#popupLoginTitle").show();
+                $("#popupLoginTitle2").show();
+            } else {
+                $("#popupAuthDiv").removeClass("frame-login").addClass("frame-register");
+                $("#popupLoginTitle").hide();
+                $("#popupLoginTitle2").hide();
+                $("#popupRegisterTitle").show();
+                $("#popupRegisterTitle2").show();
+            }
+        });
+        
+        $(".bAuthLink.gotoLogin").trigger("click");
+    }());
+</script>
+<!-- REGISTER POPUP -->

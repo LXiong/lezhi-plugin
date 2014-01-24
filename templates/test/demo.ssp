@@ -1,0 +1,45 @@
+<% attributes("layout") = "" %>
+
+<%@ var staticUrl: String %>
+<%@ var url: String %>
+<%@ var title: String  %>
+<%@ var sitePrefix: String  %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Lezhi Demo</title>
+</head>
+<body>
+
+<div>
+<div style="in-width:300px;width:24%;float:left">
+<form acton="/test/demo" method="get">
+URL: <br/><input id="url" name="url" value="${url}" style="width:100%"/> <br/>
+SitePrefix (Optinal): <br/><input id="sitePrefix" name="sitePrefix" value="" style="width:100%"/> <br/>
+<input type="submit" name="submit" class="bButton-blue" value="Submit" />
+</form>
+<br/><br/>
+
+#if (url != "")
+<div id="bShareRecommDiv" style="font-size:12px;width:100%"></div>
+<script type="text/javascript" >
+var bshare_recomm_config = {
+    url: "${url}",
+    title: "${title}"
+};
+</script>
+<script type="text/javascript" charset="utf-8" src="${staticUrl}plugin/lz.js#source=insite,outsite,trending&col=2&row=4&pic=true&type=fixed&debug=true"></script>
+#end
+</div>
+
+<div style="float:left;margin-left:20px;min-width:800px;width:74%;height:3000px;" >
+#if (url != "")
+<iframe src="${url}" style="width:100%;height:100%;scrolling="auto""></iframe>
+#end
+</div>
+</div>
+</body>
+</html>

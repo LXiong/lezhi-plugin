@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="Content-Language" content="UTF-8">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <meta name="author" content="Buzzinate">
+    <title></title>
+	<script type="text/javascript" src="js/common/bshareLib.js"></script>
+	<style>
+	body:after{content:'.';display:block;height:0;clear:both;visibility:hidden;overflow:hidden;}
+	#bShareRecommDiv.b-slide{position:relative !important;}
+	.bShareRecommTag{bottom: 0 !important;top: 30px;}
+	</style>
+</head>
+<body style="margin:10px 0 0 0;font-size:12px;">
+<script type="text/javascript">
+var config = $$.fn.getURLParms();
+var bshare_recomm_config = {
+		mock: true
+	};
+for(var per in config){
+	if(/(col|row|picSize|fontSize|width|height|titleFontSize|lineHeight)$/.test(per)){
+		config[per] = Number(config[per]);
+	}
+	if(/(pic|highlight|showLogo|titleBold|fontBold|fontUnderline|linkUnderline|picBorderRadius)$/.test(per)){
+		config[per] = config[per] == "true" ? true : false;
+	}
+	if(/(htcolor|hvcolor|bdcolor|rtcolor|titleBgColor|bgcolor)$/.test(per)){
+		config[per] = (config[per] == "" || config[per] == "transparent") ? config[per] : "#" + config[per];
+	}
+	bshare_recomm_config[per] = config[per];
+}
+
+</script>
+<!-- lezhi code start -->
+<div id="bShareRecommDiv"></div>
+<script type="text/javascript" charset="utf-8" src="lz.js#"></script>
+<!-- lezhi code end -->
+</body>
+</html>

@@ -1,0 +1,94 @@
+<% attributes("title") = "乐知 账号信息" %>
+<% attributes("nav") = "navUser" %>
+<% attributes("backend") = "true" %>
+<%@ var staticUrl: String %>
+<%@ var contactInfo: com.buzzinate.buzzads.domain.PublisherContactInfo = new com.buzzinate.buzzads.domain.PublisherContactInfo%>
+<%@ var err: (Int, String) = (-1,"") %>
+
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/user.css" />
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/plugin.css" />
+
+<style>
+    .pageBody, .pageBodyIndex {width:auto;margin:20px 15px;}
+    .pageCenter {margin-bottom:0px;}
+    .wid980 {width:auto;margin:0 15px;}
+    .adsTable1 td { padding: 10px 5px; }
+    .cRed {color:#ff7c00;}
+</style>
+
+<div class="center">
+    <div class="breadCrumbs">
+        <span>当前位置：</span>
+        <a href="${rootUrl}">乐知推荐</a>
+        <span>&nbsp=&gt;&nbsp;</span>
+        <a href="${rootUrl}user/manage">管理中心</a>
+        <span>&nbsp=&gt;&nbsp;</span>
+        <a href="${rootUrl}user/ads/contact">账号信息</a>
+    </div>
+    <div class="pageBody">
+	    <form>
+            <div class="module-white-grey" style="padding:20px;">
+				<h3 class="cRed">联系人信息</h3>
+				<div class="clear spacer10"></div>
+                <table class="adsTable1">
+					<tr>
+						<td width="75">联系人：</td>
+						<td>${contactInfo.getName}</td>
+					</tr>
+					<tr>
+						<td>手机：</td>
+						<td>${contactInfo.getMobile}</td>
+					</tr>
+					<tr>
+						<td>QQ：</td>
+						<td>${contactInfo.getQq}</td>
+					</tr>
+				</table>
+				<div class="clear spacer20"></div>
+				<div class="line"></div>
+				<div class="clear spacer20"></div>
+				<h3 class="cRed">收款信息</h3>
+				<div class="clear spacer10"></div>
+                <table class="adsTable1">
+					<tr>
+						<td>开户行：</td>
+						<td>支付宝</td>
+					</tr>
+					<tr>
+						<td width="75">收款人姓名：</td>
+						<td>${contactInfo.getReceiveName}</td>
+					</tr>
+					
+					<tr>
+						<td>收款账号：</td>
+						<td>${contactInfo.getReceiveAccount}</td>
+					</tr>
+				</table>
+				<div class="clear spacer30"></div>
+				<a class="bButton orange" style="padding:5px 10px;" href="${rootUrl}user/ads/contact/edit">修改信息</a>
+				<a class="bButton" style="padding:5px 10px;margin-left:5px;" href="${rootUrl}user/manage">返回管理中心</a>
+            </div>
+	    </form>
+    </div>
+</div>
+
+<a id="qqservicetab" target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=800087176&amp;site=qq&amp;menu=yes"></a>
+
+<div id="notifications" class="hidden" style="display: none; ">
+    <div class="notification-bar-container">
+        <div class="notification-bar-bkg" style="background-color: rgb(255, 248, 204); height: 25px;"></div>
+        <div class="notification-bar">
+            <div class="notification-bar-contents">
+                <div class="notification-msg heading1" style="color: rgb(51, 51, 51); font-size:20px; font-weight:bold;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        #if(err._1 == 1)
+            displayStatusMessage("${err._2}");
+        #end
+    })
+</script>

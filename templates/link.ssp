@@ -1,0 +1,40 @@
+<%@ var staticUrl: String %>
+<% attributes("nav") = "navHelp" %>
+
+<link rel="stylesheet" type="text/css" href="${staticUrl}css/plugin.css" />
+<style>
+    h3{margin:30px 0px 10px 0px;font-weight:bold;color:#333;}
+    .lezhiInstallStep1{padding: 20px 25px 46px 25px;}
+    pre{font-family: "Consolas", "Monaco", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;}
+</style>
+
+<div class="center">
+    <div class="pageBody">    
+        <div class="pageLeft">
+            <h3>友情链接</h3>
+            <form id="link" action="" method="POST">
+            <table style="width:95%;margin:0 auto;">
+                <tr>
+                    <th>序号</th>
+                    <th>标题</th>
+                    <th>链接</th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="text" name="title" /></td>
+                    <td><input type="text" name="url" style="width:200px;" /></td>
+                </tr>
+            </table>
+            <div class="clear spacer10"></div>
+            <input type="submit" value="保存" />
+            </form>
+        </div>
+
+    </div>
+</div>
+
